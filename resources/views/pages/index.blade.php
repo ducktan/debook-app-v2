@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('title', 'Debook - Trang chủ')
 @section('css')
@@ -16,13 +16,13 @@
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="{{ asset('img/banner1.png') }}" class="d-block w-100" alt="banner1">
+              <img src="{{ asset('assets/img/banner1.png') }}" class="d-block w-100" alt="banner1">
             </div>
             <div class="carousel-item">
-              <img src="{{ asset('img/banner2.png') }}" class="d-block w-100" alt="banner2">
+              <img src="{{ asset('assets/img/banner2.png') }}" class="d-block w-100" alt="banner2">
             </div>
             <div class="carousel-item">
-              <img src="{{ asset('img/banner3.jpg') }}" class="d-block w-100" alt="banner3">
+              <img src="{{ asset('assets/img/banner3.jpg') }}" class="d-block w-100" alt="banner3">
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -182,7 +182,7 @@
         <p class="title">SÁCH NỔI BẬT</p>
         <div class="book__list row" style="margin: 0;">
           <div class="card col-3" style="width: 15rem; padding: 0;">
-            <img src="{{ asset('img/book2.jpg') }}" class="card-img-top" alt="book">
+            <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
              <div class="card-price">
@@ -200,7 +200,7 @@
           </div>
   
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('img/book2.jpg') }}" class="card-img-top" alt="book">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
              <div class="card-price">
@@ -218,7 +218,7 @@
           </div>
   
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('img/book2.jpg') }}" class="card-img-top" alt="book">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
              <div class="card-price">
@@ -236,7 +236,7 @@
           </div>
   
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('img/book2.jpg') }}" class="card-img-top" alt="book">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
              <div class="card-price">
@@ -264,7 +264,7 @@
         <p class="title">PODCAST</p>
         <div class="book__list row" style="margin: 0;">
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('img/book2.jpg') }}" class="card-img-top" alt="book">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
              <div class="card-price">
@@ -285,7 +285,7 @@
   
   
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('img/book2.jpg') }}" class="card-img-top" alt="book">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
              <div class="card-price">
@@ -303,7 +303,7 @@
           </div>
   
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('img/book2.jpg') }}" class="card-img-top" alt="book">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
              <div class="card-price">

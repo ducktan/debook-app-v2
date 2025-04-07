@@ -34,6 +34,14 @@
                     {{Auth::user()->name}}    
                     </a></li>
 
+                    <!-- Thêm nút đăng xuất -->
+                    <li class="nav-item line__fi">
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="nav-link" style="border: none; background: none; color: inherit;">Đăng xuất</button>
+                        </form>
+                    </li>
+
                     @endauth
                     
                    
