@@ -98,12 +98,16 @@
     padding-top: 3rem;
 }
 
-.user__avatar__change .user__avt__display {
-    background-color: #c7c8c8;
+.user__avatar__change .user__avt__display img {
+   
     border-radius: 50%;
     width: 100px;
     height: 100px;
     margin-bottom: 1rem;
+}
+
+.user__avatar img {
+    border-radius: 50%;
 }
 
 .user__avatar__change button {

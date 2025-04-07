@@ -30,7 +30,7 @@
 
                     @auth
                         
-                    <li class="nav-item line__fi"><a class="nav-link" href="{{ Auth::user()->utype === 'ADM' ? route('admin.index') : route('user.index') }}">
+                    <li class="nav-item line__fi"><a class="nav-link" href="{{ Auth::user()->utype === 'ADM' ? route('admin.index') : route('user.profile') }}">
                     {{Auth::user()->name}}    
                     </a></li>
 

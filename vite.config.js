@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/master.css',
                 'resources/css/index.css',
                 'resources/css/user.css',
+                'resources/css/member.css',
                 'resources/css/admin/dashboard.css',
                 
             ],

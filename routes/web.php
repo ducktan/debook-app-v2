@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AuthAdmin;
+use App\Http\Controllers\HomeController;
 
 
 
@@ -14,9 +15,21 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('in
 
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+    Route::get('/profile', [UserController::class, 'index'])->name('user.profile');
+    
+    Route::put('/profile/update', [UserController::class, 'update'])->name('user.update');
+
+    
 }); 
+
+
 
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
+
+
+
+
+// Other pages
+Route::get('/member-register', [HomeController::class, 'member'])->name('member');
