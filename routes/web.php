@@ -6,10 +6,15 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Controllers\HomeController;
-
-
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\SocialiteController;
 
 Auth::routes();
+
+Route::controller(SocialiteController::class)->group(function () {
+    Route::get('/auth/google', 'googleLogin')->name('google.login');
+    Route::get('auth/google-callback', 'googleAuthencation')->name('auth.google-callback');
+});
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 

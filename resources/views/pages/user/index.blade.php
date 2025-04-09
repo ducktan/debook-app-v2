@@ -50,7 +50,7 @@
                     @if (Auth::user()->avatar)
                         <img src="{{ asset('assets/img/avatars/' . Auth::user()->avatar) }}" alt="Avatar" class="img-fluid">
                     @else
-                        <img src="{{ asset('assets/img/default-avt.jpg') }}" alt="Default Avatar" class="img-fluid" style="width: 150px; height: 150px; border-radius: 50%;">
+                        <img src="{{ asset('assets/img/default-avt.jpg') }}" alt="Default Avatar" class="img-fluid">
                     @endif
 
                     
