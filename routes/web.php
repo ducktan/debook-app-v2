@@ -12,8 +12,8 @@ use App\Http\Controllers\SocialiteController;
 Auth::routes();
 
 Route::controller(SocialiteController::class)->group(function () {
-    Route::get('/auth/google', 'googleLogin')->name('google.login');
-    Route::get('auth/google-callback', 'googleAuthencation')->name('auth.google-callback');
+    Route::get('/auth/redirection/{provider}', 'authProviderRedirect')->name('auth.redirection');
+    Route::get('auth/{provider}/callback', 'socialAuthencation')->name('auth.callback');
 });
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

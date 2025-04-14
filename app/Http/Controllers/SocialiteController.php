@@ -21,37 +21,47 @@ class SocialiteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function googleLogin()
+    public function authProviderRedirect($provider)
     {
-        return Socialite::driver('google')->redirect();
+        if($provider) {
+            return Socialite::driver($provider)->redirect();
+        }
+        abort(404);
+        
     }
-    public function googleAuthencation()
+    public function socialAuthencation($provider)
     {
+        
             try {
 
-                $googleUser = Socialite::driver('google')->user();
+                if ($provider) {
+                    
+                    $socialUser = Socialite::driver($provider)->user();
             
-            $user = User::where('email', $googleUser->email)->first();
-            if ($user) {
+                    $user = User::where('email', $socialUser->email)->first();
+                    if ($user) {
             
-                Auth::login($user);
-                return redirect()->route('index');
-            }
-            else {
-                // Nếu người dùng chưa tồn tại trong hệ thống, tạo mới
-                $newUser = User::create([
-                    'id' => $googleUser->id,
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'password' => Hash::make('12345678'), // Tạo mật khẩu ngẫu nhiên
-                    'avatar' => $googleUser->avatar,
-                ]);
+                        Auth::login($user);
+                        return redirect()->route('index');
+                    }
+                    else {
+                        // Nếu người dùng chưa tồn tại trong hệ thống, tạo mới
+                        $newUser = User::create([
+                            'id' => $socialUser->id,
+                            'name' => $socialUser->name,
+                            'email' => $socialUser->email,
+                            'password' => Hash::make('12345678'), // Tạo mật khẩu ngẫu nhiên
+                            'avatar' => $socialUser->avatar,
+                        ]);
 
-                if ($newUser) {
-                    Auth::login($newUser);
-                    return redirect()->route('index');
-                }
-    
+                        if ($newUser) {
+                            Auth::login($newUser);
+                            return redirect()->route('index');
+                        }
+            
+                    }
+
+                
                 
             
             }
