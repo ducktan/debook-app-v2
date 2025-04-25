@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['hideHeaderFooter' => true])
 
 @section('content')
 <div class="container my-5">

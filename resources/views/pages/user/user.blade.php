@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['hideHeaderFooter' => true])
 @section('title', 'Debook - Thông tin tài khoản')
 @section('css')
     @vite(['resources/css/user.css'])

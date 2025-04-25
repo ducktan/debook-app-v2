@@ -13,7 +13,7 @@ class UserController extends Controller
     //
     public function index()
     {
-        return view('pages.user.index');
+        return view('pages.user.user');
     }
     public function update(Request $request)
     {
