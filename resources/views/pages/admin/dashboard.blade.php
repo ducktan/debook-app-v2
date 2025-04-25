@@ -1,18 +1,24 @@
 @extends('layouts.app', ['hideHeaderFooter' => true])
 
 @section('title', 'Admin - Dashboard')
+
 @section('css')
     @vite(['resources/css/admin/dashboard.css'])
+    <!-- Thêm Chart.js qua CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Thêm Font Awesome nếu chưa có (dùng cho các icon) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Thêm Bootstrap Icons nếu chưa có -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection
-
 
 @section('content')
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block bg-white sidebar border-end p-3 min-vh-100">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-white sidebar border-end p-3 min-vh-100" id="leftBar">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <img src="{{ asset ('assets/img/Logo.png')}}" alt="logo" class="img-fluid mynav__logo">
+                <img src="{{ asset('assets/img/Logo.png') }}" alt="logo" class="img-fluid mynav__logo">
                 <button class="btn btn-sm d-md-none" id="sidebarToggle">
                     <i class="bi bi-list"></i>
                 </button>
@@ -20,7 +26,7 @@
             
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="./admin.html">
+                    <a class="nav-link d-flex align-items-center active" href="{{ route('admin.index') }}">
                         <i class="fa-solid fa-inbox text-primary"></i>
                         <span>Dashboard</span>
                     </a>
@@ -29,14 +35,12 @@
                     <a class="nav-link d-flex align-items-center" href="./userManagement.html">
                         <i class="fa-solid fa-user text-warning"></i>
                         <span>Người dùng</span>
-                      
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
                         <i class="fa-solid fa-feather text-success"></i>
                         <span>Tác giả</span>
-                       
                     </a>
                 </li>
                 <li class="nav-item">
@@ -65,19 +69,21 @@
                 </li>
                 @auth 
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
+                        <a class="nav-link d-flex align-items-center" href="#">
                             <i class="fa-solid fa-user text-dark"></i>
-                            <span>{{Auth::user()->name}}</span>
+                            <span>{{ Auth::user()->name }}</span>
                         </a>
                     </li>
-                    <!-- Thêm nút đăng xuất -->
+                    <!-- Nút đăng xuất -->
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf
-                            <button type="submit" class="nav-link" style="border: none; background: none; color: inherit;">Đăng xuất</button>
+                            <button type="submit" class="nav-link d-flex align-items-center" style="border: none; background: none; color: inherit;">
+                                <i class="fa-solid fa-sign-out-alt text-danger"></i>
+                                <span>Đăng xuất</span>
+                            </button>
                         </form>
                     </li>
-                    
                 @endauth
             </ul>
         </nav>
@@ -87,7 +93,7 @@
             <div class="responsive__item mb-5">
                 <ul class="nav d-flex">
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center active" href="./admin.html">
+                        <a class="nav-link d-flex align-items-center active" href="{{ route('admin.index') }}">
                             <i class="fa-solid fa-inbox text-primary"></i>
                             <span>Dashboard</span>
                         </a>
@@ -96,14 +102,12 @@
                         <a class="nav-link d-flex align-items-center" href="./userManagement.html">
                             <i class="fa-solid fa-user text-warning"></i>
                             <span>Người dùng</span>
-                          
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
                             <i class="fa-solid fa-feather text-success"></i>
                             <span>Tác giả</span>
-                           
                         </a>
                     </li>
                     <li class="nav-item">
@@ -148,7 +152,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p class="text-muted mb-1">Tổng doanh thu</p>
-                                <h3 class="value text-primary">250.8<small>tr</small></h3>
+                                <h3 class="value text-primary">{{ number_format($totalRevenue / 1000000, 1) }}<small>tr</small></h3>
                             </div>
                             <i class="bi bi-currency-dollar fs-1 text-primary opacity-25"></i>
                         </div>
@@ -161,7 +165,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p class="text-muted mb-1">Sản phẩm đã bán</p>
-                                <h3 class="value text-success">1,240</h3>
+                                <h3 class="value text-success">{{ $totalProductsSold }}</h3>
                             </div>
                             <i class="bi bi-box-seam fs-1 text-success opacity-25"></i>
                         </div>
@@ -174,7 +178,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p class="text-muted mb-1">Khách hàng mới</p>
-                                <h3 class="value text-warning">320</h3>
+                                <h3 class="value text-warning">{{ $newCustomers }}</h3>
                             </div>
                             <i class="bi bi-people fs-1 text-warning opacity-25"></i>
                         </div>
@@ -187,7 +191,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p class="text-muted mb-1">Lượt truy cập</p>
-                                <h3 class="value text-info">50.8<small>K</small></h3>
+                                <h3 class="value text-info">{{ number_format($totalVisits / 1000, 1) }}<small>K</small></h3>
                             </div>
                             <i class="bi bi-eye fs-1 text-info opacity-25"></i>
                         </div>
@@ -197,29 +201,31 @@
             </div>
             
             <!-- Charts Row -->
-            <div class="row g-4">
+            <div class="row g-4 mb-4">
+                <!-- Orders Chart (Doughnut) -->
                 <div class="col-lg-6">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center">
-                                <span>Thống kê đơn hàng</span>
+                                <span>Thống kê đơn hàng</span> <!-- Sửa lỗi typo "obras>" -->
                                 <select class="form-select form-select-sm w-auto">
                                     <option>Tháng 5</option>
                                     <option>Tháng 4</option>
                                 </select>
                             </h5>
-                            <div class="chart-container">
+                            <div class="chart-container" style="height: 300px;">
                                 <canvas id="ordersChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
                 
+                <!-- Revenue Chart (Bar) -->
                 <div class="col-lg-6">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h5 class="card-title">Doanh thu theo tháng (2024)</h5>
-                            <div class="chart-container">
+                            <div class="chart-container" style="height: 300px;">
                                 <canvas id="revenueChart"></canvas>
                             </div>
                         </div>
@@ -227,7 +233,7 @@
                 </div>
             </div>
             
-            <!-- Recent Orders (Example) -->
+            <!-- Recent Orders -->
             <div class="card shadow-sm mt-4">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Đơn hàng gần đây</h5>
@@ -243,14 +249,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>#DH-1001</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/05/2024</td>
-                                    <td>450,000đ</td>
-                                    <td><span class="badge bg-success">Hoàn thành</span></td>
-                                </tr>
-                                <!-- Thêm các dòng khác -->
+                                @forelse ($recentOrders as $order)
+                                    <tr>
+                                        <td>#DH-{{ $order->id }}</td>
+                                        <td>{{ $order->user_name }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y') }}</td>
+                                        <td>{{ number_format($order->total) }}đ</td>
+                                        <td>
+                                            @if ($order->status == 'Đơn mới')
+                                                <span class="badge bg-primary">{{ $order->status }}</span>
+                                            @elseif ($order->status == 'Đang xử lý')
+                                                <span class="badge bg-warning">{{ $order->status }}</span>
+                                            @elseif ($order->status == 'Đã hoàn thành')
+                                                <span class="badge bg-success">{{ $order->status }}</span>
+                                            @elseif ($order->status == 'Đã hủy')
+                                                <span class="badge bg-danger">{{ $order->status }}</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">Không có đơn hàng nào.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -262,12 +283,23 @@
 
 <script>
     // Orders Chart (Doughnut)
+    const orderStats = $orderStats [
+        'Đơn mới' ,
+        'Đang xử lý' ,
+        'Đã hoàn thành' ,
+        'Đã hủy';
+    ];
     new Chart(document.getElementById('ordersChart'), {
         type: 'doughnut',
         data: {
             labels: ['Đơn mới', 'Đang xử lý', 'Đã hoàn thành', 'Đã hủy'],
             datasets: [{
-                data: [120, 90, 200, 30],
+                data: [
+                    orderStats['Đơn mới'] || 0,
+                    orderStats['Đang xử lý'] || 0,
+                    orderStats['Đã hoàn thành'] || 0,
+                    orderStats['Đã hủy'] || 0
+                ],
                 backgroundColor: [
                     '#4285F4',
                     '#FBBC05',
@@ -301,13 +333,14 @@
     });
 
     // Revenue Chart (Bar)
+    const revenueByMonth = $revenueByMonth ?? [0, 0, 0, 0, 0];
     new Chart(document.getElementById('revenueChart'), {
         type: 'bar',
         data: {
             labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
             datasets: [{
                 label: 'Doanh thu (triệu)',
-                data: [40, 60, 80, 120, 250],
+                data: revenueByMonth,
                 backgroundColor: '#34A853',
                 borderRadius: 6
             }]
@@ -345,5 +378,4 @@
         document.getElementById('leftBar').classList.toggle('d-none');
     });
 </script>
-  
 @endsection

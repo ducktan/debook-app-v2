@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function(){
 
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    //Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 });
 
 
@@ -33,3 +34,4 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
 // Other pages
 Route::get('/member-register', [HomeController::class, 'member'])->name('member');
+
