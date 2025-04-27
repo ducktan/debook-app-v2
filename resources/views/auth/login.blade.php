@@ -1,4 +1,8 @@
 @extends('layouts.app')
+@section ('title', 'Login')
+@section('css')
+    @vite(['resources/css/login.css'])
+@endsection
 
 @section('content')
 <div class="container my-5">
@@ -51,7 +55,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
+                        <div class="row mb-4">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-success">
                                     {{ __('Login') }}
@@ -64,7 +68,21 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="row mb-0 social">
+                            
+                                <a href="{{ route('auth.redirection','google') }}">
+                                    <i class="fa-brands fa-google"></i>
+                                </a>
+
+                                <a href="{{ route('auth.redirection','facebook') }}">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                            
+                        </div>
                     </form>
+
+                    
                 </div>
             </div>
         </div>

@@ -68,11 +68,13 @@
     </nav>
 
     <div class="header__category container">
-      <a href="">Sách điện tử</a>
-      <a href="">Sách nói</a>
-      <a href="">Sách hội viên</a>
-      <a href="">Sách mua lẻ</a>
-      <a href="">Podcast</a>
+
+        @foreach ($categories as $category)
+        <a href="#" class="header__category-item">
+            {{ $category->name }}
+        </a>
+        @endforeach
+      
       <a href="">Blog</a>
     </div>
 </header>

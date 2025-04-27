@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['hideHeaderFooter' => true])
 @section('title', 'Debook - Thông tin tài khoản')
 @section('css')
     @vite(['resources/css/user.css'])
@@ -50,7 +50,7 @@
                     @if (Auth::user()->avatar)
                         <img src="{{ asset('assets/img/avatars/' . Auth::user()->avatar) }}" alt="Avatar" class="img-fluid">
                     @else
-                        <img src="{{ asset('assets/img/default-avt.jpg') }}" alt="Default Avatar" class="img-fluid" style="width: 150px; height: 150px; border-radius: 50%;">
+                        <img src="{{ asset('assets/img/default-avt.jpg') }}" alt="Default Avatar" class="img-fluid">
                     @endif
 
                     
@@ -68,6 +68,9 @@
                 
             </div>
             <hr>
+
+            
+
 
             <div class="user__item">
                 <i class="fa-solid fa-user"></i>

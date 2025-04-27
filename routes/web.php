@@ -6,10 +6,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Controllers\HomeController;
-
-
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\CommentController;
 
 Auth::routes();
+
+Route::controller(SocialiteController::class)->group(function () {
+    Route::get('/auth/redirection/{provider}', 'authProviderRedirect')->name('auth.redirection');
+    Route::get('auth/{provider}/callback', 'socialAuthencation')->name('auth.callback');
+});
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
@@ -33,3 +39,13 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
 // Other pages
 Route::get('/member-register', [HomeController::class, 'member'])->name('member');
+
+
+// Lấy danh sách comment (ví dụ, có thể trả về view hoặc json)
+Route::get('/books/{bookId}/comments', [CommentController::class, 'index']);
+
+// Form thêm comment
+Route::post('/comments', [CommentController::class, 'store'])->middleware('auth');
+
+// Xóa comment
+Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->middleware('auth');
