@@ -9,8 +9,17 @@ export default defineConfig({
                 'resources/css/index.css',
                 'resources/css/login.css',
                 'resources/css/user.css',
+                'resources/css/product.css',
+                'resources/css/productDetail.css',
+                'resources/css/cart.css',
+                'resources/css/blog.css',
                 'resources/css/member.css',
                 'resources/css/admin/dashboard.css',
+
+                'resources/js/productDetail.js',
+                'resources/js/cart.js',
+
+                
                 
             ],
             refresh: true,

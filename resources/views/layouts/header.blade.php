@@ -70,12 +70,13 @@
     <div class="header__category container">
 
         @foreach ($categories as $category)
-        <a href="#" class="header__category-item">
+        <a href="{{ route('categories.show', $category->slug) }}" class="header__category-item">
             {{ $category->name }}
         </a>
         @endforeach
+    
       
-      <a href="">Blog</a>
+      <a href="{{ route('blog')}}">Blog</a>
     </div>
 </header>
        

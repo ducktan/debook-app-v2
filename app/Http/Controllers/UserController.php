@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\ProductSubscription;
+use App\Models\Subscription;
 
 
 class UserController extends Controller
@@ -13,7 +17,12 @@ class UserController extends Controller
     //
     public function index()
     {
-        return view('pages.user.user');
+   
+        $categories = Category::all();
+        $ebooks = Product::where('type', 'ebook')->latest()->take(6)->get();
+        $podcasts = Product::where('type', 'podcast')->latest()->take(6)->get();
+
+        return view('pages.user.user', compact('ebooks', 'podcasts','categories'));
     }
     public function update(Request $request)
     {

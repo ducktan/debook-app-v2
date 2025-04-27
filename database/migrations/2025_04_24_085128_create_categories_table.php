@@ -12,8 +12,9 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->string('slug')->unique()->nullable();
             $table->text('description')->nullable();
+            $table->string('image_url')->nullable(); // 👈 thêm dòng này
             $table->timestamps();
-            $table->softDeletes(); // nếu muốn hỗ trợ xóa mềm
+            $table->softDeletes(); // hỗ trợ xóa mềm
         });
     }
 
@@ -22,4 +23,3 @@ return new class extends Migration {
         Schema::dropIfExists('categories');
     }
 };
-

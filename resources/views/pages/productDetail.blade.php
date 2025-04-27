@@ -1,4 +1,4 @@
-@extends('layouts.master', ['hideHeaderFooter' => false])
+@extends('layouts.app', ['hideHeaderFooter' => false])
 
 @section('title', 'Debook - Chi tiêt sản phẩm')
 @section('css')
@@ -13,84 +13,111 @@
             <!-- Product Gallery (Bên trái) -->
             <div class="col-lg-6">
                 <div class="main-image mb-3">
-                    <img src="IMG/bookIMG.png" class="img-fluid rounded-3 shadow" alt="Sách Hoàng Tử Bé">
+                    <img src="{{ asset($product->image_url ?? 'IMG/default.png') }}" class="img-fluid rounded-3 shadow" alt="{{ $product->title }}">
                 </div>
                 <div class="thumbnail-grid row g-2">
-                    <div class="col-3">
-                        <img src="IMG/bookIMG.png" class="img-fluid rounded-2 cursor-pointer" alt="Thumbnail 1">
-                    </div>
-                    <div class="col-3">
-                        <img src="IMG/bookIMG.png" class="img-fluid rounded-2 cursor-pointer" alt="Thumbnail 2">
-                    </div>
-                    <div class="col-3">
-                        <img src="IMG/bookIMG.png" class="img-fluid rounded-2 cursor-pointer" alt="Thumbnail 3">
-                    </div>
-                    <div class="col-3">
-                        <img src="IMG/bookIMG.png" class="img-fluid rounded-2 cursor-pointer" alt="Thumbnail 4">
-                    </div>
+                    @for ($i = 0; $i < 4; $i++)
+                        <div class="col-3">
+                            <img src="{{ asset($product->image_url ?? 'IMG/default.png') }}" class="img-fluid rounded-2 cursor-pointer" alt="Thumbnail {{ $i + 1 }}">
+                        </div>
+                    @endfor
                 </div>
             </div>
-
+    
             <!-- Product Info (Bên phải) -->
             <div class="col-lg-6">
-                <h1 class="mb-3">Hoàng Tử Bé</h1>
+                <h1 class="mb-3">{{ $product->title }}</h1>
                 <div class="book-info mb-3">
-                    <div class="text-muted">Tác giả: Antoine de Saint-Exupéry</div>
-                    <div class="text-muted">Nhà xuất bản: Nhà xuất bản Kim Đồng</div>
+                    <div class="text-muted">Tác giả: {{ $product->author }}</div>
+                    <div class="text-muted">Ngày xuất bản: {{ \Carbon\Carbon::parse($product->publication_date)->format('d/m/Y') }}</div>
                 </div>
+    
+                <!-- Rating -->
                 <div class="rating mb-3">
-                    <i class="fas fa-star text-warning"></i>
-                    <i class="fas fa-star text-warning"></i>
-                    <i class="fas fa-star text-warning"></i>
-                    <i class="fas fa-star text-warning"></i>
-                    <i class="fas fa-star-half-alt text-warning"></i>
-                    <span class="ms-2">(4.5/5)</span>
+                    @for ($i = 0; $i < floor($product->rating); $i++)
+                        <i class="fas fa-star text-warning"></i>
+                    @endfor
+                    @if ($product->rating - floor($product->rating) >= 0.5)
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                    @endif
+                    @for ($i = ceil($product->rating); $i < 5; $i++)
+                        <i class="far fa-star text-warning"></i>
+                    @endfor
+                    <span class="ms-2">({{ $product->rating }}/5)</span>
                 </div>
-
+    
                 <!-- Giá sản phẩm -->
                 <div class="price-section mb-4">
-                    <span class="h3 text-success">200.000đ</span>
-                    <del class="text-muted ms-2">250.000đ</del>
+                    <span class="h3 text-success">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                    {{-- Nếu có giá gốc (ví dụ: giảm giá), có thể hiện thêm --}}
+                    @if(isset($product->original_price))
+                        <del class="text-muted ms-2">{{ number_format($product->original_price, 0, ',', '.') }}đ</del>
+                    @endif
                 </div>
-
+    
                 <!-- Chọn định dạng -->
-                <div class="format-select mb-4">
+                {{-- <div class="format-select mb-4">
                     <h5>Chọn định dạng:</h5>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-success active">Sách điện tử</button>
-                        <button type="button" class="btn btn-outline-success">Sách nói</button>
+                        <button type="button" class="btn btn-outline-success active">
+                            {{ $product->type == 'ebook' ? 'Sách điện tử' : 'Sách nói' }}
+                        </button>
                         <button type="button" class="btn btn-outline-success">PDF Premium</button>
                     </div>
-                </div>
-
+                </div> --}}
+    
                 <!-- Số lượng -->
                 <div class="quantity-selector mb-4">
                     <h5>Số lượng:</h5>
                     <div class="input-group w-25">
-                        <button class="btn btn-outline-success" type="button">-</button>
-                        <input type="text" class="form-control text-center" value="1">
-                        <button class="btn btn-outline-success" type="button">+</button>
+                        <button class="btn btn-outline-success" type="button" id="decreaseQty">-</button>
+                        <input type="text" id="quantityInput" class="form-control text-center" value="1" readonly>
+                        <button class="btn btn-outline-success" type="button" id="increaseQty">+</button>
                     </div>
                 </div>
+    
+                <!-- Thêm vào giỏ hàng + Mua ngay -->
+                <div class="mb-4 d-flex">
+                    <!-- Thêm vào giỏ hàng -->
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="me-3">
+                        @csrf
+                        <button type="submit" class="btn btn-success btn-lg rounded-pill">
+                            <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ hàng
+                        </button>
+                    </form>
+                
+                    <!-- Mua ngay -->
+                    <a href="{{ route('index') }}" class="btn btn-warning btn-lg rounded-pill">
+                        Mua ngay
+                    </a>
+                </div>
+                
 
-                <!-- Nút Thêm vào giỏ hàng và Mua ngay -->
-                <button class="btn btn-success btn-lg me-3 rounded-pill">
-                    <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ hàng
-                </button>
-                <button class="btn btn-warning btn-lg rounded-pill">
-                    Mua ngay
-                </button>
+    
                 <!-- Tóm tắt sách -->
+                
+
                 <div class="book-summary">
                     <h5 class="summary-title">Tóm tắt sách</h5>
-                    <p class="summary-text">
-                        "Hoàng Tử Bé" là tác phẩm kinh điển kể về cuộc gặp gỡ giữa một phi công bị rơi máy bay ở sa mạc Sahara với một cậu bé đến từ tiểu tinh cầu B612. Qua câu chuyện đầy chất thơ và triết lý, tác giả đưa chúng ta đến với những bài học sâu sắc về tình yêu, tình bạn và ý nghĩa thực sự của cuộc sống...
+                    
+                    <!-- Nội dung rút gọn -->
+                    <p id="summaryShort" class="summary-text">
+                        {{ Str::limit($product->description, 200) }}
                     </p>
-                    <a href="#" class="read-more">Đọc thêm <i class="fas fa-chevron-down"></i></a>
+                
+                    <!-- Nội dung đầy đủ, ẩn ban đầu -->
+                    <p id="summaryFull" class="summary-text d-none">
+                        {{ $product->description }}
+                    </p>
+                
+                    <a href="javascript:void(0)" id="toggleSummary" class="read-more">
+                        Đọc thêm <i class="fas fa-chevron-down"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </main>
+    
 <!-- Phần Đánh giá -->
 <section class="reviews-section mt-5">
     <div class="container">
@@ -298,4 +325,8 @@
 </div>
    
 
+@endsection
+
+@section('js')
+    @vite(['resources/js/productDetail.js'])
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.master', ['hideHeaderFooter' => false])
+@extends('layouts.app', ['hideHeaderFooter' => false])
 
 @section('title', 'Debook - Giỏ hàng')
 @section('css')
@@ -28,132 +28,69 @@
             </div>
 
             <!-- Cart Items -->
-<div class="cart-items bg-white rounded shadow-sm">
-<!-- Cart Item 1 -->
-<div class="cart-item p-3 border-bottom">
-    <div class="row align-items-center">
-        <div class="col-auto">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" checked>
-            </div>
-        </div>
-        <div class="col">
-            <div class="product-info d-flex">
-                <img src="IMG/bookIMG.png" alt="Hoàng Tử Bé" class="product-img me-3">
-                <div class="product-details">
-                    <h6 class="product-title mb-1">Hoàng Tử Bé</h6>
-                    <div class="product-author text-muted small">Tác giả: Antoine de Saint-Exupéry</div>
-                    <div class="product-format text-muted small">Định dạng: Sách điện tử</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center">
-            <div class="product-price">
-                <span class="text-success fw-bold">200.000đ</span>
-                <div class="text-decoration-line-through text-muted small">250.000đ</div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center">
-            <div class="product-quantity">
-                <div class="input-group input-group-sm">
-                    <button class="btn btn-outline-secondary">-</button>
-                    <input type="text" class="form-control text-center" value="1">
-                    <button class="btn btn-outline-secondary">+</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center text-danger fw-bold">
-            200.000đ
-        </div>
-        <div class="col-md-1 text-center">
-            <button class="btn btn-sm btn-link text-danger"><i class="fas fa-trash-alt"></i></button>
-        </div>
-    </div>
-</div>
+            <div class="cart-items bg-white rounded shadow-sm">
+                <!-- Lặp qua tất cả các sản phẩm trong giỏ hàng -->
+                @foreach ($cart as $product)
+                    <div class="cart-item p-3 border-bottom">
+                        <div class="row align-items-center">
+                            <!-- Checkbox -->
+                            <div class="col-auto">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked>
+                                </div>
+                            </div>
+        
+                            <!-- Product Info -->
+                            <div class="col">
+                                <div class="product-info d-flex">
+                                    <img src="{{ asset($product['image_url']) }}" alt="{{ $product['name'] }}" class="product-img me-3" style="width: 60px; height: 90px;">
 
-<!-- Cart Item 2 -->
-<div class="cart-item p-3 border-bottom">
-    <div class="row align-items-center">
-        <div class="col-auto">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" checked>
-            </div>
-        </div>
-        <div class="col">
-            <div class="product-info d-flex">
-                <img src="IMG/bookIMG.png" alt="Đắc Nhân Tâm" class="product-img me-3">
-                <div class="product-details">
-                    <h6 class="product-title mb-1">Đắc Nhân Tâm</h6>
-                    <div class="product-author text-muted small">Tác giả: Dale Carnegie</div>
-                    <div class="product-format text-muted small">Định dạng: Sách nói</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center">
-            <div class="product-price">
-                <span class="text-success fw-bold">150.000đ</span>
-            </div>
-        </div>
-        <div class="col-md-2 text-center">
-            <div class="product-quantity">
-                <div class="input-group input-group-sm">
-                    <button class="btn btn-outline-secondary">-</button>
-                    <input type="text" class="form-control text-center" value="2">
-                    <button class="btn btn-outline-secondary">+</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center text-danger fw-bold">
-            300.000đ
-        </div>
-        <div class="col-md-1 text-center">
-            <button class="btn btn-sm btn-link text-danger"><i class="fas fa-trash-alt"></i></button>
-        </div>
-    </div>
-</div>
+                                    <div class="product-details">
+                                        <h6 class="product-title mb-1">{{ $product['name'] }}</h6>
+                                        <div class="product-author text-muted small">Tác giả: {{ $product['author'] }}</div>
+                                        {{-- <div class="product-format text-muted small">Định dạng: {{ $product->format }}</div> --}}
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <!-- Product Price -->
+                            <div class="col-md-2 text-center">
+                                <div class="product-price">
+                                    <span class="text-success fw-bold">{{ number_format($product['price']) }}đ</span>
+                                    {{-- @if ($product->original_price)
+                                        <div class="text-decoration-line-through text-muted small">{{ number_format($product->original_price) }}đ</div>
+                                    @endif --}}
+                                </div>
+                            </div>
+        
+                           <!-- Quantity -->
+                            <div class="col-md-2 text-center">
+                                <div class="product-quantity">
+                                    <div class="input-group input-group-sm">
+                                        <button class="btn btn-outline-secondary quantity-update" data-id="{{ $product['id'] }}" data-action="decrease">-</button>
+                                        <input type="text" class="form-control text-center quantity" value="{{ $product['quantity'] }}" min="1" id="quantity-{{ $product['id'] }}">
+                                        <button class="btn btn-outline-secondary quantity-update" data-id="{{ $product['id'] }}" data-action="increase">+</button>
+                                    </div>
+                                </div>
+                            </div>
 
-<!-- Cart Item 3 -->
-<div class="cart-item p-3">
-    <div class="row align-items-center">
-        <div class="col-auto">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox">
+                            <!-- Total Price for this item -->
+                            <div class="col-md-2 text-center text-danger fw-bold">
+                                <span class="item-total" data-id="{{ $product['id'] }}">{{ number_format($product['price'] * $product['quantity']) }}đ</span>
+                            </div>
+                            <!-- Remove Product -->
+                            <div class="col-md-1 text-center">
+                                <form action="{{ route('cart.remove', $product['id']) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-link text-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-        </div>
-        <div class="col">
-            <div class="product-info d-flex">
-                <img src="IMG/bookIMG.png" alt="Nhà Giả Kim" class="product-img me-3">
-                <div class="product-details">
-                    <h6 class="product-title mb-1">Nhà Giả Kim</h6>
-                    <div class="product-author text-muted small">Tác giả: Paulo Coelho</div>
-                    <div class="product-format text-muted small">Định dạng: PDF Premium</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center">
-            <div class="product-price">
-                <span class="text-success fw-bold">180.000đ</span>
-                <div class="text-decoration-line-through text-muted small">200.000đ</div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center">
-            <div class="product-quantity">
-                <div class="input-group input-group-sm">
-                    <button class="btn btn-outline-secondary">-</button>
-                    <input type="text" class="form-control text-center" value="1">
-                    <button class="btn btn-outline-secondary">+</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2 text-center text-danger fw-bold">
-            180.000đ
-        </div>
-        <div class="col-md-1 text-center">
-            <button class="btn btn-sm btn-link text-danger"><i class="fas fa-trash-alt"></i></button>
-        </div>
-    </div>
-</div>
-</div>
 
             <!-- Continue Shopping -->
             <div class="mt-3">
@@ -193,5 +130,9 @@
         </div>
     </div>
 </main>
+@endsection
+
+@section('js')
+    @vite(['resources/js/cart.js'])
 @endsection
 
