@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Category;
 
 class RegisterController extends Controller
 {
@@ -69,4 +70,21 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+     /**
+     * Show the login form with categories.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegisterForm()
+    {
+        // Lấy danh mục từ bảng categories
+        $categories = Category::all();
+
+        // Truyền dữ liệu categories vào view register
+        return view('auth.register', compact('categories'));
+    }
+
+
+
 }

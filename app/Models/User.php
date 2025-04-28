@@ -49,4 +49,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+            // Trong app/Models/User.php
+        public function subscriptions()
+        {
+            return $this->hasMany(UserSubscription::class);  // Quan hệ 1-n với bảng user_subscriptions
+        }
+
 }

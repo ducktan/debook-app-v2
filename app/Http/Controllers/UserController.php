@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use App\Models\UserSubscription;
+use App\Models\Subscription;
+
 
 
 class UserController extends Controller
@@ -13,7 +16,7 @@ class UserController extends Controller
     //
     public function index()
     {
-        return view('pages.user.index');
+        return view('pages.user.user');
     }
     public function update(Request $request)
     {
@@ -54,9 +57,20 @@ class UserController extends Controller
         // Quay lại trang profile và thông báo thành công
         return redirect()->route('user.profile')->with('success', 'Cập nhật thông tin thành công!');
     }
+    //
+    public function showUserDashboard()
+    {
+        // Lấy thông tin người dùng hiện tại
+        $user = Auth::user();  // Lấy thông tin người dùng đã đăng nhập
 
+        // Lấy thông tin subscription của người dùng có trạng thái 'active'
+        $subscription = $user->subscriptions()->where('status', 'active')->first();
 
-    
+        // Truyền dữ liệu vào view
+        return view('user.dashboard', compact('subscription', 'user'));
+    }
+
+  
 
    
 }

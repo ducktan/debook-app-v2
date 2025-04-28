@@ -7,7 +7,44 @@
 
 @section('content')
      <!-- Banner -->
-      <section class="banner container-fluid bg-dark banner section">
+
+
+
+
+    <section class="banner container-fluid bg-dark banner section">
+    <!-- phần hiện thông báo-->
+
+              @if(session('success'))
+            <div class="alert alert-success" id="success-message">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger" id="error-message">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <script>
+            // Kiểm tra nếu thông báo thành công có tồn tại
+            if (document.getElementById('success-message')) {
+                setTimeout(function() {
+                    // Ẩn thông báo sau 3 giây
+                    document.getElementById('success-message').style.display = 'none';
+                }, 3000);  // Thời gian 3 giây (3000ms)
+            }
+
+            // Kiểm tra nếu thông báo lỗi có tồn tại
+            if (document.getElementById('error-message')) {
+                setTimeout(function() {
+                    // Ẩn thông báo sau 3 giây
+                    document.getElementById('error-message').style.display = 'none';
+                }, 3000);  // Thời gian 3 giây (3000ms)
+            }
+        </script>
+
+
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -177,150 +214,56 @@
       </section>
   
       <!-- Book -->
-  
-      <section class="book container section">
-        <p class="title">SÁCH NỔI BẬT</p>
-        <div class="book__list row" style="margin: 0;">
+      <!-- SÁCH NỔI BẬT -->
+    <section class="book container section">
+      <p class="title">SÁCH NỔI BẬT</p>
+      <div class="book__list row" style="margin: 0;">
+        @foreach($ebooks as $book)
           <div class="card col-3" style="width: 15rem; padding: 0;">
-            <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
+            <img src="{{ asset($book->image_url) }}" class="card-img-top" alt="book">
             <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
+              <h5 class="card-title">{{ $book->title }}</h5>
+              <div class="card-price">
+                <p class="card-text">{{ number_format($book->price, 0, ',', '.') }}đ</p>
+                <div class="card-promotion">-{{ rand(20, 80) }}%</div> <!-- tạm random -->
+              </div>
+              <del>{{ number_format($book->price * 2, 0, ',', '.') }}đ</del>
+              <div class="card-star" style="color: rgb(255, 205, 68);">
+                @for($i = 0; $i < round($book->rating); $i++)
+                  <i class="fa fa-star"></i>
+                @endfor
+              </div>
             </div>
           </div>
-  
+        @endforeach
+      </div>
+    </section>
+
+    <!-- PODCAST -->
+    <section class="book container section">
+      <p class="title">PODCAST</p>
+      <div class="book__list row" style="margin: 0;">
+        @foreach($podcasts as $podcast)
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
+            <img src="{{ asset($podcast->image_url) }}" class="card-img-top" alt="podcast">
             <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
+              <h5 class="card-title">{{ $podcast->title }}</h5>
+              <div class="card-price">
+                <p class="card-text">{{ number_format($podcast->price, 0, ',', '.') }}đ</p>
+                <div class="card-promotion">-{{ rand(10, 50) }}%</div>
+              </div>
+              <del>{{ number_format($podcast->price * 1.8, 0, ',', '.') }}đ</del>
+              <div class="card-star" style="color: rgb(255, 205, 68);">
+                @for($i = 0; $i < round($podcast->rating); $i++)
+                  <i class="fa fa-star"></i>
+                @endfor
+              </div>
             </div>
           </div>
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-       
-        </div>
-      </section>
-  
-  
-      <!-- Podcast -->
-  
-      <section class="book container section">
-        <p class="title">PODCAST</p>
-        <div class="book__list row" style="margin: 0;">
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-        
-  
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        @endforeach
+      </div>
+    </section>
+
   
   
       <!-- Playlist -->

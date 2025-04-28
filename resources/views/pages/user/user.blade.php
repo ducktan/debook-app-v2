@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['hideHeaderFooter' => false])
 @section('title', 'Debook - Thông tin tài khoản')
 @section('css')
     @vite(['resources/css/user.css'])
@@ -7,7 +7,7 @@
 
 <section class="user section container">
 
-    <div class="user__responsive">
+  <div class="user__responsive">
         <div class="user__information">
             <h3>{{ Auth::user()->full_name ?? 'NULL' }}</h3>
             <div class="user__avatar"></div>
@@ -50,12 +50,14 @@
                     @if (Auth::user()->avatar)
                         <img src="{{ asset('assets/img/avatars/' . Auth::user()->avatar) }}" alt="Avatar" class="img-fluid">
                     @else
-                        <img src="{{ asset('assets/img/default-avt.jpg') }}" alt="Default Avatar" class="img-fluid" style="width: 150px; height: 150px; border-radius: 50%;">
+                        <img src="{{ asset('assets/img/default-avt.jpg') }}" alt="Default Avatar" class="img-fluid">
                     @endif
 
                     
                 </div>
             </div>
+
+
             <div class="user__status">
                 <i class="fa-solid fa-crown"></i>
                 <p>{{ Auth::user()->utype ?? 'NULL' }}</p>
@@ -67,7 +69,13 @@
                 </a>
                 
             </div>
+
+
+
             <hr>
+
+            
+
 
             <div class="user__item">
                 <i class="fa-solid fa-user"></i>
