@@ -248,4 +248,43 @@
     </div>
 </div>
   
+
+<!-- Filters -->
+<form id="filter-form">
+    <div class="mb-4">
+        <h6 class="text-muted mb-3">Giá</h6>
+        <div class="form-check">
+            <input class="form-check-input price-filter" type="radio" name="price_range" 
+                   id="price_all" value="" checked>
+            <label class="form-check-label" for="price_all">Tất cả</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input price-filter" type="radio" name="price_range" 
+                   id="price1" value="under_50k">
+            <label class="form-check-label" for="price1">Dưới 50.000đ</label>
+        </div>
+        <!-- Các option giá khác -->
+    </div>
+    
+    <div class="mb-4">
+        <h6 class="text-muted mb-3">Định dạng</h6>
+        @foreach(['ebook', 'audiobook', 'podcast', 'blog'] as $format)
+        <div class="form-check">
+            <input class="form-check-input format-filter" type="checkbox" 
+                   name="format[]" id="{{ $format }}" value="{{ $format }}">
+            <label class="form-check-label" for="{{ $format }}">
+                {{ ucfirst($format) }}
+            </label>
+        </div>
+        @endforeach
+    </div>
+</form>
+
+<!-- Sort -->
+<select class="form-select w-auto" id="sort-select">
+    <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Phổ biến nhất</option>
+    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
+    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
+</select>
+
 @endsection

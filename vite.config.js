@@ -9,8 +9,11 @@ export default defineConfig({
                 'resources/css/index.css',
                 'resources/css/user.css',
                 'resources/css/member.css',
+                'resources/css/product.css',
                 'resources/css/admin/dashboard.css',
                 
+                'resources/js/app.js',  // File chính, nếu bạn có
+                'resources/js/product.js'  // Thêm product.js vào phần input
             ],
             refresh: true,
         }),
