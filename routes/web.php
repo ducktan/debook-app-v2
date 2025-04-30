@@ -40,13 +40,18 @@ Route::middleware(['auth'])->group(function(){
     Route::put('/profile/update', [UserController::class, 'update'])->name('user.update');
     Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/update/{productId}', [CartController::class, 'updateQuantity']);
+    Route::post('cart/update/{productId}', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::post('/cart/remove/{productId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+    Route::post('/payment', [CartController::class, 'payment'])->name('payment');
 
 
 
     
 }); 
+
+Route::get('/payment/return', [CartController::class, 'paymentReturn']);
+
 
 
 // Admin routes
