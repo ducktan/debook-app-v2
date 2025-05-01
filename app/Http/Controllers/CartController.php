@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Session;
 // Thiết lập múi giờ GMT+7
@@ -18,7 +19,6 @@ class CartController extends Controller
     {
         $product = Product::findOrFail($productId);
         $quantity = (int) $request->input('quantity', 1);
-        
 
         $cart = session()->get('cart', []);
 
@@ -37,12 +37,16 @@ class CartController extends Controller
             ];
         }
 
-      
-
         session()->put('cart', $cart);
 
-        return redirect()->route('cart.index');
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã thêm vào giỏ hàng!',
+            'cart_count' => array_sum(array_column(session('cart'), 'quantity'))
+        ]);
+        
     }
+
 
 
     public function index()
@@ -223,35 +227,49 @@ class CartController extends Controller
         
 
         
-            // Kiểm tra mã phản hồi của VNPay
-            if ($vnp_ResponseCode === '00' && $vnp_TransactionStatus === '00') {
-                // Thanh toán thành công
-                // Cập nhật trạng thái đơn hàng
-                $order = Order::where('codeVNPAY', $vnp_TxnRef)->first();
-                if ($order) {
-                    // Cập nhật trạng thái đơn hàng thành công
-                    $order->status = 'completed'; // Đánh dấu là đã hoàn thành
-                   
-                    $order->save();
-                }
-                session()->forget('cart');
+        // Kiểm tra mã phản hồi của VNPay
+        if ($vnp_ResponseCode === '00' && $vnp_TransactionStatus === '00') {
+            // Thanh toán thành công
+            // Cập nhật trạng thái đơn hàng
+            $order = Order::where('codeVNPAY', $vnp_TxnRef)->first();
+            if ($order) {
+                // Cập nhật trạng thái đơn hàng thành công
+                $order->status = 'completed'; // Đánh dấu là đã hoàn thành
+                
+                $order->save();
 
-                // Redirect đến trang thành công
-                return redirect()->route('index')->with('success', 'Thanh toán thành công!');
-            } else {
-                // Thanh toán thất bại
-                $order = Order::where('codeVNPAY', $vnp_TxnRef)->first();
-                if ($order) {
-                    // Cập nhật trạng thái đơn hàng thành thất bại
-                    $order->status = 'failed'; // Đánh dấu là thất bại
-                    $order->save();
+                if ($order->user_id) {
+                    foreach ($order->items as $item) {
+                        DB::table('user_products')->updateOrInsert([
+                            'user_id' => $order->user_id,
+                            'product_id' => $item->product_id
+                        ]);
+                    }
                 }
-                session()->forget('cart');
-                // Redirect đến trang thất bại
-                return redirect()->route('index')->with('error', 'Thanh toán thất bại!');
             }
+            session()->forget('cart');
+
+            // Redirect đến trang thành công
+            return redirect()->route('index')->with('success', 'Thanh toán thành công!');
+        } else {
+            // Thanh toán thất bại
+            $order = Order::where('codeVNPAY', $vnp_TxnRef)->first();
+            if ($order) {
+                // Cập nhật trạng thái đơn hàng thành thất bại
+                $order->status = 'failed'; // Đánh dấu là thất bại
+                $order->save();
+            }
+            session()->forget('cart');
+            // Redirect đến trang thất bại
+            return redirect()->route('index')->with('error', 'Thanh toán thất bại!');
+        }
+
+       
+        
         
     }
+
+    
 
  
     

@@ -21,20 +21,17 @@
         <div class="user__tab__item d-flex g-5">
             <div class="user__item">
                 <i class="fa-solid fa-user"></i>
-                <p><a href="">Quản lý tài khoản</a></p>
+                <p><a href="{{ route('user.profile')}}">Quản lý tài khoản</a></p>
             </div>
             <div class="user__item">
                 <i class="fa-solid fa-book"></i>
-                <p><a href="">Tủ sách cá nhân</a></p>
+                <p><a href=" {{ route('user.myProducts')}}">Tủ sách cá nhân</a></p>
             </div>
             <div class="user__item">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <p><a href="">Quản lý đơn hàng</a></p>
+                <p><a href="{{ route('user.myOrders')}}">Quản lý đơn hàng</a></p>
             </div>
-            <div class="user__item">
-                <i class="fa-solid fa-money-bill"></i>
-                <p><a href="">Lịch sử giao dịch</a></p>
-            </div>
+         
             <div class="user__item">
                 <i class="fa-solid fa-headset"></i>
                 <p><a href="">Hỗ trợ khách hàng</a></p>
@@ -74,24 +71,24 @@
 
             <div class="user__item">
                 <i class="fa-solid fa-user"></i>
-                <p><a href="">Quản lý tài khoản</a></p>
+                <p><a href="{{ route('user.profile')}}">Quản lý tài khoản</a></p>
             </div>
             <div class="user__item">
                 <i class="fa-solid fa-book"></i>
-                <p><a href="">Tủ sách cá nhân</a></p>
+                <p><a href="{{ route('user.myProducts')}}">Tủ sách cá nhân</a></p>
             </div>
             <div class="user__item">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <p><a href="">Quản lý đơn hàng</a></p>
+                <p><a href="{{ route('user.myOrders')}}">Quản lý đơn hàng</a></p>
             </div>
-            <div class="user__item">
-                <i class="fa-solid fa-money-bill"></i>
-                <p><a href="">Lịch sử giao dịch</a></p>
-            </div>
-            <div class="user__item">
+            <div class="user__item" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-headset"></i>
-                <p><a href="">Hỗ trợ khách hàng</a></p>
+                <p>Hỗ trợ khách hàng</p>
             </div>
+
+            
+            
+            
         </div>
         <div class="col-xl-7 col-lg-8 col-12 user__col">
             <h2>Quản lý thông tin tài khoản</h2>
@@ -168,5 +165,39 @@
     </div>
 
  </section>
+
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">HỖ TRỢ</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="support-box">
+                <h2>Bạn cần hỗ trợ</h2>
+                <p>Liên hệ với chúng tôi thông qua các kênh hỗ trợ</p>
+                <div class="support-buttons">
+                  <a href="#">Messenger</a>
+                  <a href="#">Zalo</a>
+                </div>
+                <p style="text-align:center;">Hoặc</p>
+                <div class="contact-list">
+                  <div class="contact-item">Hotline: 0763777222</div>
+                  <div class="contact-item">Tổng đài: 1900 0508</div>
+                  <div class="contact-item">Email: support@debook.vn</div>
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+       
+        </div>
+    </div>
+    </div>
+</div>
+
+
 
 @endsection

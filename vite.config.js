@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/user.css',
                 'resources/css/product.css',
                 'resources/css/productDetail.css',
+              
                 'resources/css/cart.css',
                 'resources/css/blog.css',
                 'resources/css/member.css',

@@ -38,5 +38,7 @@ class HomeController extends Controller
 
         return back()->with('success', 'Đã gửi mail thành công!');
     }
+
+   
   
 }

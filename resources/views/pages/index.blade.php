@@ -6,6 +6,9 @@
 @endsection
 
 @section('content')
+
+
+  
      <!-- Banner -->
       <section class="banner container-fluid bg-dark banner section">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">

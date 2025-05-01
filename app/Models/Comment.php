@@ -20,4 +20,12 @@ class Comment extends Model
     {
         return $this->belongsTo(Product::class); // hoặc EBook nếu bạn dùng tên model đó
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    
+
+    
 }

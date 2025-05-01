@@ -152,6 +152,78 @@
     border: none;
 }
 
+.support-box {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 24px 32px;
+    color: #333;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .support-box h2 {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 20px;
+    color: #222;
+  }
+  
+  .support-box p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 16px;
+  }
+  
+  .support-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
+  .support-buttons a {
+    background-color: #f1f1f1;
+    color: #333;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    transition: 0.3s ease;
+    border: 1px solid #ccc;
+  }
+  .support-buttons a:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .contact-item {
+    background-color: #f9f9f9;
+    border-radius: 999px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 15px;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  /* Light modal content */
+  .modal-content {
+    background-color: #fff;
+    border-radius: 16px;
+    border: none;
+    color: #333;
+  }
+  
+  /* Button close (light style) */
+  .btn-close {
+    filter: none;
+  }
+  
+
 
 
 /* Responsive */

@@ -49,4 +49,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function purchasedProducts()
+    {
+        return $this->belongsToMany(Product::class, 'user_products');
+    }
 }

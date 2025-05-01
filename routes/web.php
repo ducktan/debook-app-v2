@@ -24,6 +24,8 @@ Route::controller(SocialiteController::class)->group(function () {
 // Indexx
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::post('/subscribe', [HomeController::class, 'subscribe'])->name('subscribe'); // mail subscribe
+// Search
+Route::get('/search', [HomeController::class, 'search'])->name('products.search');
 // Category
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 // Blog
@@ -35,20 +37,36 @@ Route::get('/blog', function () {
 
 // User Profile
 Route::middleware(['auth'])->group(function(){
-    Route::get('/profile', [UserController::class, 'index'])->name('user.profile');
-    
+    Route::get('/profile', [UserController::class, 'index'])->name('user.profile');    
     Route::put('/profile/update', [UserController::class, 'update'])->name('user.update');
+
+    // -------
+
+    Route::get('/my-products', [UserController::class, 'myProducts'])->name('user.myProducts');
+    Route::delete('/my-products/{product}', [UserController::class, 'destroy'])->name('user.products.destroy');
+
+    // -------
+    Route::get('/my-orders', [UserController::class, 'myOrders'])->name('user.myOrders');
+    // -------
+   
+
+    // -----
     Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('cart/update/{productId}', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::post('/cart/remove/{productId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-
     Route::post('/payment', [CartController::class, 'payment'])->name('payment');
+
+    // Comment 
+    Route::post('/products/{product}/comments', [ProductController::class, 'store'])->name('comments.store');
+
+
 
 
 
     
 }); 
+
 
 Route::get('/payment/return', [CartController::class, 'paymentReturn']);
 

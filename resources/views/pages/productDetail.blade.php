@@ -65,7 +65,7 @@
                         <button type="button" class="btn btn-outline-success">PDF Premium</button>
                     </div>
                 </div> --}}
-                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="me-3">
+                <form id="add-to-cart-form" action="{{ route('cart.add', $product->id) }}" method="POST" class="me-3">
                     @csrf
                 <!-- Số lượng -->
                 <div class="quantity-selector mb-4">
@@ -85,12 +85,13 @@
                         <button type="submit" class="btn btn-success btn-lg rounded-pill" style="margin-right: 16px;">
                             <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ hàng
                         </button>
+
+                        <button type="submit" class="btn btn-warning btn-lg rounded-pill" style="margin-right: 16px;">
+                            Mua ngay   
+                        </button>
                    
                 
-                    <!-- Mua ngay -->
-                    <a href="{{ route('index') }}" class="btn btn-warning btn-lg rounded-pill">
-                        Mua ngay
-                    </a>
+                    
                 </div>
             </form>
                 
@@ -187,90 +188,37 @@
         </button>
         
         <!-- Danh sách đánh giá -->
-        <div class="review-list">
-            <!-- Đánh giá 1 -->
-            <div class="review-item card mb-4">
-                <div class="card-body">
-                    <div class="review-header d-flex justify-content-between mb-3">
-                        <div class="user-info d-flex align-items-center">
-                            <img src="IMG/signin-image.jpg" alt="User Avatar" class="rounded-circle me-3" width="40" height="40">
-                            <div>
-                                <h6 class="mb-0">Nguyễn Văn A</h6>
-                                <div class="rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <span class="ms-2 text-muted">2 ngày trước</span>
+        
+        <div class="review-list mt-5">
+            @forelse($product->comments()->latest()->get() as $comment)
+                <div class="review-item card mb-4">
+                    <div class="card-body">
+                        <div class="review-header d-flex justify-content-between mb-3">
+                            <div class="user-info d-flex align-items-center">
+                                <img src="{{ asset('IMG/default-avatar.jpg') }}" alt="User Avatar"
+                                    class="rounded-circle me-3" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-0">{{ $comment->user->name }}</h6>
+                                    <div class="rating">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="{{ $i <= $comment->rating ? 'fas' : 'far' }} fa-star text-warning"></i>
+                                        @endfor
+                                        <span class="ms-2 text-muted">{{ $comment->created_at->diffForHumans() }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="review-actions">
-                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        <h5 class="mb-2">Sách hay, nội dung ý nghĩa</h5>
-                        <p class="mb-2">Tôi rất thích cuốn sách này, nội dung sâu sắc và hình ảnh minh họa đẹp. Đây là một tác phẩm kinh điển mà mọi người nên đọc ít nhất một lần trong đời.</p>
-                        <div class="review-images d-flex mt-3">
-                            <img src="IMG/bookIMG.png" class="img-thumbnail me-2" width="80" height="80" alt="Review image 1">
-                            <img src="IMG/bookIMG.png" class="img-thumbnail me-2" width="80" height="80" alt="Review image 2">
-                        </div>
-                    </div>
-                    <div class="review-footer mt-3 d-flex justify-content-between">
-                        <div class="helpful-count">
-                            <button class="btn btn-sm btn-outline-success"><i class="far fa-thumbs-up me-1"></i> Hữu ích (12)</button>
-                        </div>
-                        <div class="report">
-                            <button class="btn btn-sm btn-outline-danger">Báo cáo</button>
+                        <div class="review-content">
+                            <p class="mb-0">{{ $comment->content }}</p>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Đánh giá 2 -->
-            <div class="review-item card mb-4">
-                <div class="card-body">
-                    <div class="review-header d-flex justify-content-between mb-3">
-                        <div class="user-info d-flex align-items-center">
-                            <img src="IMG/signup-image.jpg" alt="User Avatar" class="rounded-circle me-3" width="40" height="40">
-                            <div>
-                                <h6 class="mb-0">Trần Thị B</h6>
-                                <div class="rating">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star text-warning"></i>
-                                    <span class="ms-2 text-muted">1 tuần trước</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="review-actions">
-                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-ellipsis-v"></i></button>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        <h5 class="mb-2">Sách đẹp nhưng giá hơi cao</h5>
-                        <p class="mb-2">Nội dung sách rất hay nhưng tôi nghĩ giá hơi cao so với chất lượng giấy và bìa sách. Tuy nhiên đây vẫn là một cuốn sách đáng đọc.</p>
-                    </div>
-                    <div class="review-footer mt-3 d-flex justify-content-between">
-                        <div class="helpful-count">
-                            <button class="btn btn-sm btn-outline-success"><i class="far fa-thumbs-up me-1"></i> Hữu ích (5)</button>
-                        </div>
-                        <div class="report">
-                            <button class="btn btn-sm btn-outline-danger">Báo cáo</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Xem thêm đánh giá -->
-            <div class="text-center mt-4">
-                <button class="btn btn-outline-success rounded-pill">Xem thêm đánh giá <i class="fas fa-chevron-down ms-2"></i></button>
-            </div>
+            @empty
+                <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+            @endforelse
         </div>
+
+
     </div>
 </section>
 
@@ -278,53 +226,41 @@
 <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reviewModalLabel">Viết đánh giá của bạn</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
+            <form method="POST" action="{{ route('comments.store', $product->id) }}">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">Viết đánh giá của bạn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Rating -->
                     <div class="mb-4">
                         <label class="form-label">Đánh giá của bạn</label>
                         <div class="rating-input">
-                            <input type="radio" id="star5" name="rating" value="5" />
-                            <label for="star5" title="5 sao"><i class="fas fa-star"></i></label>
-                            <input type="radio" id="star4" name="rating" value="4" />
-                            <label for="star4" title="4 sao"><i class="fas fa-star"></i></label>
-                            <input type="radio" id="star3" name="rating" value="3" />
-                            <label for="star3" title="3 sao"><i class="fas fa-star"></i></label>
-                            <input type="radio" id="star2" name="rating" value="2" />
-                            <label for="star2" title="2 sao"><i class="fas fa-star"></i></label>
-                            <input type="radio" id="star1" name="rating" value="1" />
-                            <label for="star1" title="1 sao"><i class="fas fa-star"></i></label>
+                            @for ($i = 5; $i >= 1; $i--)
+                                <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" />
+                                <label for="star{{ $i }}" title="{{ $i }} sao"><i class="fas fa-star"></i></label>
+                            @endfor
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="reviewTitle" class="form-label">Tiêu đề đánh giá</label>
-                        <input type="text" class="form-control" id="reviewTitle" placeholder="Ví dụ: Sách rất hay, đáng đọc">
-                    </div>
+
+                    <!-- Content -->
                     <div class="mb-3">
                         <label for="reviewContent" class="form-label">Nội dung đánh giá</label>
-                        <textarea class="form-control" id="reviewContent" rows="5" placeholder="Hãy chia sẻ cảm nhận của bạn về sản phẩm này"></textarea>
+                        <textarea class="form-control" id="reviewContent" name="content" rows="5" placeholder="Hãy chia sẻ cảm nhận của bạn về sản phẩm này" required></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Hình ảnh (tối đa 3 ảnh)</label>
-                        <div class="image-upload d-flex">
-                            <div class="upload-box me-2 border rounded d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; cursor: pointer;">
-                                <i class="fas fa-plus fa-2x text-muted"></i>
-                                <input type="file" class="d-none" accept="image/*" multiple>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-success">Gửi đánh giá</button>
-            </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-success">Gửi đánh giá</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
    
 
 @endsection

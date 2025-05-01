@@ -10,6 +10,10 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductSubscription;
 use App\Models\Subscription;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
+
 
 
 class UserController extends Controller
@@ -63,6 +67,47 @@ class UserController extends Controller
         // Quay lại trang profile và thông báo thành công
         return redirect()->route('user.profile')->with('success', 'Cập nhật thông tin thành công!');
     }
+
+    public function myProducts()
+    {
+        $user = Auth::user();
+        $products = $user->purchasedProducts;
+        return view('pages.user.my_products', compact('products'));
+    }
+
+    // Xoá sản phẩm đã mua
+    public function destroy($productId)
+    {
+        // Lấy người dùng hiện tại
+        $user = Auth::user();
+        
+        // Kiểm tra xem sản phẩm có thuộc quyền sở hữu của người dùng không
+        $product = $user->purchasedProducts()->find($productId);
+    
+        if ($product) {
+            // Xóa sản phẩm khỏi cơ sở dữ liệu
+            $user->purchasedProducts()->detach($productId);
+    
+            // Đưa thông báo thành công và quay lại trang quản lý sản phẩm
+            return redirect()->route('user.myProducts')->with('success', 'Đã xoá ấn phẩm thành công!');
+        }
+    
+        // Nếu sản phẩm không tìm thấy hoặc không phải của người dùng, hiển thị lỗi
+        return redirect()->route('user.myProducts')->with('error', 'Không thể tìm thấy ấn phẩm này!');
+    }
+
+    public function myOrders()
+    {
+        $orders = Order::with(['items.product']) // Eager load
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('pages.user.order', compact('orders'));
+    }
+
+
+    
 
 
     
