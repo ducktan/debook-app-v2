@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use App\Models\UserSubscription;
 use App\Models\Subscription;
+use Carbon\Carbon;
 
 
 
@@ -58,19 +59,59 @@ class UserController extends Controller
         return redirect()->route('user.profile')->with('success', 'Cập nhật thông tin thành công!');
     }
     //
-    public function showUserDashboard()
+
+        public function subscriptions()
+    {
+        return $this->hasMany(UserSubscription::class);  // Quan hệ 1-n với bảng user_subscriptions
+    }
+  /* public function showUserDashboard()
     {
         // Lấy thông tin người dùng hiện tại
         $user = Auth::user();  // Lấy thông tin người dùng đã đăng nhập
+
+
+        // Tính toán số ngày còn lại
+    $endDate = Carbon::parse($user->end_date); // Giả sử end_date là ngày hết hạn của gói
+    $currentDate = Carbon::now();
+    
+    // Tính số ngày còn lại
+    $daysRemaining = $endDate->diffInDays($currentDate);
+    
+
 
         // Lấy thông tin subscription của người dùng có trạng thái 'active'
         $subscription = $user->subscriptions()->where('status', 'active')->first();
 
         // Truyền dữ liệu vào view
-        return view('user.dashboard', compact('subscription', 'user'));
+        return view('dashboard', compact('subscription', 'user','daysRemaining'));
+    }
+  */
+        public function showUserDashboard()
+{
+    // Lấy thông tin người dùng hiện tại
+    $user = Auth::user();  // Lấy thông tin người dùng đã đăng nhập
+
+    // Lấy thông tin subscription của người dùng có trạng thái 'active'
+    $userSubscription = $user->subscriptions()->where('status', 'active')->first();
+
+
+    // Tính toán số ngày còn lại
+    $endDate = Carbon::parse($userSubscription->end_date); // Giả sử end_date là ngày hết hạn của gói
+    $currentDate = Carbon::now();
+    
+    // Tính số ngày còn lại
+    $daysRemaining = $endDate->diffInDays($currentDate, false); // Thêm false để lấy số ngày âm nếu hết hạn
+
+    // Nếu ngày còn lại là số âm, có thể là hết hạn
+    if ($daysRemaining < 0) {
+        $daysRemaining = 0;
     }
 
-  
+    
+    // Truyền dữ liệu vào view
+    return view('dashboard', compact('subscription', 'user', 'daysRemaining'));
+}
 
+    
    
 }

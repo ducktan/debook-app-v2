@@ -130,5 +130,23 @@
             <button type="submit">Thanh toán ngay</button>
         </form>
     </div>
+
+    <script>
+                    const formData = new FormData();
+            formData.append('subscription_id', 1); // ID gói đăng ký người dùng chọn
+
+            fetch('/process-payment', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message); // Hiển thị thông báo thành công
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+    </script>
 </body>
 </html>

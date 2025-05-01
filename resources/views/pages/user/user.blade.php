@@ -6,6 +6,9 @@
 @section('content')
 
 <section class="user section container">
+<!-- thêm vào ở đây -->
+
+
 
   <div class="user__responsive">
         <div class="user__information">
@@ -63,12 +66,23 @@
                 <p>{{ Auth::user()->utype ?? 'NULL' }}</p>
             </div>
 
-            <div class="user__register">
-                <a href="{{route('member')}}">
-                    <p>Trở thành Hội viên</p>
+      <div class="user__register">
+                   @if(isset($daysRemaining) && $daysRemaining > 0)
+                <p>Còn {{ $daysRemaining }} ngày hội viên</p>
+            @else
+            <a href="{{route('member')}}">
+                <p>Đăng ký hội viên</p>
                 </a>
+            @endif
+
+               
                 
             </div>
+            
+
+
+
+
 
 
 

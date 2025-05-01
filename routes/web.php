@@ -48,6 +48,7 @@ Route::post('/process-payment', [PaymentController::class, 'process'])->name('pr
 
 
 //
+Route::get('/user', [UserController::class, 'showUserDashboard'])->name('dashboard');
 
-Route::get('/dashboard', [UserController::class, 'showDashboard'])->name('dashboard');
+
 
