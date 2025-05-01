@@ -74,9 +74,25 @@ Route::get('/payment/return', [CartController::class, 'paymentReturn']);
 
 // Admin routes
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
+    // Dashboard
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-});
+    
+    // ===== USER MANAGEMENT ===== (Giữ nguyên như cũ)
+    Route::get('/admin/user-setting', [AdminController::class, 'User'])->name('admin.userSetting');
+    Route::get('/admin/user/add', [AdminController::class, 'add_User'])->name('admin.user.add');
+    Route::post('/admin/user/store', [AdminController::class,'user_Store'])->name('admin.user.store');
+    Route::get('/admin/user/edit/{id}', [AdminController::class,'user_edit'])->name('admin.user.edit');
+    Route::put('/admin/user/update/{id}', [AdminController::class, 'user_update'])->name('admin.user.update');
+    Route::get('/admin/user/delete/{id}', [AdminController::class, 'user_delete'])->name('admin.user.delete');
 
+    // ===== PRODUCT MANAGEMENT ===== (Thêm mới theo cùng phong cách)
+    Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
+    Route::get('/admin/product/add', [AdminController::class, 'product_create'])->name('admin.product.add');
+    Route::post('/admin/product/store', [AdminController::class, 'product_store'])->name('admin.product.store');
+    Route::get('/admin/product/edit/{id}', [AdminController::class, 'product_edit'])->name('admin.product.edit');
+    Route::put('/admin/product/update/{id}', [AdminController::class, 'product_update'])->name('admin.product.update');
+    Route::get('/admin/product/delete/{id}', [AdminController::class, 'product_delete'])->name('admin.product.delete');
+});
 
 
 
