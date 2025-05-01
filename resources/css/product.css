@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-html,body{
+html, body {
     font-size: 16px;
 }
 
@@ -16,16 +16,15 @@ html,body{
 .title::after {
     content: "";
     width: 30%;
-    height: 3px; /* Độ dày của đường kẻ */
+    height: 3px;
     display: block;
-    background-image: linear-gradient(to right, #317923, #FDCE26); /* Gradient từ xanh lá sang vàng */
+    background-image: linear-gradient(to right, #317923, #FDCE26);
 }
 
 a {
     text-decoration: none;
     color: black;
 }
-
 
 .section {
     margin-bottom: 5rem;
@@ -39,41 +38,39 @@ a {
     overflow: hidden;
 }
 
-
 /* Sidebar */
-
-/* Style chung cho aside */
 aside.col-lg-3 {
-    padding: 2rem;
-    margin-top: 50px;
+    padding: 1.5rem;
+    margin-top: 30px;
+    background: #f8f9fa;
+    border-radius: 8px;
 }
-/* Tiêu đề với icon */
+
 .filter-title {
-    display: flex;
-    align-items: center;
-    font-size: 1.25rem;
-    color:  #4a5568;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e2e8f0;
-    position: relative;
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
+.filter-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
 
-/* Phần checkbox */
 .form-check {
     margin-bottom: 0.5rem;
     padding-left: 1.75rem;
 }
 
 .form-check-input {
-    margin-left: -1.25rem;
-    margin-top: 0.15rem;
+    width: 1.1em;
+    height: 1.1em;
+    margin-top: 0.2em;
 }
 
 .form-check-label {
-    color: #4a5568;
-    cursor: pointer;
-    transition: color 0.2s ease;
+    margin-left: 0.5em;
+    font-size: 0.95rem;
 }
 
 .form-check:hover .form-check-label {
@@ -119,32 +116,32 @@ aside.col-lg-3 {
     color: #cbd5e0;
 }
 
-/* Hiệu ứng hover cho sao */
 .filter-section a:hover .fa-star:not(.far) {
     transform: scale(1.1);
 }
 
-
-
 /* Sản phẩm */
 .text-muted {
-    margin-left: 20px; 
+    margin-left: 20px;
 }
+
 .product-list {
-    flex: 1; /* Chiếm phần còn lại của container */
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
+    padding: 20px;
 }
 
 .product-card {
     background-color: white;
-    border: 1px solid #ddd;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 15px;
-    width: calc(33.333% - 20px); /* 3 cột sản phẩm */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-card:hover {
@@ -152,8 +149,11 @@ aside.col-lg-3 {
 }
 
 .product-card img {
-    max-width: 100%;
-    border-radius: 8px;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 12px;
 }
 
 .product-info {
@@ -181,6 +181,7 @@ aside.col-lg-3 {
     color: #ffc107;
     font-size: 14px;
 }
+
 /* Nút thêm giỏ hàng */
 .btn-primary {
     background: #317923;
@@ -208,4 +209,52 @@ aside.col-lg-3 {
     color: white;
 }
 
+/* FIX: Ngăn chặn chữ bị tách rời */
+.product-card h3,
+.product-card p,
+.product-info * {
+    word-break: break-word;
+    white-space: normal;
+}
 
+/* Đảm bảo các thẻ a không bị ảnh hưởng bởi flex */
+a:not(.btn) {
+    display: inline;
+}
+
+/* Responsive fixes */
+@media (max-width: 992px) {
+    .product-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    aside.col-lg-3 {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-list {
+        grid-template-columns: 1fr;
+    }
+
+    .product-card {
+        padding: 12px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+.product-card h3,
+.product-card p,
+.product-info h3,
+.product-info p,
+.product-card a {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+    white-space: normal !important;
+    display: block !important;
+}
