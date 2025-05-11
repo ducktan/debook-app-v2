@@ -27,7 +27,6 @@
 .category__item .card {
     position: relative;
     height: 200px;
-    background-image: url('/assets/img/bookIMG.png'); 
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

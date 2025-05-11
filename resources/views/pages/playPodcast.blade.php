@@ -1,4 +1,4 @@
-@extends('layouts.master', ['hideHeaderFooter' => false])
+@extends('layouts.app', ['hideHeaderFooter' => false])
 
 @section('title', 'Debook - Play Podcast')
 @section('css')

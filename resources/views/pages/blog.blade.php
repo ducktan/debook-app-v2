@@ -1,12 +1,10 @@
-@extends('layouts.master', ['hideHeaderFooter' => false])
+@extends('layouts.app', ['hideHeaderFooter' => false])
 
 @section('title', 'Debook - Blog')
 @section('css')
     @vite(['resources/css/blog.css'])
 @endsection
-@section('js')
-    @vite(['resources/js/blog.js'])
-@endsection
+
 
 @section('content')
 
