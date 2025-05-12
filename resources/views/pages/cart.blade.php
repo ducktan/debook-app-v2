@@ -111,14 +111,14 @@
                     <span>Tạm tính (đ):</span>
                     <span>{{number_format($totalPrice)}}đ</span>
                 </div>
-                <div class="d-flex justify-content-between mb-2">
+                {{-- <div class="d-flex justify-content-between mb-2">
                     <span>Giảm giá:</span>
                     <span class="text-success">-70.000đ</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Phí vận chuyển:</span>
                     <span>0đ</span>
-                </div>
+                </div> --}}
                 <hr>
                 <div class="d-flex justify-content-between mb-3">
                     <span class="fw-bold">Tổng cộng:</span>

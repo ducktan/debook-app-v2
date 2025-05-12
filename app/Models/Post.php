@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -14,11 +14,13 @@ class Post extends Model
         'title',
         'content',
         'audio_url',
+        'image_url',
     ];
 
-    // Quan hệ: Một bài viết thuộc về một người dùng
+    // Mỗi post thuộc về một user
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    
 }

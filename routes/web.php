@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\PostController;
 
 Auth::routes(); //Authentication routes
 
@@ -31,9 +32,8 @@ Route::get('/ajax-search', [HomeController::class, 'ajaxSearch'])->name('ajax.se
 // Category
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 // Blog
-Route::get('/blog', function () {
-    return view('pages.blog');
-})->name('blog');
+// Blog
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
 
 
@@ -71,6 +71,9 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/subscription/pay', [SubscriptionController::class, 'pay'])->name('subscription.pay');
     Route::get('/subscription/payment/return', [SubscriptionController::class, 'vnpayReturn'])->name('subscription.vnpay_return');
 
+    // Đăng bài
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+
 
 
 
@@ -106,6 +109,8 @@ Route::middleware(['check.vip'])->group(function () {
         return view('pages.category');
     })->name('categories.vip');
 });
+
+
 
 
 

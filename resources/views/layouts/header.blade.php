@@ -110,7 +110,7 @@
         @endforeach
     
       
-      <a href="{{ route('blog')}}">Blog</a>
+      <a href="{{ route('posts.index')}}">Blog</a>
     </div>
 </header>
        
