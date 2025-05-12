@@ -58,12 +58,29 @@
                 <p>{{ Auth::user()->utype ?? 'NULL' }}</p>
             </div>
 
-            <div class="user__register">
-                <a href="{{route('member')}}">
-                    <p>Trở thành Hội viên</p>
-                </a>
-                
+           <div class="user__register">
+            
+                @if(Auth::user()->utype === 'VIP' && Auth::user()->subscription && \Carbon\Carbon::now()->lt(Auth::user()->subscription->end_date))
+                    @php
+                        // Kiểm tra nếu end_date có giá trị hợp lệ và tính số ngày còn lại
+                        $endDate = \Carbon\Carbon::parse(Auth::user()->subscription->end_date);
+                        $daysLeft = \Carbon\Carbon::now()->diffInDays($endDate, false); // false để cho phép số ngày âm
+                        $daysLeft = round($daysLeft); // Làm tròn số ngày còn lại
+                    @endphp
+
+                    @if($daysLeft > 0)
+                        <p>Hội viên VIP - còn {{ $daysLeft }} ngày</p>
+                    @else
+                        <p>Hội viên VIP đã hết hạn</p>
+                    @endif
+                @else
+                    <a href="{{ route('member') }}">
+                        <p>Trở thành Hội viên</p>
+                    </a>
+                @endif
             </div>
+
+
             <hr>
 
             

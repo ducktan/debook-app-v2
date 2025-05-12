@@ -11,6 +11,7 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubscriptionController;
 
 Auth::routes(); //Authentication routes
 
@@ -65,6 +66,13 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/products/{product}/read', [ProductController::class, 'read'])->name('products.read');
     Route::get('/products/{product}/listen', [ProductController::class, 'listen'])->name('products.listen');
 
+    // Member register
+    Route::get('/subscription/confirm/{id}', [SubscriptionController::class, 'confirm'])->name('subscription.confirm');
+    Route::post('/subscription/pay', [SubscriptionController::class, 'pay'])->name('subscription.pay');
+    Route::get('/subscription/payment/return', [SubscriptionController::class, 'vnpayReturn'])->name('subscription.vnpay_return');
+
+
+
 
 
 
@@ -92,6 +100,13 @@ Route::get('/member-register', [HomeController::class, 'member'])->name('member'
 // Products
 Route::get('/products', [ProductController::class, 'showProducts'])->name('products');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+Route::middleware(['check.vip'])->group(function () {
+    Route::get('/categories/noi-dung-doc-quyen', function () {
+        return view('pages.category');
+    })->name('categories.vip');
+});
+
 
 
 

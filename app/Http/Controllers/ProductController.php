@@ -105,7 +105,9 @@ class ProductController extends Controller
 
     public function listen($id)
     {
-        return view('pages.playPodcast');
+        $product = Product::withCount('comments')->findOrFail($id);
+
+        return view('pages.playPodcast', compact('product'));
     }
    
 

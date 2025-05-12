@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Mail\WelcomeSubscriberMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\SubscribeRequest;
+use App\Models\Subscription;
 
 
 class HomeController extends Controller
@@ -24,7 +25,9 @@ class HomeController extends Controller
     }
     public function member()
     {
-        return view('pages.member');
+        // Lấy tất cả các gói hội viên từ bảng subscriptions
+        $subscriptions = Subscription::all();
+        return view('pages.member', compact('subscriptions'));
     }
 
     public function subscribe(Request $request)
