@@ -10,7 +10,7 @@ export default defineConfig({
                 'resources/css/user.css',
                 'resources/css/member.css',
                 'resources/css/admin/dashboard.css',
-                
+                'resources/css/admin/orderSetting.css'
             ],
             refresh: true,
         }),

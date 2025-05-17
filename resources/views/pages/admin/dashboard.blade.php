@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
+                    <a class="nav-link d-flex align-items-center" href="{{ route('admin.order')}}">
                         <i class="fa-solid fa-truck-fast text-danger"></i>
                         <span>Đơn hàng</span>
                     </a>
@@ -117,7 +117,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
+                        <a class="nav-link d-flex align-items-center" href="{{ route('admin.order')}}">
                             <i class="fa-solid fa-truck-fast text-danger"></i>
                             <span>Đơn hàng</span>
                         </a>
@@ -191,7 +191,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p class="text-muted mb-1">Lượt truy cập</p>
-                                <h3 class="value text-info">{{ number_format($totalVisits / 1000, 1) }}<small>K</small></h3>
+                                <h3 class="value text-info"><small>K</small></h3>
                             </div>
                             <i class="bi bi-eye fs-1 text-info opacity-25"></i>
                         </div>

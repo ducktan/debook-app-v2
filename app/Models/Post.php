@@ -5,23 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Post extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'total',
-        'status',
+        'title',
+        'content',
+        'audio_url',
     ];
 
+    // Quan hệ: Một bài viết thuộc về một người dùng
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
     }
 }
