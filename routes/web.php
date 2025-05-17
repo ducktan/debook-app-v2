@@ -92,10 +92,15 @@ Route::get('/payment/return', [CartController::class, 'paymentReturn']);
 
 
 // Admin routes
-Route::middleware(['auth', AuthAdmin::class])->group(function(){
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users.show');
+Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->group(function(){
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users.show');
+    Route::post('/users/store', [AdminController::class, 'store'])->name('admin.users.store');
+    Route::delete('/users/delete/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+    Route::put('/users/update/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+
 });
+
 
 
 

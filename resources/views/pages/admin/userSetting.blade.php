@@ -167,7 +167,7 @@
             </div>
 
             <!-- Users Table -->
-    <div class="card shadow-sm border-0">
+    <div class="card shadow-sm border-0 mb-5">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
@@ -216,15 +216,27 @@
                                 <td class="join-date">{{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y') }}</td>
                                 <td>
                                     <div class="d-flex action-buttons">
-                                        <a href="#" class="btn-action btn-edit me-2" data-bs-toggle="tooltip" title="Chỉnh sửa">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                        <form action="#" method="POST" onsubmit="return confirm('Bạn chắc chắn muốn xoá?')">
-                                            @csrf @method('DELETE')
+                                       <button class="btn btn-primary btn-action btn-edit me-1 editUserBtn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                                                data-id="{{ $user->id }}"
+                                                data-name="{{ $user->name }}"
+                                                data-fullname="{{ $user->full_name }}"
+                                                data-email="{{ $user->email }}"
+                                                data-phone="{{ $user->phone }}"
+                                                data-utype="{{ $user->utype }}"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        
+
+                                        <form class="delete-user-form" data-id="{{ $user->id }}">
+                                            @csrf
+                                            @method('DELETE')
                                             <button type="submit" class="btn-action btn-delete" data-bs-toggle="tooltip" title="Xoá">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
+
                                     </div>
                                 </td>
                             </tr>
@@ -234,6 +246,73 @@
             </div>
         </div>
     </div>
+    {{-- Update Modal --}}
+
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+        <form id="editUserForm" enctype="multipart/form-data" action="{{ route('admin.users.update', ['id' => $user->id]) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Chỉnh sửa người dùng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+            
+                <input type="hidden" name="id" id="edit_user_id">
+
+                
+                <div class="mb-3">
+                    <label for="edit_name" class="form-label">Tên đăng nhập</label>
+                    <input type="text" class="form-control" id="edit_name" name="name" required>
+                </div>
+
+            
+                <div class="mb-3">
+                    <label for="edit_full_name" class="form-label">Họ tên</label>
+                    <input type="text" class="form-control" id="edit_full_name" name="full_name" required>
+                </div>
+
+            
+                <div class="mb-3">
+                    <label for="edit_email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="edit_email" name="email" required>
+                </div>
+
+            
+                <div class="mb-3">
+                    <label for="edit_phone" class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control" id="edit_phone" name="phone">
+                </div>
+
+            
+                <div class="mb-3">
+                    <label for="edit_utype" class="form-label">Loại tài khoản</label>
+                    <select class="form-select" id="edit_utype" name="utype" required>
+                    <option value="USR">Khách</option>
+                    <option value="VIP">Khách VIP</option>
+                    <option value="ADM">Admin</option>
+                    </select>
+                </div>
+
+            
+                <div class="mb-3">
+                    <label for="edit_avatar" class="form-label">Ảnh đại diện</label>
+                    <input type="file" class="form-control" id="edit_avatar" name="avatar" accept="image/*">
+                </div>
+                </div>
+
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </div>
+        </form>
+  </div>
+</div>
+
+
+
 
 <!-- Phân trang -->
     @if ($users->hasPages())
@@ -264,7 +343,7 @@
 <!-- Add User Modal -->
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="#" method="POST" enctype="multipart/form-data" class="modal-content">
+        <form action="{{route('admin.users.store')}}" method="POST" enctype="multipart/form-data" class="modal-content" id="addUserForm">
             @csrf
             <div class="modal-header">
                 <h5 class="modal-title">Thêm người dùng mới</h5>
@@ -277,23 +356,14 @@
                     <input type="text" class="form-control" id="name" name="name" required>
                 </div>
 
-                <!-- Full Name -->
-                <div class="mb-3">
-                    <label for="full_name" class="form-label">Họ và tên</label>
-                    <input type="text" class="form-control" id="full_name" name="full_name" required>
-                </div>
-
+            
                 <!-- Email -->
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email" required>
                 </div>
 
-                <!-- Phone -->
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Số điện thoại</label>
-                    <input type="text" class="form-control" id="phone" name="phone">
-                </div>
+                
 
                 <!-- Password -->
                 <div class="mb-3">
@@ -306,17 +376,13 @@
                     <label for="utype" class="form-label">Loại tài khoản</label>
                     <select class="form-select" id="utype" name="utype" required>
                         <option value="">-- Chọn loại tài khoản --</option>
-                        <option value="adm">Admin</option>
-                        <option value="usr">Khách</option>
+                        <option value="ADM">Admin</option>
+                        <option value="USR">Khách</option>
                         <option value="VIP">Khách VIP</option>
                     </select>
                 </div>
 
-                <!-- Avatar -->
-                <div class="mb-3">
-                    <label for="avatar" class="form-label">Ảnh đại diện</label>
-                    <input class="form-control" type="file" id="avatar" name="avatar" accept="image/*">
-                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
@@ -326,5 +392,25 @@
     </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
+@endsection
+
+@section('js')
+    @vite(['resources/js/user.js'])
 @endsection

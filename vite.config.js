@@ -27,6 +27,8 @@ export default defineConfig({
                 'resources/js/filter.js',
                 'resources/js/blogDetail.js',
 
+                 'resources/js/user.js',
+
                 
                 
             ],
