@@ -20,13 +20,13 @@
             
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="./admin.html">
+                    <a class="nav-link d-flex align-items-center active" href="{{ route('admin.index') }}">
                         <i class="fa-solid fa-inbox text-primary"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./userManagement.html">
+                    <a class="nav-link d-flex align-items-center" href="{{ route('admin.users.show') }}">
                         <i class="fa-solid fa-user text-warning"></i>
                         <span>Người dùng</span>
                       
@@ -65,7 +65,7 @@
                 </li>
                 @auth 
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
+                        <a class="nav-link d-flex align-items-center" href="#">
                             <i class="fa-solid fa-user text-dark"></i>
                             <span>{{Auth::user()->name}}</span>
                         </a>

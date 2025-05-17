@@ -68,36 +68,45 @@
                     </button>                     
                 </div>                
             @else
-                <form id="add-to-cart-form" action="{{ route('cart.add', $product->id) }}" method="POST" class="me-3">
-                        @csrf
-                    <!-- Số lượng -->
-                    <div class="quantity-selector mb-4">
-                        <h5>Số lượng:</h5>
-                        <div class="input-group w-25">
-                            <button class="btn btn-outline-success" type="button" id="decreaseQty">-</button>
-                            <input type="text" id="quantityInput" class="form-control text-center" value="1" readonly name="quantity">
-                            <button class="btn btn-outline-success" type="button" id="increaseQty">+</button>
-                        </div>
-                    </div>
-        
-                    <!-- Thêm vào giỏ hàng + Mua ngay -->
-                    <div class="mb-4 d-flex">
-                        <!-- Thêm vào giỏ hàng -->
-                        
-                        
-                            <button type="submit" class="btn btn-success btn-lg rounded-pill" style="margin-right: 16px;">
-                                <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ hàng
-                            </button>
 
-                            <button type="submit" class="btn btn-warning btn-lg rounded-pill" style="margin-right: 16px;">
-                                Mua ngay   
-                            </button>
-                    
-                    
+                @if ($product->price == 0)
+                     @if($product->type == 'ebook')
+                        <a href="{{ route('products.read', $product->id) }}" class="btn btn-success">Đọc sách</a>
+                    @elseif($product->type == 'podcast')
+                        <a href="{{ route('products.listen', $product->id) }}" class="btn btn-success">Nghe podcast</a>
+                    @endif
+                @else
+
+                    <form id="add-to-cart-form" action="{{ route('cart.add', $product->id) }}" method="POST" class="me-3">
+                            @csrf
+                        <!-- Số lượng -->
+                        <div class="quantity-selector mb-4">
+                            <h5>Số lượng:</h5>
+                            <div class="input-group w-25">
+                                <button class="btn btn-outline-success" type="button" id="decreaseQty">-</button>
+                                <input type="text" id="quantityInput" class="form-control text-center" value="1" readonly name="quantity">
+                                <button class="btn btn-outline-success" type="button" id="increaseQty">+</button>
+                            </div>
+                        </div>
+            
+                        <!-- Thêm vào giỏ hàng + Mua ngay -->
+                        <div class="mb-4 d-flex">
+                            <!-- Thêm vào giỏ hàng -->
+                            
+                            
+                                <button type="submit" class="btn btn-success btn-lg rounded-pill" style="margin-right: 16px;">
+                                    <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ hàng
+                                </button>
+
+                                <button type="submit" class="btn btn-warning btn-lg rounded-pill" style="margin-right: 16px;">
+                                    Mua ngay   
+                                </button>
                         
-                    </div>
-                </form>
-                
+                        
+                            
+                        </div>
+                    </form>
+                @endif
 
             @endif
             

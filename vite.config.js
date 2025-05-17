@@ -16,13 +16,16 @@ export default defineConfig({
               
                 'resources/css/cart.css',
                 'resources/css/blog.css',
+                'resources/css/blogDetail.css',
                 'resources/css/member.css',
                 'resources/css/admin/dashboard.css',
+                'resources/css/admin/userSetting.css',
 
                 'resources/js/productDetail.js',
                 'resources/js/cart.js',
                 'resources/js/search.js',
                 'resources/js/filter.js',
+                'resources/js/blogDetail.js',
 
                 
                 

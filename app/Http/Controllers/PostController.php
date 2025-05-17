@@ -43,5 +43,10 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Bài viết đã được tạo!');
     }
+    public function show($id)
+    {
+        $post = Post::with('user')->findOrFail($id);
+        return view('pages.blogDetail', compact('post'));
+    }
 
 }

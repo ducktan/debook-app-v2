@@ -30,11 +30,13 @@
                     <div class="card h-100">
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <img src="{{ asset($post->image_url ?? 'IMG/book2.jpg') }}" class="card-img-top img-fluid custom-img" alt="Book Cover">
+                               <img src="{{ asset('storage/' . $post->image_url) }}" class="card-img-top img-fluid custom-img" alt="Book Cover">
+
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <a href="#" class="card-title text-success">{{ $post->title }}</a>
+                                    <a href="{{ route('posts.show', $post->id) }}" class="card-title text-success">{{ $post->title }}</a>
+
                                     {{-- {{ route('blog.show', $post->id) }} --}}
                                     <p class="card-text"><strong>Ngày đăng: </strong>{{ $post->created_at->format('d/m/Y') }}</p>
                                     <p class="card-text">{{ Str::limit($post->content, 100) }}</p>
@@ -85,7 +87,8 @@
                     </div>
                     <div class="flex-grow-1">
                         <label for="review-image" class="form-label">Ảnh:</label>
-                        <input type="file" class="form-control" id="review-image" accept="image/*" required name="image_url">
+                        <input type="file" class="form-control" id="review-image" accept="image/*" required name="image">
+
                     </div>
                     <div>
                         <button type="submit" class="btn btn-success add__button">Thêm</button>

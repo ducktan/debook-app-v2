@@ -1,4 +1,4 @@
-@extends('layouts.master', ['hideHeaderFooter' => true])
+@extends('layouts.app', ['hideHeaderFooter' => true])
 
 @section('title', 'Debook - Blog Detail')
 @section('css')
@@ -15,24 +15,26 @@
         <a href="{{ url ('/')}}"><i class="fa-solid fa-house"></i></a>
     </div>
 
-    <div class="blog-post blog__item mb-5">
-        <!-- Header bài viết -->
+        <div class="blog-post blog__item mb-5">
+            <!-- Header bài viết -->
         <div class="post-header">
-            <img src="./IMG/book2.jpg" alt="Avatar" class="avatar">
-            <div class="author-info">
-                <h3 class="author-name">Nguyễn Văn A</h3>
-                <span class="post-time">2 giờ trước</span>
-            </div>
+        <img src="{{ asset('storage/' . ($post->image_url ?? 'images/default.jpg')) }}" alt="Ảnh đại diện" class="avatar">
+        <div class="author-info">
+            <h3 class="author-name">{{ $post->user->name ?? 'Không rõ' }}</h3>
+            <span class="post-time">{{ $post->created_at->diffForHumans() }}</span>
         </div>
+    </div>
 
-        <!-- Nội dung bài viết -->
-        <div class="post-content">
-            <h2 class="post-title">Một ngày đẹp trời ở Hà Nội</h2>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum consectetur neque ad sint quibusdam veniam iusto delectus eos fuga enim illo voluptas sit vel soluta tempore ipsa nihil, ratione doloremque sunt reprehenderit quia nisi impedit? Cupiditate molestias sed odit quibusdam harum fuga vitae iste iure quasi culpa facere dolore magni dicta esse doloribus delectus nihil itaque amet, consequuntur repellat officiis rerum numquam. Nisi hic, ad, fugit consequuntur similique impedit sed consequatur soluta vero magni quasi nesciunt dolor reprehenderit harum quas facere ab quaerat? Dolorem doloribus est maiores, pariatur corrupti officiis beatae perferendis incidunt possimus, iusto dolores accusamus recusandae harum omnis aperiam? Repudiandae error voluptatum autem aut iure quas est ullam, sit maxime quasi? Eligendi et quo blanditiis quidem iure laboriosam placeat molestiae ipsam nam, ducimus odio explicabo. Expedita, assumenda nisi fugiat eligendi eveniet illo dolorem facilis, doloribus itaque vel illum eos deleniti facere eum corrupti tempora iusto totam labore in.
-            </p>
-            <img src="./IMG/banner1.png" alt="Hình ảnh bài viết" class="post-image">
-        </div>
+    <!-- Nội dung bài viết -->
+    <div class="post-content">
+        <h2 class="post-title">{{ $post->title }}</h2>
+        <p>{{ $post->content }}</p>
+
+        @if ($post->image_url)
+            <img src="{{ asset('storage/' . $post->image_url) }}" alt="Hình ảnh bài viết" class="post-image">
+        @endif
+    </div>
+
 
         <!-- Tương tác -->
         <div class="post-actions">

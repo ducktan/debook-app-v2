@@ -73,6 +73,8 @@ Route::middleware(['auth'])->group(function(){
 
     // Đăng bài
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+
 
 
 
@@ -92,6 +94,7 @@ Route::get('/payment/return', [CartController::class, 'paymentReturn']);
 // Admin routes
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users.show');
 });
 
 

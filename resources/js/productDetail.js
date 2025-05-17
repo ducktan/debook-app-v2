@@ -79,3 +79,22 @@ document.querySelector('form')?.addEventListener('submit', () => {
 
 
 
+ const toggleBtn = document.getElementById("toggleSummary");
+    const shortText = document.getElementById("summaryShort");
+    const fullText = document.getElementById("summaryFull");
+
+    if (toggleBtn && shortText && fullText) {
+        toggleBtn.addEventListener("click", function () {
+            const isExpanded = !fullText.classList.contains("d-none");
+
+            if (isExpanded) {
+                fullText.classList.add("d-none");
+                shortText.classList.remove("d-none");
+                toggleBtn.innerHTML = 'Đọc thêm <i class="fas fa-chevron-down"></i>';
+            } else {
+                fullText.classList.remove("d-none");
+                shortText.classList.add("d-none");
+                toggleBtn.innerHTML = 'Thu gọn <i class="fas fa-chevron-up"></i>';
+            }
+        });
+    }
