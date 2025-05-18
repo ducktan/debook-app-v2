@@ -61,7 +61,7 @@
             @foreach($categories as $category)
             <div class="category__item col-6 col-md-3">
                 <a href="{{ route('categories.show', $category->slug) }}" class="card-link">
-                    <div class="card" style="background-image: url('{{ asset($category->image_url ?? 'assets/img/Logo.png') }}');">
+                    <div class="card" style="background-image: url('{{ asset('storage/images/categories/' . $category->image_url ?? 'assets/img/Logo.png') }}');">
                         <!-- Nội dung card sẽ không bị thay đổi do a bọc ngoài -->
                     </div>
                     <div class="card-body">

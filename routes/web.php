@@ -98,6 +98,19 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->group(function()
     Route::post('/users/store', [AdminController::class, 'store'])->name('admin.users.store');
     Route::delete('/users/delete/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
     Route::put('/users/update/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+    Route::get('/users/search', [AdminController::class, 'search'])->name('admin.users.search');
+
+    // Categories
+    Route::get('/categories', [AdminController::class, 'categories'])->name('admin.categories.show');
+    Route::post('/categories/store', [AdminController::class, 'storeCategory'])->name('admin.categories.store');
+    Route::delete('/categories/delete/{id}', [AdminController::class, 'destroyCate'])->name('admin.categories.destroy');
+    Route::put('/categories/update/{id}', [AdminController::class, 'updateCate'])->name('admin.categories.update');
+   
+    // Products
+    Route::get('/products', [AdminController::class, 'showProducts'])->name('admin.products.show');
+
+
+
 
 });
 

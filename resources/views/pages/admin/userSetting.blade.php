@@ -10,126 +10,11 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-         <nav class="col-md-3 col-lg-2 d-md-block bg-white sidebar border-end p-3 min-vh-100">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <img src="{{ asset ('assets/img/Logo.png')}}" alt="logo" class="img-fluid mynav__logo">
-                <button class="btn btn-sm d-md-none" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
-            </div>
-            
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="{{ route('admin.index') }}">
-                        <i class="fa-solid fa-inbox text-primary"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="{{ route('admin.users.show') }}">
-                        <i class="fa-solid fa-user text-warning"></i>
-                        <span>Người dùng</span>
-                      
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
-                        <i class="fa-solid fa-feather text-success"></i>
-                        <span>Tác giả</span>
-                       
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./productManagement.html">
-                        <i class="fa-solid fa-gift text-info"></i>
-                        <span>Sản phẩm</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
-                        <i class="fa-solid fa-truck-fast text-danger"></i>
-                        <span>Đơn hàng</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./paymentManagement.html">
-                        <i class="fa-solid fa-cart-shopping text-secondary"></i>
-                        <span>Thanh toán</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
-                        <i class="fa-solid fa-font text-dark"></i>
-                        <span>Nội dung</span>
-                    </a>
-                </li>
-                @auth 
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="#">
-                            <i class="fa-solid fa-user text-dark"></i>
-                            <span>{{Auth::user()->name}}</span>
-                        </a>
-                    </li>
-                    <!-- Thêm nút đăng xuất -->
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="nav-link" style="border: none; background: none; color: inherit;">Đăng xuất</button>
-                        </form>
-                    </li>
-                    
-                @endauth
-            </ul>
-        </nav>
+        @include('pages.admin.sidebar')
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <!-- Header -->
-            <div class="responsive__item mb-5 d-block d-md-none">
-                <ul class="nav d-flex">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center active" href="./admin.html">
-                            <i class="bi bi-speedometer2 text-primary"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./userManagement.html">
-                            <i class="bi bi-people-fill text-warning"></i>
-                            <span>Người dùng</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
-                            <i class="bi bi-person-badge-fill text-success"></i>
-                            <span>Tác giả</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./productManagement.html">
-                            <i class="bi bi-book-half text-info"></i>
-                            <span>Sản phẩm</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
-                            <i class="bi bi-cart-check text-danger"></i>
-                            <span>Đơn hàng</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./paymentManagement.html">
-                            <i class="bi bi-credit-card text-secondary"></i>
-                            <span>Thanh toán</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
-                            <i class="bi bi-file-earmark-text text-dark"></i>
-                            <span>Nội dung</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            @include('pages.admin.resItem')
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold mb-0">
@@ -143,27 +28,17 @@
             <!-- Filter Bar -->
             <div class="row mb-4 g-3">
                 <div class="col-md-6">
-                    <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Tìm kiếm...">
-                        <button class="btn btn-outline-secondary" type="button">Lọc</button>
-                    </div>
+                    <form action="{{ route('admin.users.show') }}" method="GET">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="q" placeholder="Tìm kiếm..." value="{{ request('q') }}" id="search-input">
+                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option selected>Loại người dùng</option>
-                        <option>Admin</option>
-                        <option>Biên tập viên</option>
-                        <option>Người dùng thường</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option selected>Trạng thái</option>
-                        <option>Đang hoạt động</option>
-                        <option>Đã khóa</option>
-                    </select>
-                </div>
+              
+
+                
             </div>
 
             <!-- Users Table -->
@@ -181,14 +56,14 @@
                             <th width="120">Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="user-table-body">
                         @foreach ($users as $user)
                             <tr class="user-row">
                                 <td class="user-id">{{ $user->id }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="user-avatar-wrapper">
-                                            <img src="{{ $user->avatar ? asset('assets/img/avatars/' . $user->avatar) : asset('assets/img/default-avt.jpg') }}" 
+                                            <img src="{{ $user->avatar ? asset('storage/images/avatar/' . $user->avatar) : asset('assets/img/default-avt.jpg') }}" 
                                                 class="rounded-circle me-2 hover-glow"
                                                 data-bs-toggle="tooltip" 
                                                 title="{{ $user->full_name }}">
@@ -412,5 +287,5 @@
 @endsection
 
 @section('js')
-    @vite(['resources/js/user.js'])
+    @vite(['resources/js/admin/user.js'])
 @endsection

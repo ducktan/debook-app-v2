@@ -45,7 +45,7 @@
                 <h3>{{ Auth::user()->full_name ?? 'NULL' }}</h3>
                 <div class="user__avatar">
                     @if (Auth::user()->avatar)
-                        <img src="{{ asset('assets/img/avatars/' . Auth::user()->avatar) }}" alt="Avatar" class="img-fluid">
+                        <img src="{{ asset('storage/images/avatar/' . Auth::user()->avatar) }}" alt="Avatar" class="img-fluid">
                     @else
                         <img src="{{ asset('assets/img/default-avt.jpg') }}" alt="Default Avatar" class="img-fluid">
                     @endif

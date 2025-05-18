@@ -1,0 +1,12 @@
+/* ===== Responsive ===== */
+@media (max-width: 767.98px) {
+    .sidebar {
+        display: none;
+    }
+}
+@media screen and (min-width: 767.98px) {
+    .responsive__item {
+        display: none;
+    }
+    
+}

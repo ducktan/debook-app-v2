@@ -1,4 +1,4 @@
-@extends('layouts.master', ['hideHeaderFooter' => true])
+@extends('layouts.app', ['hideHeaderFooter' => true])
 
 @section('title', 'Admin - Product')
 @section('css')
@@ -10,108 +10,11 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-none d-md-block bg-white sidebar border-end p-3 min-vh-100">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <img src="./IMG/Logo.png" alt="logo" class="img-fluid mynav__logo">
-                <button class="btn btn-sm d-md-none" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
-            </div>
-            
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./admin.html">
-                        <i class="bi bi-speedometer2 text-primary"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./userManagement.html">
-                        <i class="bi bi-people-fill text-warning"></i>
-                        <span>người dùng</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
-                        <i class="bi bi-person-badge-fill text-success"></i>
-                        <span>Tác giả</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="./productManagement.html">
-                        <i class="bi bi-book-half text-info"></i>
-                        <span>Sản phẩm</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
-                        <i class="bi bi-cart-check text-danger"></i>
-                        <span>Đơn hàng</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./paymentManagement.html">
-                        <i class="bi bi-credit-card text-secondary"></i>
-                        <span>Thanh toán</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
-                        <i class="bi bi-file-earmark-text text-dark"></i>
-                        <span>Nội dung</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        @include('pages.admin.sidebar') 
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <div class="responsive__item mb-5 d-block d-md-none">
-                <ul class="nav d-flex">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center active" href="./admin.html">
-                            <i class="bi bi-speedometer2 text-primary"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./userManagement.html">
-                            <i class="bi bi-people-fill text-warning"></i>
-                            <span>Người dùng</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
-                            <i class="bi bi-person-badge-fill text-success"></i>
-                            <span>Tác giả</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./productManagement.html">
-                            <i class="bi bi-book-half text-info"></i>
-                            <span>Sản phẩm</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
-                            <i class="bi bi-cart-check text-danger"></i>
-                            <span>Đơn hàng</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./paymentManagement.html">
-                            <i class="bi bi-credit-card text-secondary"></i>
-                            <span>Thanh toán</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
-                            <i class="bi bi-file-earmark-text text-dark"></i>
-                            <span>Nội dung</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            @include('pages.admin.resItem')
 
             <!-- Header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -124,7 +27,7 @@
             </div>
 
             <!-- Filter Bar -->
-            <div class="row mb-4 g-3">
+            {{-- <div class="row mb-4 g-3">
                 <div class="col-md-5">
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
@@ -151,7 +54,7 @@
                         <i class="bi bi-funnel"></i> Lọc
                     </button>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Products Table -->
             <div class="card shadow-sm border-0">

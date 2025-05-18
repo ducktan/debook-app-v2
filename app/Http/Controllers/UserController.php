@@ -46,18 +46,15 @@ class UserController extends Controller
 
         // Xử lý thay đổi avatar nếu có
         if ($request->hasFile('avatar')) {
-            // Xóa ảnh cũ nếu tồn tại trong thư mục public/assets/img/avatars
-            if ($user->avatar && file_exists(public_path('assets/img/avatars/' . $user->avatar))) {
-                unlink(public_path('assets/img/avatars/' . $user->avatar)); // Xóa file cũ
+            // Xóa avatar cũ nếu có
+            if ($user->avatar && Storage::disk('public')->exists('images/avatar/' . $user->avatar)) {
+                Storage::disk('public')->delete('images/avatar/' . $user->avatar);
             }
 
-            // Tạo tên mới cho ảnh avatar
+            // Lưu avatar mới
             $avatarName = time() . '.' . $request->file('avatar')->extension();
+            $request->file('avatar')->storeAs('images/avatar', $avatarName, 'public');
 
-            // Lưu ảnh vào thư mục public/assets/img/avatars
-            $request->file('avatar')->move(public_path('assets/img/avatars'), $avatarName);
-
-            // Cập nhật đường dẫn avatar vào cơ sở dữ liệu
             $user->avatar = $avatarName;
         }
 

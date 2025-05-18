@@ -20,6 +20,8 @@ export default defineConfig({
                 'resources/css/member.css',
                 'resources/css/admin/dashboard.css',
                 'resources/css/admin/userSetting.css',
+                'resources/css/admin/sidebar.css',
+                'resources/css/admin/productSetting.css',
 
                 'resources/js/productDetail.js',
                 'resources/js/cart.js',
@@ -27,7 +29,8 @@ export default defineConfig({
                 'resources/js/filter.js',
                 'resources/js/blogDetail.js',
 
-                 'resources/js/user.js',
+                'resources/js/admin/user.js',
+                'resources/js/admin/category.js',
 
                 
                 

@@ -30,6 +30,7 @@
 
 
     @vite(['resources/css/master.css']) 
+    @vite(['resources/css/admin/sidebar.css']) 
     @yield('css')
    
 
