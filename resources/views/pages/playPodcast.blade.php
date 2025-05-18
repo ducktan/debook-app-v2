@@ -58,7 +58,7 @@
 <div class="podcast-container">
     <div class="row align-items-center mb-4">
         <div class="col-md-4 text-center">
-            <img src="{{ asset($product->image_url) }}" class="img-fluid cover-shadow" alt="Podcast cover">
+            <img src="{{ asset('storage/images/products/' . $product->image_url) }}" class="img-fluid cover-shadow" alt="Podcast cover">
         </div>
         <div class="col-md-8">
             <h3 class="fw-bold">{{ $product->title }}</h3>
@@ -84,7 +84,7 @@
 <div class="audio-bar d-none" id="playerBar">
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-            <img src="{{ asset($product->image_url) }}" alt="Podcast" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;" class="me-2">
+            <img src="{{ asset('storage/images/products/' . $product->image_url) }}" alt="Podcast" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;" class="me-2">
             <div>
                 <div class="fw-bold small">{{ $product->title }}</div>
                 <div class="text-muted small">{{ $product->channel ?? 'Trạm dừng cảm xúc' }}</div>

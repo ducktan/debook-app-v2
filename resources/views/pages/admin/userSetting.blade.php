@@ -190,25 +190,9 @@
 
 
 <!-- Phân trang -->
-    @if ($users->hasPages())
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center mt-3">
-                <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $users->previousPageUrl() }}" tabindex="-1">Previous</a>
-                </li>
-
-                @for ($i = 1; $i <= $users->lastPage(); $i++)
-                    <li class="page-item {{ $users->currentPage() == $i ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $users->url($i) }}">{{ $i }}</a>
-                    </li>
-                @endfor
-
-                <li class="page-item {{ $users->hasMorePages() ? '' : 'disabled' }}">
-                    <a class="page-link" href="{{ $users->nextPageUrl() }}">Next</a>
-                </li>
-            </ul>
-        </nav>
-    @endif
+    <nav class="mt-4">
+                {{ $users->links('pagination::bootstrap-5') }}
+    </nav>
 
 
         </main>

@@ -22,6 +22,7 @@ export default defineConfig({
                 'resources/css/admin/userSetting.css',
                 'resources/css/admin/sidebar.css',
                 'resources/css/admin/productSetting.css',
+                'resources/css/admin/orderSetting.css',
 
                 'resources/js/productDetail.js',
                 'resources/js/cart.js',
@@ -31,6 +32,9 @@ export default defineConfig({
 
                 'resources/js/admin/user.js',
                 'resources/js/admin/category.js',
+                'resources/js/admin/productAd.js',
+                'resources/js/admin/comment.js',
+                'resources/js/admin/order.js',
 
                 
                 

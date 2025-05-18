@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
-
+use App\Models\Comment;
+use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -180,25 +182,220 @@ class AdminController extends Controller
     // CHƯA LÀM SEARCH
 
     // PRODUCT
-    public function showProducts()
+   public function showProducts()
     {
-        $proItems = Product::latest()->paginate(10);
+        $perPage = 10;
+        $proItems = Product::with(['category', 'comments'])
+            ->withCount('comments')
+            ->paginate($perPage);
+
+        // Gắn rating trung bình mà không làm mất phân trang
+        $proItems->getCollection()->transform(function ($product) {
+            $product->average_rating = round($product->comments->avg('rating'), 1);
+            return $product;
+        });
+
         return view('pages.admin.productSetting', compact('proItems'));
+    }
+
+    public function storeProduct(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'publication_date' => 'nullable|date',
+            'price' => 'required|numeric|min:0',
+            'duration' => 'nullable|integer',
+            'language' => 'nullable|string|max:50',
+            'description' => 'nullable|string',
+            'file' => 'nullable|file',
+            'image' => 'nullable|image',
+        ]);
+
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('file', 'public'); // lưu file và trả về đường dẫn
+            $validated['file_url'] = basename($filePath); // chỉ lấy tên file thôi
+        }
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images/products', 'public');
+            $validated['image_url'] = basename($imagePath); // chỉ lấy tên file
+        }
+
+        $validated['rating'] = 0;
+
+        Product::create($validated);
+
+        return response()->json(['message' => 'Sản phẩm đã được thêm thành công!']);
+
+    }
+    public function destroyProduct($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // Xoá file nếu muốn (ảnh + file), ví dụ:
+        if ($product->image_url) {
+            Storage::disk('public')->delete('images/products/' . $product->image_url);
+        }
+        if ($product->file_url) {
+            Storage::disk('public')->delete('file/' . $product->file_url);
+        }
+
+        $product->delete();
+
+        return response()->json(['message' => 'Sản phẩm đã được xoá thành công!']);
+    }
+
+    public function updateProduct(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'type' => 'required|string|in:ebook,podcast',
+            'category_id' => 'required|exists:categories,id',
+            'publication_date' => 'nullable|date',
+            'price' => 'required|numeric|min:0',
+            'duration' => 'nullable|integer|min:0',
+            'language' => 'nullable|string|max:10',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'file' => 'nullable|file|max:10240', // max 10MB
+        ]);
+
+        // Cập nhật ảnh nếu có upload mới
+        if ($request->hasFile('image')) {
+            // Xoá ảnh cũ nếu có
+            if ($product->image_url) {
+                Storage::delete('public/images/products/' . $product->image_url);
+            }
+
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('public/images/products', $imageName);
+            $product->image_url = $imageName;
+        }
+
+        // Cập nhật file nếu có upload mới
+        if ($request->hasFile('file')) {
+            if ($product->file_url) {
+                Storage::delete('public/files/products/' . $product->file_url);
+            }
+
+            $fileName = time() . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->storeAs('public/files/products', $fileName);
+            $product->file_url = $fileName;
+        }
+
+        // Cập nhật dữ liệu khác
+        $product->fill([
+            'title' => $validated['title'],
+            'author' => $validated['author'],
+            'type' => $validated['type'],
+            'category_id' => $validated['category_id'],
+            'publication_date' => $validated['publication_date'],
+            'price' => $validated['price'],
+            'duration' => $validated['duration'],
+            'language' => $validated['language'],
+            'description' => $validated['description'],
+        ]);
+
+        $product->save();
+
+         return response()->json([
+            'message' => 'Cập nhật sản phẩm thành công!',
+            'product' => $product
+        ]);
+    }
+
+
+
+    // COMMENT 
+    public function showComments()
+    {
+        $comments = Comment::with('user', 'product')->latest()->paginate(10);
+        return view('pages.admin.commentAdmin', compact('comments'));
+    }
+    public function destroyComment (Comment $comment)
+    {
+        try {
+            Log::info('Deleting comment ID: ' . $comment->id);
+            $comment->delete();
+
+            return response()->json([
+                'message' => 'Bình luận đã xoá thành công.',
+                'status' => 'success'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Đã có lỗi xảy ra khi xoá.',
+                'status' => 'error'
+            ], 500);
+        }
+    }
+
+
+
+    // ORDER 
+   public function showOrders()
+    {
+        // Lấy tổng số đơn
+        $total = Order::count();
+
+        // Đếm số đơn theo trạng thái
+        $pending = Order::where('status', 'pending')->count();
+        $completed = Order::where('status', 'completed')->count();
+        $cancelled = Order::where('status', 'cancelled')->count();
+
+        // Truyền dữ liệu sang view
+        $stats = [
+            'total' => $total,
+            'pending' => $pending,
+            'completed' => $completed,
+            'cancelled' => $cancelled,
+        ];
+
+        // Lấy danh sách đơn (có phân trang)
+        $orders = \App\Models\Order::with('user', 'items')->orderBy('created_at', 'desc')->paginate(15);
+
+        return view('pages.admin.orderSetting', compact('stats', 'orders'));
+    }
+
+    public function showOItems($id)
+    {
+        $order = Order::with('items.product')->findOrFail($id);
+
+        return view('pages.admin.order_detail', compact('order'));
+    }
+    public function destroyOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+
+        return response()->json(['message' => 'Đã xóa đơn hàng thành công']);
+    }
+
+    public function complete(Order $order)
+    {
+        if ($order->status !== 'pending') {
+            return response()->json(['message' => 'Đơn hàng không ở trạng thái chờ xác nhận'], 400);
+        }
+
+        $order->status = 'completed';
+        $order->save();
+
+        return response()->json(['message' => 'Đơn hàng đã được xác nhận']);
     }
 
 
 
 
-    // COMMENT 
 
 
 
-
-    // BLOG
-
-
-
-    // ORDER 
+    // DASHBOARD
 
 
 

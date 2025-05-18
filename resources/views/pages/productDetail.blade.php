@@ -13,12 +13,12 @@
             <!-- Product Gallery (Bên trái) -->
             <div class="col-lg-6">
                 <div class="main-image mb-3">
-                    <img src="{{ asset($product->image_url ?? 'IMG/default.png') }}" class="img-fluid rounded-3 shadow" alt="{{ $product->title }}">
+                    <img src="{{ asset('storage/images/products/'. $product->image_url ?? 'IMG/default.png') }}" class="img-fluid rounded-3 shadow" alt="{{ $product->title }}">
                 </div>
                 <div class="thumbnail-grid row g-2">
                     @for ($i = 0; $i < 4; $i++)
                         <div class="col-3">
-                            <img src="{{ asset($product->image_url ?? 'IMG/default.png') }}" class="img-fluid rounded-2 cursor-pointer" alt="Thumbnail {{ $i + 1 }}">
+                            <img src="{{ asset('storage/images/products/'. $product->image_url ?? 'IMG/default.png') }}" class="img-fluid rounded-2 cursor-pointer" alt="Thumbnail {{ $i + 1 }}">
                         </div>
                     @endfor
                 </div>

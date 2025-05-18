@@ -109,6 +109,7 @@ class ProductController extends Controller
 
         return view('pages.playPodcast', compact('product'));
     }
+    
    
 
 

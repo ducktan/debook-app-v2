@@ -93,23 +93,9 @@
             </div>
 
             <!-- Pagination -->
-            @if ($cateItem->hasPages())
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center mt-3">
-                        <li class="page-item {{ $cateItem->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $cateItem->previousPageUrl() }}" tabindex="-1">Trước</a>
-                        </li>
-                        @for ($i = 1; $i <= $cateItem->lastPage(); $i++)
-                            <li class="page-item {{ $cateItem->currentPage() == $i ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $cateItem->url($i) }}">{{ $i }}</a>
-                            </li>
-                        @endfor
-                        <li class="page-item {{ $cateItem->hasMorePages() ? '' : 'disabled' }}">
-                            <a class="page-link" href="{{ $cateItem->nextPageUrl() }}">Tiếp</a>
-                        </li>
-                    </ul>
-                </nav>
-            @endif
+            <nav class="mt-4">
+                {{ $cateItem->links('pagination::bootstrap-5') }}
+            </nav>
         </main>
     </div>
 </div>

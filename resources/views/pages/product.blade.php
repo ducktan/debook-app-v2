@@ -37,10 +37,11 @@
                     <div class="col-12 col-sm-6 col-lg-4 mb-4">
                         <div class="product-card card">
                             <a href="{{ route('products.show', $product->id) }}" class="product-card-link">
-                                <img src="{{ asset($product->image_url ?? 'IMG/default.png') }}" alt="{{ $product->title }}" class="img-fluid">
+                                <img src="{{ asset('storage/images/products/' . $product->image_url ?? 'IMG/default.png') }}" alt="{{ $product->title }}" class="img-fluid">
                                 <div class="product-info">
                                     <h3>{{ $product->title }}</h3>
-                                    <p>{{ $product->description }}</p>
+                                    <p>{{Str::limit($product->description, 100) }}</p>
+
                                     <p class="price">{{ number_format($product->price, 0, ',', '.') }}đ</p>
                                     <p class="rating">
                                         @for ($i = 0; $i < floor($product->rating); $i++) <i class="fas fa-star"></i> @endfor

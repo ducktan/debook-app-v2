@@ -20,7 +20,7 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm border-0">
                         @if($product->image_url)
-                            <img src="{{ asset($product->image_url) }}" 
+                            <img src="{{ asset('storage/images/products/' . $product->image_url) }}" 
                                 class="card-img-top img-fluid" 
                                 alt="{{ $product->title }}"
                                 style="height: 180px; width: 100%; object-fit: cover; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">

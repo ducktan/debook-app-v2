@@ -11,6 +11,10 @@ class Product extends Model
         'publication_date', 'price', 'file_url', 'image_url',
         'duration', 'language', 'rating'
     ];
+    protected $casts = [
+    'publication_date' => 'date',
+    ];
+
 
     public function category()
     {
@@ -25,6 +29,7 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class);
     }
+    
 
     
 }

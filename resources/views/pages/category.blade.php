@@ -11,7 +11,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm border-light">
                     @if($product->image_url)
-                        <img src="{{ asset($product->image_url) }}" class="card-img-top img-fluid" alt="{{ $product->name }}" style="object-fit: cover; height: 250px;">
+                        <img src="{{ asset('storage/images/products/' . $product->image_url) }}" class="card-img-top img-fluid" alt="{{ $product->name }}" style="object-fit: cover; height: 250px;">
                     @else
                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
                             <span class="text-muted">Không có ảnh</span>

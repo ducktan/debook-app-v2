@@ -108,6 +108,25 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->group(function()
    
     // Products
     Route::get('/products', [AdminController::class, 'showProducts'])->name('admin.products.show');
+    Route::post('/products/store', [AdminController::class, 'storeProduct'])->name('admin.products.store');
+    Route::delete('/products/delete/{id}', [AdminController::class, 'destroyProduct'])->name('admin.products.destroy');
+    Route::put('/products/update/{id}', [AdminController::class, 'updateProduct'])->name('admin.products.update');
+
+    // Comments
+    Route::get('/comments', [AdminController::class, 'showComments'])->name('admin.comments.show');
+    Route::delete('/comments/delete/{comment}', [AdminController::class, 'destroyComment'])->name('admin.comments.destroy');
+
+    // Orders
+    Route::get('/orders', [AdminController::class, 'showOrders'])->name('admin.orders.show');
+    Route::get('/orders/{id}', [AdminController::class, 'showOItems'])->name('admin.orders.show.items');
+    Route::delete('/orders/delete/{id}', [AdminController::class, 'destroyOrder'])->name('admin.orders.destroy');
+    Route::patch('/orders/complete/{order}', [AdminController::class, 'complete'])->name('orders.complete');
+
+
+
+
+
+
 
 
 

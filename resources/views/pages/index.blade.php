@@ -79,7 +79,7 @@
           <div class="category__list row">
               @foreach($podcasts as $podcast)
               <div class="category__item col-6 col-md-3">
-                  <div class="card" style="background-image: url('{{ asset($podcast->image_url ?? 'assets/img/Logo.png') }}');"></div>
+                  <div class="card" style="background-image: url('{{ asset('storage/images/products/'. $podcast->image_url ?? 'assets/img/Logo.png') }}');"></div>
                   <div class="card-body">
                       <h5 class="card-title">{{ $podcast->title }}</h5>
                       <p class="card-text">{{ $podcast->description}} </p>
@@ -112,7 +112,7 @@
       <div class="book__list row" style="margin: 0;">
         @foreach($ebooks as $book)
           <div class="card col-3" style="width: 15rem; padding: 0;">
-            <img src="{{ asset($book->image_url) }}" class="card-img-top" alt="book">
+            <img src="{{ asset('storage/images/products/'. $book->image_url) }}" class="card-img-top" alt="book">
             <div class="card-body">
               <h5 class="card-title">{{ $book->title }}</h5>
               <div class="card-price">
@@ -137,7 +137,7 @@
       <div class="book__list row" style="margin: 0;">
         @foreach($podcasts as $podcast)
           <div class="card col-3" style="width: 15rem; padding: 0;">
-            <img src="{{ asset($podcast->image_url) }}" class="card-img-top" alt="podcast">
+            <img src="{{ asset('storage/images/products/'. $podcast->image_url) }}" class="card-img-top" alt="podcast">
             <div class="card-body">
               <h5 class="card-title">{{ $podcast->title }}</h5>
               <div class="card-price">
