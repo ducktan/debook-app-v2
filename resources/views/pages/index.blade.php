@@ -6,6 +6,9 @@
 @endsection
 
 @section('content')
+
+
+  
      <!-- Banner -->
       <section class="banner container-fluid bg-dark banner section">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
@@ -38,7 +41,7 @@
       </section>
   
       <!-- Category --> 
-      <section class="category container section">
+    <section class="category container section">
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#book-cate" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Danh mục sách</button>
@@ -54,273 +57,105 @@
 
       <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="book-cate" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-
-
           <div class="category__list row">
+            @foreach($categories as $category)
             <div class="category__item col-6 col-md-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
+                <a href="{{ route('categories.show', $category->slug) }}" class="card-link">
+                    <div class="card" style="background-image: url('{{ asset('storage/images/categories/' . $category->image_url ?? 'assets/img/Logo.png') }}');">
+                        <!-- Nội dung card sẽ không bị thay đổi do a bọc ngoài -->
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $category->name }}</h5>
+                        <p class="card-text">{{ $category->description }}</p>
+                    </div>
+                </a>
             </div>
-            
-            <div class="category__item col-6 col-md-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-            <div class="category__item col-6 col-md-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-            <div class="category__item col-6 col-md-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-          </div>
-
-
-
-
-
-          
-        </div>
-        <div class="tab-pane fade" id="podcast" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-          <div class="category__list row">
-            <div class="category__item col-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-            
-            
-            <div class="category__item col-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-            <div class="category__item col-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-          </div>
-
-        </div>
-        <div class="tab-pane fade" id="blog" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-          <div class="category__list row">
-            <div class="category__item col-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-            
-            <div class="category__item col-3">
-              <div class="card">
-                  
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              </div>
-              
-            </div>
-            
-            
-              
-            </div>
-          </div>
-
-        </div>
+        @endforeach
+        
+          </div> <!-- thêm cái này -->
       </div>
-      </section>
+      
+      <div class="tab-pane fade" id="podcast" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+          <div class="category__list row">
+              @foreach($podcasts as $podcast)
+              <div class="category__item col-6 col-md-3">
+                  <div class="card" style="background-image: url('{{ asset('storage/images/products/'. $podcast->image_url ?? 'assets/img/Logo.png') }}');"></div>
+                  <div class="card-body">
+                      <h5 class="card-title">{{ $podcast->title }}</h5>
+                      <p class="card-text">{{ $podcast->description}} </p>
+                  </div>
+              </div>
+              @endforeach
+          </div> <!-- thêm cái này -->
+      </div>
+      
+      <div class="tab-pane fade" id="blog" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+          <div class="category__list row">            
+              <div class="category__item col-3">
+                  <div class="card"></div>
+                  <div class="card-body">
+                      <h5 class="card-title">SÁCH VĂN HỌC</h5>
+                      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  </div>
+              </div>
+          </div>
+      </div> <!-- thêm cái này -->
+      
+        
+      </div>
+  </section>
   
       <!-- Book -->
-  
-      <section class="book container section">
-        <p class="title">SÁCH NỔI BẬT</p>
-        <div class="book__list row" style="margin: 0;">
+      <!-- SÁCH NỔI BẬT -->
+    <section class="book container section">
+      <p class="title">SÁCH NỔI BẬT</p>
+      <div class="book__list row" style="margin: 0;">
+        @foreach($ebooks as $book)
           <div class="card col-3" style="width: 15rem; padding: 0;">
-            <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
+            <img src="{{ asset('storage/images/products/'. $book->image_url) }}" class="card-img-top" alt="book">
             <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
+              <h5 class="card-title">{{ $book->title }}</h5>
+              <div class="card-price">
+                <p class="card-text">{{ number_format($book->price, 0, ',', '.') }}đ</p>
+                <div class="card-promotion">-{{ rand(20, 80) }}%</div> <!-- tạm random -->
+              </div>
+              <del>{{ number_format($book->price * 2, 0, ',', '.') }}đ</del>
+              <div class="card-star" style="color: rgb(255, 205, 68);">
+                @for($i = 0; $i < round($book->rating); $i++)
+                  <i class="fa fa-star"></i>
+                @endfor
+              </div>
             </div>
           </div>
-  
+        @endforeach
+      </div>
+    </section>
+
+    <!-- PODCAST -->
+    <section class="book container section">
+      <p class="title">PODCAST</p>
+      <div class="book__list row" style="margin: 0;">
+        @foreach($podcasts as $podcast)
           <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
+            <img src="{{ asset('storage/images/products/'. $podcast->image_url) }}" class="card-img-top" alt="podcast">
             <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
+              <h5 class="card-title">{{ $podcast->title }}</h5>
+              <div class="card-price">
+                <p class="card-text">{{ number_format($podcast->price, 0, ',', '.') }}đ</p>
+                <div class="card-promotion">-{{ rand(10, 50) }}%</div>
+              </div>
+              <del>{{ number_format($podcast->price * 1.8, 0, ',', '.') }}đ</del>
+              <div class="card-star" style="color: rgb(255, 205, 68);">
+                @for($i = 0; $i < round($podcast->rating); $i++)
+                  <i class="fa fa-star"></i>
+                @endfor
+              </div>
             </div>
           </div>
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-       
-        </div>
-      </section>
-  
-  
-      <!-- Podcast -->
-  
-      <section class="book container section">
-        <p class="title">PODCAST</p>
-        <div class="book__list row" style="margin: 0;">
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-        
-  
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-  
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
-             <div class="card-price">
-              <p class="card-text">39.000đ</p>
-              <div class="card-promotion">-75%</div>
-             </div> 
-             <del>150.000đ</del>
-             <div class="card-star" style="color: rgb(255, 205, 68);">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>  
-             </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        @endforeach
+      </div>
+    </section>
+
   
   
       <!-- Playlist -->
@@ -368,21 +203,28 @@
   
       <!-- Contact -->
       <section class="contact container-fluid section">
+        <div class="contact__text">
+          <p>Điền thông tin ngay để nhận thông báo nhé!</p>
       
-          <div class="contact__text">
-            <p>Điền thông tin ngay để nhận thông báo nhé!</p>
-            <form>
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-          </div>
+          <form action="{{ route('subscribe') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+              <div id="emailHelp" class="form-text">Chúng tôi sẽ không chia sẻ email của bạn với ai khác.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+      
+          @if(session('success'))
+              <script>
+                  alert("{{ session('success') }}");
+              </script>
+          @endif
+      
         </div>
       </section>
-  
+      
 
    
 

@@ -3,15 +3,62 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Mail\WelcomeSubscriberMail;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\SubscribeRequest;
+use App\Models\Subscription;
+
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('pages.index');
+        $categories = Category::all();
+        $ebooks = Product::where('type', 'ebook')->latest()->take(6)->get();
+        $podcasts = Product::where('type', 'podcast')->latest()->take(6)->get();
+
+        return view('pages.index', compact('ebooks', 'podcasts','categories'));
     }
     public function member()
     {
-        return view('pages.member');
+        // Lấy tất cả các gói hội viên từ bảng subscriptions
+        $subscriptions = Subscription::all();
+        return view('pages.member', compact('subscriptions'));
     }
+
+    public function subscribe(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // Gửi mail ngay lập tức mà KHÔNG lưu database
+        Mail::to($request->email)->send(new WelcomeSubscriberMail());
+
+        return back()->with('success', 'Đã gửi mail thành công!');
+    }
+
+    public function ajaxSearch(Request $request)
+    {
+        $query = $request->input('query');
+
+        if (!$query) {
+            return response()->json([]);
+        }
+
+        $products = Product::where('title', 'like', '%' . $query . '%')
+            ->orWhere('description', 'like', '%' . $query . '%')
+            ->limit(10)
+            ->get(['id', 'title', 'image_url']);
+
+        return response()->json($products);
+    }
+
+
+   
+  
 }

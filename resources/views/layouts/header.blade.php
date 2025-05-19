@@ -19,6 +19,30 @@
                             <i class="fa-solid fa-house"></i>
                         </a>
                     </li>
+                    @php
+                        $cart = session('cart', []);
+                        $cartCount = array_sum(array_column($cart, 'quantity'));
+                    @endphp
+
+
+                    <li class="nav-item position-relative">
+                        <a class="nav-link active" aria-current="page" href="{{ url('/cart') }}">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            @if ($cartCount > 0)
+                                <span class="position-absolute top-0 start-100 move__it badge rounded-pill bg-danger">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" aria-current="page" href="{{ url('/products') }}">
+                           <i class="fa-solid fa-book"></i>
+                            
+                        </a>
+                    </li>
+
 
                     
                     
@@ -51,11 +75,21 @@
                 
                 
                 <div class="d-flex align-items-center flex-wrap gap-2 form">
-                    <form class="d-flex flex-grow-1 myform" role="search" id="myform">
-                        <input class="form-control me-2" type="search" placeholder="Search" 
-                               aria-label="Search">
+                    <form class="d-flex flex-grow-1 position-relative myform" role="search" id="myform" autocomplete="off">
+                        <input class="form-control me-2" type="search" placeholder="Search"
+                            aria-label="Search" name="query" id="search-box">
                         <button class="btn btn-outline-success" type="submit">Search</button>
+
+                        <!-- Kết quả tìm kiếm hiển thị tại đây -->
+                        <div id="search-results" class="position-absolute bg-white border w-100 z-3" 
+                            style="top: 100%; left: 0; display: none; max-height: 300px; overflow-y: auto;">
+                        </div>
                     </form>
+
+                    
+
+
+                    
 
                     <div class="icon__search">
                       <i class="fa-solid fa-magnifying-glass"></i>
@@ -68,12 +102,15 @@
     </nav>
 
     <div class="header__category container">
-      <a href="">Sách điện tử</a>
-      <a href="">Sách nói</a>
-      <a href="">Sách hội viên</a>
-      <a href="">Sách mua lẻ</a>
-      <a href="">Podcast</a>
-      <a href="">Blog</a>
+
+        @foreach ($categories as $category)
+        <a href="{{ route('categories.show', $category->slug) }}" class="header__category-item">
+            {{ $category->name }}
+        </a>
+        @endforeach
+    
+      
+      <a href="{{ route('posts.index')}}">Blog</a>
     </div>
 </header>
        

@@ -10,191 +10,89 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block bg-white sidebar border-end p-3 min-vh-100">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <img src="{{ asset ('assets/img/Logo.png')}}" alt="logo" class="img-fluid mynav__logo">
-                <button class="btn btn-sm d-md-none" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
-            </div>
-            
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center active" href="./admin.html">
-                        <i class="fa-solid fa-inbox text-primary"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./userManagement.html">
-                        <i class="fa-solid fa-user text-warning"></i>
-                        <span>Người dùng</span>
-                      
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
-                        <i class="fa-solid fa-feather text-success"></i>
-                        <span>Tác giả</span>
-                       
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./productManagement.html">
-                        <i class="fa-solid fa-gift text-info"></i>
-                        <span>Sản phẩm</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
-                        <i class="fa-solid fa-truck-fast text-danger"></i>
-                        <span>Đơn hàng</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./paymentManagement.html">
-                        <i class="fa-solid fa-cart-shopping text-secondary"></i>
-                        <span>Thanh toán</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
-                        <i class="fa-solid fa-font text-dark"></i>
-                        <span>Nội dung</span>
-                    </a>
-                </li>
-                @auth 
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
-                            <i class="fa-solid fa-user text-dark"></i>
-                            <span>{{Auth::user()->name}}</span>
-                        </a>
-                    </li>
-                    <!-- Thêm nút đăng xuất -->
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="nav-link" style="border: none; background: none; color: inherit;">Đăng xuất</button>
-                        </form>
-                    </li>
-                    
-                @endauth
-            </ul>
-        </nav>
+        @include('pages.admin.sidebar')
         
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <div class="responsive__item mb-5">
-                <ul class="nav d-flex">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center active" href="./admin.html">
-                            <i class="fa-solid fa-inbox text-primary"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./userManagement.html">
-                            <i class="fa-solid fa-user text-warning"></i>
-                            <span>Người dùng</span>
-                          
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./authorManagement.html">
-                            <i class="fa-solid fa-feather text-success"></i>
-                            <span>Tác giả</span>
-                           
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./productManagement.html">
-                            <i class="fa-solid fa-gift text-info"></i>
-                            <span>Sản phẩm</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./orderManagement.html">
-                            <i class="fa-solid fa-truck-fast text-danger"></i>
-                            <span>Đơn hàng</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./paymentManagement.html">
-                            <i class="fa-solid fa-cart-shopping text-secondary"></i>
-                            <span>Thanh toán</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="./contentManagement.html">
-                            <i class="fa-solid fa-font text-dark"></i>
-                            <span>Nội dung</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+           @include('pages.admin.resItem')
 
             <!-- Header -->
             <div class="header__item">
                 <h2 class="fw-bold">Dashboard</h2>
                 <div class="card p-3 bg-white shadow-sm">
-                    <span class="text-muted">Thời gian thống kê: <strong class="text-primary">Tháng 5, 2024</strong></span>
+                    <span class="text-muted">Thời gian thống kê: <strong class="text-primary">{{ now ()}}</strong></span>
                 </div>
             </div>
             
             <!-- Stats Cards -->
-            <div class="row g-4 mb-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-primary">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Tổng doanh thu</p>
-                                <h3 class="value text-primary">250.8<small>tr</small></h3>
-                            </div>
-                            <i class="bi bi-currency-dollar fs-1 text-primary opacity-25"></i>
-                        </div>
-                        <span class="trend text-success"><i class="bi bi-arrow-up"></i> 12% so với tháng trước</span>
-                    </div>
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-primary">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Tổng doanh thu</p>
+                    <h3 class="value text-primary">
+                        {{ number_format($totalRevenue / 1_000_000, 1) }}<small>tr</small>
+                    </h3>
                 </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-success">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Sản phẩm đã bán</p>
-                                <h3 class="value text-success">1,240</h3>
-                            </div>
-                            <i class="bi bi-box-seam fs-1 text-success opacity-25"></i>
-                        </div>
-                        <span class="trend text-danger"><i class="bi bi-arrow-down"></i> 5% so với tháng trước</span>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-warning">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Khách hàng mới</p>
-                                <h3 class="value text-warning">320</h3>
-                            </div>
-                            <i class="bi bi-people fs-1 text-warning opacity-25"></i>
-                        </div>
-                        <span class="trend text-success"><i class="bi bi-arrow-up"></i> 8% so với tháng trước</span>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-info">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Lượt truy cập</p>
-                                <h3 class="value text-info">50.8<small>K</small></h3>
-                            </div>
-                            <i class="bi bi-eye fs-1 text-info opacity-25"></i>
-                        </div>
-                        <span class="trend text-success"><i class="bi bi-arrow-up"></i> 22% so với tháng trước</span>
-                    </div>
-                </div>
+                <i class="bi bi-currency-dollar fs-1 text-primary opacity-25"></i>
             </div>
+            <span class="trend {{ $revenueGrowth >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $revenueGrowth >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($revenueGrowth) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-success">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Sản phẩm đã bán</p>
+                    <h3 class="value text-success">{{ number_format($totalProductsSold) }}</h3>
+                </div>
+                <i class="bi bi-box-seam fs-1 text-success opacity-25"></i>
+            </div>
+            <span class="trend {{ $productsSoldTrend >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $productsSoldTrend >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($productsSoldTrend) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-warning">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Khách hàng mới</p>
+                    <h3 class="value text-warning">{{ number_format($newCustomers) }}</h3>
+                </div>
+                <i class="bi bi-people fs-1 text-warning opacity-25"></i>
+            </div>
+            <span class="trend {{ $newCustomersGrowth >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $newCustomersGrowth >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($newCustomersGrowth) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-info">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Lượt truy cập</p>
+                    <h3 class="value text-info">{{ number_format($totalVisits / 1000, 1) }}<small>K</small></h3>
+                </div>
+                <i class="bi bi-eye fs-1 text-info opacity-25"></i>
+            </div>
+            <span class="trend {{ $visitsGrowth >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $visitsGrowth >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($visitsGrowth) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+</div>
+
             
             <!-- Charts Row -->
             <div class="row g-4">
@@ -243,13 +141,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>#DH-1001</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/05/2024</td>
-                                    <td>450,000đ</td>
-                                    <td><span class="badge bg-success">Hoàn thành</span></td>
-                                </tr>
+                                @foreach ($recentOrders as $order)
+                                    <tr>
+                                        <td>#{{ $order->codeVNPAY }}</td>
+                                        <td>{{ $order->user->full_name ?? 'Ẩn danh' }}</td>
+                                        <td>{{ $order->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ number_format($order->total, 0, ',', '.') }}đ</td>
+                                        <td>
+                                            @if ($order->status === 'completed')
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            @elseif ($order->status === 'pending')
+                                                <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                                            @else
+                                                <span class="badge bg-danger">Đã huỷ</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 <!-- Thêm các dòng khác -->
                             </tbody>
                         </table>
@@ -262,18 +170,20 @@
 
 <script>
     // Orders Chart (Doughnut)
+    const orderStats = @json($orderStats);
+    const revenueByMonth = @json($revenueByMonth);
+
     new Chart(document.getElementById('ordersChart'), {
         type: 'doughnut',
         data: {
-            labels: ['Đơn mới', 'Đang xử lý', 'Đã hoàn thành', 'Đã hủy'],
+            labels: ['pending', 'completed', 'cancel'],
             datasets: [{
-                data: [120, 90, 200, 30],
-                backgroundColor: [
-                    '#4285F4',
-                    '#FBBC05',
-                    '#34A853',
-                    '#EA4335'
+                data: [
+                    orderStats.pending || 0,
+                    orderStats.completed || 0,
+                    orderStats.cancel || 0
                 ],
+                backgroundColor: ['#FBBC05', '#34A853', '#EA4335'],
                 borderWidth: 0
             }]
         },
@@ -307,7 +217,13 @@
             labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
             datasets: [{
                 label: 'Doanh thu (triệu)',
-                data: [40, 60, 80, 120, 250],
+                data: [
+                    revenueByMonth[1] || 0,
+                    revenueByMonth[2] || 0,
+                    revenueByMonth[3] || 0,
+                    revenueByMonth[4] || 0,
+                    revenueByMonth[5] || 0
+                ],
                 backgroundColor: '#34A853',
                 borderRadius: 6
             }]

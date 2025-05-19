@@ -49,4 +49,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function purchasedProducts()
+    {
+        return $this->belongsToMany(Product::class, 'user_products');
+    }
+    public function subscription()
+    {
+        return $this->hasOne(UserSubscription::class, 'user_id')->latestOfMany();
+    }
+
 }

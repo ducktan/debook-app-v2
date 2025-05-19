@@ -1,78 +1,30 @@
-@extends('layouts.master', ['hideHeaderFooter' => true])
+@extends('layouts.app', ['hideHeaderFooter' => true])
 
 @section('title', 'Debook - Read Book')
 @section('css')
     @vite(['resources/css/readBook.css'])
 @endsection
+
 <div class="container mt-4">
     <!-- Tiêu đề -->
     <div class="title-container">
         <div class="title__text">
-            <h1>Trong ngôi nhà của mẹ</h1>
-            <h4>Chương 1: Tình bạn từ góc nhìn của mẹ</h4>
+            <h1>{{ $product->title }}</h1>
+            <p class="title__author">Tác giả: {{ $product->author }}</p>
         </div>
         <div class="title__button">
             <button class="back-button" onclick="history.back()">
                 <i class="fa-solid fa-person-walking-arrow-loop-left"></i>
             </button>
         </div>
-       
-        
-        
     </div>
 
-    <!-- Nội dung -->
-    <div class="read-container">
-        <p>
-            Tình bạn là một trong những điều đẹp đẽ và quý giá nhất trong cuộc sống, 
-            là sợi dây vô hình kết nối con người với nhau bằng sự chân thành, tin tưởng 
-            và sẻ chia. Tình bạn không phân biệt tuổi tác, giới tính hay hoàn cảnh sống, 
-            mà đơn giản là sự đồng điệu giữa hai tâm hồn, là sự gắn kết được xây dựng qua 
-            thời gian và thử thách. Một người bạn tốt giống như một ngọn đèn soi sáng những 
-            lúc ta mờ mịt, là bờ vai để ta tựa vào khi yếu lòng, là người có thể lắng nghe mà 
-            không phán xét, thấu hiểu mà không cần phải nói quá nhiều. Trong cuộc sống, 
-            có những khoảnh khắc chúng ta cảm thấy cô đơn, lạc lõng, chính tình bạn đã trở 
-            thành điểm tựa, giúp ta vững bước và mạnh mẽ hơn...
-            Tình bạn là một trong những điều đẹp đẽ và quý giá nhất trong cuộc sống, 
-            là sợi dây vô hình kết nối con người với nhau bằng sự chân thành, tin tưởng 
-            và sẻ chia. Tình bạn không phân biệt tuổi tác, giới tính hay hoàn cảnh sống, 
-            mà đơn giản là sự đồng điệu giữa hai tâm hồn, là sự gắn kết được xây dựng qua 
-            thời gian và thử thách. Một người bạn tốt giống như một ngọn đèn soi sáng những 
-            lúc ta mờ mịt, là bờ vai để ta tựa vào khi yếu lòng, là người có thể lắng nghe mà 
-            không phán xét, thấu hiểu mà không cần phải nói quá nhiều. Trong cuộc sống, 
-            có những khoảnh khắc chúng ta cảm thấy cô đơn, lạc lõng, chính tình bạn đã trở 
-            thành điểm tựa, giúp ta vững bước và mạnh mẽ hơn
-            Tình bạn là một trong những điều đẹp đẽ và quý giá nhất trong cuộc sống, 
-            là sợi dây vô hình kết nối con người với nhau bằng sự chân thành, tin tưởng 
-            và sẻ chia. Tình bạn không phân biệt tuổi tác, giới tính hay hoàn cảnh sống, 
-            mà đơn giản là sự đồng điệu giữa hai tâm hồn, là sự gắn kết được xây dựng qua 
-            thời gian và thử thách. Một người bạn tốt giống như một ngọn đèn soi sáng những 
-            lúc ta mờ mịt, là bờ vai để ta tựa vào khi yếu lòng, là người có thể lắng nghe mà 
-            không phán xét, thấu hiểu mà không cần phải nói quá nhiều. Trong cuộc sống, 
-            có những khoảnh khắc chúng ta cảm thấy cô đơn, lạc lõng, chính tình bạn đã trở 
-            thành điểm tựa, giúp ta vững bước và mạnh mẽ hơn
-            Tình bạn là một trong những điều đẹp đẽ và quý giá nhất trong cuộc sống, 
-            là sợi dây vô hình kết nối con người với nhau bằng sự chân thành, tin tưởng 
-            và sẻ chia. Tình bạn không phân biệt tuổi tác, giới tính hay hoàn cảnh sống, 
-            mà đơn giản là sự đồng điệu giữa hai tâm hồn, là sự gắn kết được xây dựng qua 
-            thời gian và thử thách. Một người bạn tốt giống như một ngọn đèn soi sáng những 
-            lúc ta mờ mịt, là bờ vai để ta tựa vào khi yếu lòng, là người có thể lắng nghe mà 
-            không phán xét, thấu hiểu mà không cần phải nói quá nhiều. Trong cuộc sống, 
-            có những khoảnh khắc chúng ta cảm thấy cô đơn, lạc lõng, chính tình bạn đã trở 
-            thành điểm tựa, giúp ta vững bước và mạnh mẽ hơn
-            Tình bạn là một trong những điều đẹp đẽ và quý giá nhất trong cuộc sống, 
-            là sợi dây vô hình kết nối con người với nhau bằng sự chân thành, tin tưởng 
-            và sẻ chia. Tình bạn không phân biệt tuổi tác, giới tính hay hoàn cảnh sống, 
-            mà đơn giản là sự đồng điệu giữa hai tâm hồn, là sự gắn kết được xây dựng qua 
-            thời gian và thử thách. Một người bạn tốt giống như một ngọn đèn soi sáng những 
-            lúc ta mờ mịt, là bờ vai để ta tựa vào khi yếu lòng, là người có thể lắng nghe mà 
-            không phán xét, thấu hiểu mà không cần phải nói quá nhiều. Trong cuộc sống, 
-            có những khoảnh khắc chúng ta cảm thấy cô đơn, lạc lõng, chính tình bạn đã trở 
-            thành điểm tựa, giúp ta vững bước và mạnh mẽ hơn
-        </p>
+    <!-- PDF Reader -->
+    <div id="pdf-viewer" class="pdf-container">
+        <canvas id="pdf-canvas"></canvas>
     </div>
 
-
+    <!-- Nav buttons -->
     <div class="nav-buttons">
         <button onclick="prevPage()">⟨ Trang trước</button>
         <button onclick="nextPage()">Trang tiếp ⟩</button>
@@ -80,22 +32,69 @@
 </div>
 
 <script>
-    function prevPage() {
-        // Thay URL trang trước nếu cần
-        window.history.back();
+    // URL file PDF, bạn có thể thay thế bằng URL của file PDF trong cơ sở dữ liệu
+    var pdfUrl = @json(asset('storage/file/' . $product->file_url));// Đảm bảo rằng $product->pdf_url chứa đường dẫn đến file PDF
+
+    // Khởi tạo PDF.js
+    var pdfDoc = null,
+        pageNum = 1,
+        pageIsRendering = false,
+        pageNumIsPending = null;
+    
+    // Hiển thị trang PDF
+    function renderPage(num) {
+        pageIsRendering = true;
+
+        pdfDoc.getPage(num).then(function(page) {
+            var canvas = document.getElementById("pdf-canvas");
+            var ctx = canvas.getContext("2d");
+
+            var viewport = page.getViewport({ scale: 1.5 });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            }).promise.then(function() {
+                pageIsRendering = false;
+                if (pageNumIsPending !== null) {
+                    renderPage(pageNumIsPending);
+                    pageNumIsPending = null;
+                }
+            });
+        });
+
+        document.getElementById("page_num").textContent = num;
     }
 
-    function nextPage() {
-        // Thay URL trang tiếp theo nếu cần
-        window.location.href = "next-page.html";
+    // Tải file PDF
+    function loadPdf() {
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+            pdfDoc = pdf;
+            renderPage(pageNum);
+        });
     }
+
+    // Trang tiếp theo
+    function nextPage() {
+        if (pageNum < pdfDoc.numPages) {
+            pageNum++;
+            renderPage(pageNum);
+        }
+    }
+
+    // Trang trước
+    function prevPage() {
+        if (pageNum > 1) {
+            pageNum--;
+            renderPage(pageNum);
+        }
+    }
+
+    // Tải PDF khi trang được load
+    window.onload = loadPdf;
 </script>
 
 @section('content')
-
-
-  
-
-
-  
 @endsection

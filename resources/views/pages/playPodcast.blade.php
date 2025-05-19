@@ -1,307 +1,160 @@
-@extends('layouts.master', ['hideHeaderFooter' => false])
+@extends('layouts.app')
 
-@section('title', 'Debook - Play Podcast')
+@section('title', $product->title)
+
 @section('css')
-    @vite(['resources/css/playPodcast.css'])
+    <style>
+        body {
+            background: linear-gradient(135deg, #f3f4f6, #ffffff);
+        }
+        .podcast-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding-top: 40px;
+        }
+        .cover-shadow {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-radius: 12px;
+        }
+        .btn-listen {
+            background-color: #00c58e;
+            color: white;
+            border-radius: 999px;
+            padding: 12px 24px;
+            font-weight: 600;
+        }
+        .btn-listen:hover {
+            background-color: #00a67d;
+        }
+        .rating-stars {
+            color: #facc15;
+        }
+        .quote-box {
+            background-color: #e0f7f1;
+            border-left: 4px solid #00c58e;
+            padding: 16px;
+            border-radius: 8px;
+            font-style: italic;
+        }
+        .audio-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+        .audio-controls i {
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 0 8px;
+        }
+    </style>
 @endsection
-
 
 @section('content')
-
-<div class="podcast-container container">
-    <div class="podcast-heade row">
-        <div class="podcast-image col-md-6 col-12 mb-3">
-            <img src="./IMG/playlist1.jpg" alt="Podcast Cover">
-            
+<div class="podcast-container">
+    <div class="row align-items-center mb-4">
+        <div class="col-md-4 text-center">
+            <img src="{{ asset('storage/images/products/' . $product->image_url) }}" class="img-fluid cover-shadow" alt="Podcast cover">
         </div>
-        <div class="podcast-info col-md-6 col-12">
-            <h1>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</h1>
-            <div class="rating d-flex">
-                <span class="score">5.0</span> 
-                <div class="card-star" style="color: rgb(255, 205, 68);">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>  
-                   </div>
-                <span class="reviews">• 1 đánh giá</span>
+        <div class="col-md-8">
+            <h3 class="fw-bold">{{ $product->title }}</h3>
+            <div class="d-flex align-items-center mb-2">
+                <span class="rating-stars me-2">{{$product->rating}} ★</span>
+                <span class="text-muted">• {{ $product->comments_count }} đánh giá</span>
             </div>
-            <div class="trending">
-                <span class="badge">#1</span> trong Top xu hướng Podcast
-            </div>
-            <p class="author">Tác giả: <strong>Vô danh tiểu tốt</strong></p>
-            <div class="actions">
-                <button class="follow-btn"><i class="fas fa-bell"></i> Theo dõi</button>
-                <button class="share-btn"><i class="fas fa-share-alt"></i></button>
-            </div>
-            <div class="description">
-                <p>"Vỗ Về Những Đứa Trẻ Đang Tập Lớn" là nơi chúng mình chia sẻ những câu chuyện khác nhau trong hành trình trưởng thành từ tình yêu, đến ước mơ và cả những khó khăn thử thách...Vỗ Về Những Đứa Trẻ Đang Tập Lớn" là nơi chúng mình chia sẻ những câu chuyện khác nhau trong hành trình trưởng thành từ tình yêu, đến ước mơ và cả những khó khăn thử thách..Vỗ Về Những Đứa Trẻ Đang Tập Lớn" là nơi chúng mình chia sẻ những câu chuyện khác nhau trong hành trình trưởng thành từ tình yêu, đến ước mơ và cả những khó khăn thử thách...Vỗ Về Những Đứa Trẻ Đang Tập Lớn" là nơi chúng mình chia sẻ những câu chuyện khác nhau trong hành trình trưởng thành từ tình yêu, đến ước mơ và cả những khó khăn thử thách..</p>
-                <a href="#" class="see-more">Xem thêm</a>
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const description = document.querySelector(".description");
-                    const seeMoreBtn = document.querySelector(".see-more");
-            
-                    seeMoreBtn.addEventListener("click", function (event) {
-                        event.preventDefault(); // Ngăn trang tải lại
-                        description.classList.toggle("expanded");
-            
-                        if (description.classList.contains("expanded")) {
-                            seeMoreBtn.textContent = "Thu gọn";
-                        } else {
-                            seeMoreBtn.textContent = "Xem thêm";
-                        }
-                    });
-                });
-            </script>
-            
+            <p class="mb-1"><strong>Tác giả:</strong> {{ $product->author }}</p>
+           
+            <button class="btn btn-listen" id="startBtn">
+                <i class="fas fa-play me-2"></i> Nghe podcast
+            </button>
         </div>
     </div>
 
-    <div class="episode-list">
-        <h2>Danh sách tập (11)</h2>
-        <div class="episode">
-            <div class="episode-image">
-                <img src="./IMG/playlist1.jpg" alt="Episode Cover">
-            </div>
-            <div class="episode-info">
-                <a href="#" class="episode-title">Vẽ 2 chữ định mệnh</a>
-                <p><strong>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</strong> | 20/03/2025</p>
-                <p>Chào mừng bạn đến với podcast "Vỗ về những đứa trẻ tập lớn". Trong tập này, chúng ta sẽ cùng khám phá khái niệm "định...</p>
-            </div>
-            <div class="episode-stats">
-                <i class="fas fa-headphones"></i> 4,5K
-                <button id="playButton" class="play-button">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-        </div>
-
-
-        <div class="episode">
-            <div class="episode-image">
-                <img src="./IMG/playlist1.jpg" alt="Episode Cover">
-            </div>
-            <div class="episode-info">
-                <a href="#" class="episode-title">Vẽ 2 chữ định mệnh</a>
-                <p><strong>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</strong> | 20/03/2025</p>
-                <p>Chào mừng bạn đến với podcast "Vỗ về những đứa trẻ tập lớn". Trong tập này, chúng ta sẽ cùng khám phá khái niệm "định...</p>
-            </div>
-            <div class="episode-stats">
-                <i class="fas fa-headphones"></i> 4,5K
-                <button id="playButton" class="play-button">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-        </div>
-
-
-        <div class="episode">
-            <div class="episode-image">
-                <img src="./IMG/playlist1.jpg" alt="Episode Cover">
-            </div>
-            <div class="episode-info">
-                <a href="#" class="episode-title">Vẽ 2 chữ định mệnh</a>
-                <p><strong>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</strong> | 20/03/2025</p>
-                <p>Chào mừng bạn đến với podcast "Vỗ về những đứa trẻ tập lớn". Trong tập này, chúng ta sẽ cùng khám phá khái niệm "định...</p>
-            </div>
-            <div class="episode-stats">
-                <i class="fas fa-headphones"></i> 4,5K
-                <button id="playButton" class="play-button">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="episode">
-            <div class="episode-image">
-                <img src="./IMG/playlist1.jpg" alt="Episode Cover">
-            </div>
-            <div class="episode-info">
-                <a href="#" class="episode-title">Vẽ 2 chữ định mệnh</a>
-                <p><strong>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</strong> | 20/03/2025</p>
-                <p>Chào mừng bạn đến với podcast "Vỗ về những đứa trẻ tập lớn". Trong tập này, chúng ta sẽ cùng khám phá khái niệm "định...</p>
-            </div>
-            <div class="episode-stats">
-                <i class="fas fa-headphones"></i> 4,5K
-                <button id="playButton" class="play-button">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="episode">
-            <div class="episode-image">
-                <img src="./IMG/playlist1.jpg" alt="Episode Cover">
-            </div>
-            <div class="episode-info">
-                <a href="#" class="episode-title">Vẽ 2 chữ định mệnh</a>
-                <p><strong>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</strong> | 20/03/2025</p>
-                <p>Chào mừng bạn đến với podcast "Vỗ về những đứa trẻ tập lớn". Trong tập này, chúng ta sẽ cùng khám phá khái niệm "định...</p>
-            </div>
-            <div class="episode-stats">
-                <i class="fas fa-headphones"></i> 4,5K
-                <button id="playButton" class="play-button">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-        </div>
-
-
-        <div class="episode">
-            <div class="episode-image">
-                <img src="./IMG/playlist1.jpg" alt="Episode Cover">
-            </div>
-            <div class="episode-info">
-                <a href="#" class="episode-title">Vẽ 2 chữ định mệnh</a>
-                <p><strong>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</strong> | 20/03/2025</p>
-                <p>Chào mừng bạn đến với podcast "Vỗ về những đứa trẻ tập lớn". Trong tập này, chúng ta sẽ cùng khám phá khái niệm "định...</p>
-            </div>
-            <div class="episode-stats">
-                <i class="fas fa-headphones"></i> 4,5K
-                <button id="playButton" class="play-button">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-        </div>
-
-
-
-        <div class="episode">
-            <div class="episode-image">
-                <img src="./IMG/playlist1.jpg" alt="Episode Cover">
-            </div>
-            <div class="episode-info">
-                <a href="#" class="episode-title">Vẽ 2 chữ định mệnh</a>
-                <p><strong>Vỗ Về Những Đứa Trẻ Đang Tập Lớn</strong> | 20/03/2025</p>
-                <p>Chào mừng bạn đến với podcast "Vỗ về những đứa trẻ tập lớn". Trong tập này, chúng ta sẽ cùng khám phá khái niệm "định...</p>
-            </div>
-            <div class="episode-stats">
-                <i class="fas fa-headphones"></i> 4,5K
-                <button id="playButton" class="play-button">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-
-</div>
-
-
-
-<!-- phần play podcast -->
-
-<div class="audio-player container" id="audioPlayer">
-<div class="track-info">
-    <img src="./IMG/playlist1.jpg" alt="Album Art" class="track-cover">
-    <div>
-        <div class="track-title">Cậu là chính cậu và th...</div>
-        <div class="track-artist">Vỗ Về Những Đứa Trẻ Đang Tập Lớn</div>
+    <div class="quote-box mt-3">
+        <p>
+            “{{$product->description}}”
+        </p>
     </div>
 </div>
 
-<audio id="audio" src="./img/CheHo-WxrdieGillLucin3x-9070141.mp3"></audio>
-
-<div class="controls">
-    <button onclick="toggleSpeed()" class="icon-btn" id="speed">1.0x</button>
-    <button onclick="skip(-15)" class="icon-btn"><i class="fas fa-undo-alt"></i></button>
-    <button onclick="playPause()" class="icon-btn"><i id="playIcon" class="fas fa-play"></i></button>
-    <button onclick="skip(15)" class="icon-btn"><i class="fas fa-redo-alt"></i></button>
-    <span id="currentTime">00:00</span>
-    <div class="progress-bar">
-        <input type="range" id="seekBar" min="0" value="0">
-    </div>
-    <span id="duration">03:20</span>
-
-    <div class="right-icons">
-      <i class="fas fa-list icon-btn"></i>
-      <i class="fas fa-user-friends icon-btn"></i>
-      <i class="fas fa-volume-up icon-btn"></i>
-      <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+<div class="audio-bar d-none" id="playerBar">
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <img src="{{ asset('storage/images/products/' . $product->image_url) }}" alt="Podcast" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;" class="me-2">
+            <div>
+                <div class="fw-bold small">{{ $product->title }}</div>
+                <div class="text-muted small">{{ $product->channel ?? 'Trạm dừng cảm xúc' }}</div>
+            </div>
+        </div>
+        <div class="audio-controls d-flex align-items-center">
+            <span id="speedBtn">1.0x</span>
+            <i class="fas fa-backward" onclick="seek(-15)"></i>
+            <i id="playPauseBtn" class="fas fa-play" onclick="togglePlay()"></i>
+            <i class="fas fa-forward" onclick="seek(15)"></i>
+            <span id="timeNow" class="mx-2 small">00:00</span>
+            <input type="range" id="seekBar" min="0" value="0" step="1">
+            <span id="duration" class="ms-2 small">--:--</span>
+        </div>
     </div>
 </div>
-</div>
+
+<audio id="audio" src="{{ asset($product->file_url) }}"></audio>
 
 <script>
-const audio = document.getElementById('audio');
-const seekBar = document.getElementById('seekBar');
-const currentTimeEl = document.getElementById('currentTime');
-const durationEl = document.getElementById('duration');
-const playIcon = document.getElementById('playIcon');
-const speedBtn = document.getElementById('speed');
-let speed = 1.0;
+    const audio = document.getElementById('audio');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const seekBar = document.getElementById('seekBar');
+    const timeNow = document.getElementById('timeNow');
+    const duration = document.getElementById('duration');
+    const speedBtn = document.getElementById('speedBtn');
+    let speed = 1.0;
 
-function playPause() {
-if (audio.paused) {
-  audio.play();
-  playIcon.classList.replace('fa-play', 'fa-pause');
-} else {
-  audio.pause();
-  playIcon.classList.replace('fa-pause', 'fa-play');
-}
-}
+    document.getElementById('startBtn').onclick = () => {
+        document.getElementById('playerBar').classList.remove('d-none');
+        audio.play();
+        playPauseBtn.classList.replace('fa-play', 'fa-pause');
+    };
 
-function skip(seconds) {
-audio.currentTime += seconds;
-}
-
-function toggleSpeed() {
-speed += 0.25;
-if (speed > 2) speed = 1.0;
-audio.playbackRate = speed;
-speedBtn.innerText = speed.toFixed(1) + 'x';
-}
-
-audio.ontimeupdate = () => {
-seekBar.max = audio.duration;
-seekBar.value = audio.currentTime;
-currentTimeEl.textContent = formatTime(audio.currentTime);
-};
-
-seekBar.oninput = (e) => {
-audio.currentTime = e.target.value;
-};
-
-document.getElementById('volume').oninput = (e) => {
-audio.volume = e.target.value;
-};
-
-function formatTime(seconds) {
-const min = Math.floor(seconds / 60).toString().padStart(2, '0');
-const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
-return `${min}:${sec}`;
-}
-const volumeIcon = document.querySelector('.fa-volume-up'); // Chọn icon volume
-
-document.getElementById('volume').oninput = (e) => {
-    const volume = e.target.value;
-    audio.volume = volume;
-
-    if (volume == 0) {
-        volumeIcon.className = 'fas fa-volume-mute icon-btn';
-    } else if (volume < 0.5) {
-        volumeIcon.className = 'fas fa-volume-down icon-btn';
-    } else {
-        volumeIcon.className = 'fas fa-volume-up icon-btn';
+    function togglePlay() {
+        if (audio.paused) {
+            audio.play();
+            playPauseBtn.classList.replace('fa-play', 'fa-pause');
+        } else {
+            audio.pause();
+            playPauseBtn.classList.replace('fa-pause', 'fa-play');
+        }
     }
-};
 
+    function seek(seconds) {
+        audio.currentTime += seconds;
+    }
 
+    speedBtn.onclick = () => {
+        speed += 0.25;
+        if (speed > 2) speed = 1.0;
+        audio.playbackRate = speed;
+        speedBtn.textContent = speed.toFixed(1) + 'x';
+    };
 
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60).toString().padStart(2, '0');
+        const s = Math.floor(sec % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    }
 
-        document.getElementById('playButton').addEventListener('click', function () {
-        document.getElementById('audioPlayer').style.display = 'flex';
-    });
+    audio.ontimeupdate = () => {
+        seekBar.max = audio.duration;
+        seekBar.value = audio.currentTime;
+        timeNow.textContent = formatTime(audio.currentTime);
+        duration.textContent = formatTime(audio.duration);
+    };
 
-
-
+    seekBar.oninput = () => {
+        audio.currentTime = seekBar.value;
+    };
 </script>
-
-  
-
-  
 @endsection
-
