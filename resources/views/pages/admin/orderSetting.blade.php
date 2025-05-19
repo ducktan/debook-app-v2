@@ -22,9 +22,10 @@
                     <i class="bi bi-cart-check me-2" style="color: #FBBC05;"></i>QUẢN LÝ ĐƠN HÀNG
                 </h2>
                 <div>
-                    <button class="btn btn-success me-2">
-                        <i class="bi bi-file-earmark-excel me-1"></i> Xuất Excel
-                    </button>
+                    <a href="{{ route('admin.exportReport') }}" class="btn btn-primary mb-3">
+                        Xuất báo cáo Excel
+                    </a>
+
                 </div>
             </div>
 

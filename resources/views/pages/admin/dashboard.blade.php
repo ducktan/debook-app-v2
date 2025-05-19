@@ -20,64 +20,79 @@
             <div class="header__item">
                 <h2 class="fw-bold">Dashboard</h2>
                 <div class="card p-3 bg-white shadow-sm">
-                    <span class="text-muted">Thời gian thống kê: <strong class="text-primary">Tháng 5, 2024</strong></span>
+                    <span class="text-muted">Thời gian thống kê: <strong class="text-primary">{{ now ()}}</strong></span>
                 </div>
             </div>
             
             <!-- Stats Cards -->
-            <div class="row g-4 mb-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-primary">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Tổng doanh thu</p>
-                                <h3 class="value text-primary">250.8<small>tr</small></h3>
-                            </div>
-                            <i class="bi bi-currency-dollar fs-1 text-primary opacity-25"></i>
-                        </div>
-                        <span class="trend text-success"><i class="bi bi-arrow-up"></i> 12% so với tháng trước</span>
-                    </div>
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-primary">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Tổng doanh thu</p>
+                    <h3 class="value text-primary">
+                        {{ number_format($totalRevenue / 1_000_000, 1) }}<small>tr</small>
+                    </h3>
                 </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-success">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Sản phẩm đã bán</p>
-                                <h3 class="value text-success">1,240</h3>
-                            </div>
-                            <i class="bi bi-box-seam fs-1 text-success opacity-25"></i>
-                        </div>
-                        <span class="trend text-danger"><i class="bi bi-arrow-down"></i> 5% so với tháng trước</span>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-warning">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Khách hàng mới</p>
-                                <h3 class="value text-warning">320</h3>
-                            </div>
-                            <i class="bi bi-people fs-1 text-warning opacity-25"></i>
-                        </div>
-                        <span class="trend text-success"><i class="bi bi-arrow-up"></i> 8% so với tháng trước</span>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card p-3 shadow-sm border-left-info">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-muted mb-1">Lượt truy cập</p>
-                                <h3 class="value text-info">50.8<small>K</small></h3>
-                            </div>
-                            <i class="bi bi-eye fs-1 text-info opacity-25"></i>
-                        </div>
-                        <span class="trend text-success"><i class="bi bi-arrow-up"></i> 22% so với tháng trước</span>
-                    </div>
-                </div>
+                <i class="bi bi-currency-dollar fs-1 text-primary opacity-25"></i>
             </div>
+            <span class="trend {{ $revenueGrowth >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $revenueGrowth >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($revenueGrowth) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-success">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Sản phẩm đã bán</p>
+                    <h3 class="value text-success">{{ number_format($totalProductsSold) }}</h3>
+                </div>
+                <i class="bi bi-box-seam fs-1 text-success opacity-25"></i>
+            </div>
+            <span class="trend {{ $productsSoldTrend >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $productsSoldTrend >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($productsSoldTrend) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-warning">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Khách hàng mới</p>
+                    <h3 class="value text-warning">{{ number_format($newCustomers) }}</h3>
+                </div>
+                <i class="bi bi-people fs-1 text-warning opacity-25"></i>
+            </div>
+            <span class="trend {{ $newCustomersGrowth >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $newCustomersGrowth >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($newCustomersGrowth) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card p-3 shadow-sm border-left-info">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1">Lượt truy cập</p>
+                    <h3 class="value text-info">{{ number_format($totalVisits / 1000, 1) }}<small>K</small></h3>
+                </div>
+                <i class="bi bi-eye fs-1 text-info opacity-25"></i>
+            </div>
+            <span class="trend {{ $visitsGrowth >= 0 ? 'text-success' : 'text-danger' }}">
+                <i class="bi bi-arrow-{{ $visitsGrowth >= 0 ? 'up' : 'down' }}"></i> 
+                {{ abs($visitsGrowth) }}% so với tháng trước
+            </span>
+        </div>
+    </div>
+</div>
+
             
             <!-- Charts Row -->
             <div class="row g-4">
@@ -126,13 +141,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>#DH-1001</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/05/2024</td>
-                                    <td>450,000đ</td>
-                                    <td><span class="badge bg-success">Hoàn thành</span></td>
-                                </tr>
+                                @foreach ($recentOrders as $order)
+                                    <tr>
+                                        <td>#{{ $order->codeVNPAY }}</td>
+                                        <td>{{ $order->user->full_name ?? 'Ẩn danh' }}</td>
+                                        <td>{{ $order->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ number_format($order->total, 0, ',', '.') }}đ</td>
+                                        <td>
+                                            @if ($order->status === 'completed')
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            @elseif ($order->status === 'pending')
+                                                <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                                            @else
+                                                <span class="badge bg-danger">Đã huỷ</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 <!-- Thêm các dòng khác -->
                             </tbody>
                         </table>
@@ -145,18 +170,20 @@
 
 <script>
     // Orders Chart (Doughnut)
+    const orderStats = @json($orderStats);
+    const revenueByMonth = @json($revenueByMonth);
+
     new Chart(document.getElementById('ordersChart'), {
         type: 'doughnut',
         data: {
-            labels: ['Đơn mới', 'Đang xử lý', 'Đã hoàn thành', 'Đã hủy'],
+            labels: ['pending', 'completed', 'cancel'],
             datasets: [{
-                data: [120, 90, 200, 30],
-                backgroundColor: [
-                    '#4285F4',
-                    '#FBBC05',
-                    '#34A853',
-                    '#EA4335'
+                data: [
+                    orderStats.pending || 0,
+                    orderStats.completed || 0,
+                    orderStats.cancel || 0
                 ],
+                backgroundColor: ['#FBBC05', '#34A853', '#EA4335'],
                 borderWidth: 0
             }]
         },
@@ -190,7 +217,13 @@
             labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
             datasets: [{
                 label: 'Doanh thu (triệu)',
-                data: [40, 60, 80, 120, 250],
+                data: [
+                    revenueByMonth[1] || 0,
+                    revenueByMonth[2] || 0,
+                    revenueByMonth[3] || 0,
+                    revenueByMonth[4] || 0,
+                    revenueByMonth[5] || 0
+                ],
                 backgroundColor: '#34A853',
                 borderRadius: 6
             }]

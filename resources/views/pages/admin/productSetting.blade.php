@@ -94,7 +94,11 @@
                                         </td>
 
                                         <td>
-                                            <p class="mb-0 fw-bold text-truncate" style="max-width: 200px">{{ $product->title }}</p>
+                                            <p class="mb-0 fw-bold text-truncate" style="max-width: 200px">
+                                                <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark">
+                                                    {{ $product->title }}
+                                                </a>
+                                            </p>
                                             <small class="text-muted d-block">{{ $product->author }}</small>
                                             <small class="text-muted">Xuất bản: {{ \Carbon\Carbon::parse($product->publication_date)->format('d/m/Y') }}</small>
                                         </td>

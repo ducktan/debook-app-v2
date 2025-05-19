@@ -33,7 +33,7 @@
 
 <script>
     // URL file PDF, bạn có thể thay thế bằng URL của file PDF trong cơ sở dữ liệu
-    var pdfUrl = @json(asset($product->file_url));// Đảm bảo rằng $product->pdf_url chứa đường dẫn đến file PDF
+    var pdfUrl = @json(asset('storage/file/' . $product->file_url));// Đảm bảo rằng $product->pdf_url chứa đường dẫn đến file PDF
 
     // Khởi tạo PDF.js
     var pdfDoc = null,

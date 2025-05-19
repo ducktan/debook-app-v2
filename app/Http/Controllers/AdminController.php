@@ -12,6 +12,10 @@ use App\Models\Product;
 use App\Models\Comment;
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
+use App\Exports\ReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -22,8 +26,82 @@ class AdminController extends Controller
     //// User
     public function index()
     {
-        return view('pages.admin.dashboard');
+        // Thống kê đơn hàng theo trạng thái
+        $orderStats = Order::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        // Doanh thu từng tháng (chỉ tính đơn completed)
+        $revenueByMonth = DB::table('orders')
+            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->where('orders.status', 'completed')
+            ->select(
+                DB::raw('MONTH(orders.created_at) as month'),
+                DB::raw('SUM(order_items.price * order_items.quantity) as total')
+            )
+            ->groupBy(DB::raw('MONTH(orders.created_at)'))
+            ->pluck('total', 'month');
+
+        // Tổng doanh thu tháng hiện tại (ví dụ tháng 5)
+        $currentMonth = date('m');
+        $totalRevenue = $revenueByMonth->get($currentMonth, 0);
+
+        // Tổng sản phẩm đã bán (đơn completed)
+        $totalProductsSold = DB::table('order_items')
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->where('orders.status', 'completed')
+            ->sum('order_items.quantity');
+
+        // Khách hàng mới trong tháng hiện tại
+        $newCustomers = User::whereMonth('created_at', $currentMonth)->count();
+
+        // Lượt truy cập giả định (bạn cần thay bằng dữ liệu thật nếu có)
+        $totalVisits = 50800; // ví dụ số liệu cứng
+
+        // Các đơn gần đây
+        $recentOrders = Order::latest()->take(5)->get();
+
+        // Ví dụ về tăng trưởng (tính đơn giản)
+        // Lấy doanh thu tháng trước (tháng hiện tại - 1)
+        $lastMonth = $currentMonth - 1 <= 0 ? 12 : $currentMonth - 1;
+        $lastMonthRevenue = $revenueByMonth->get($lastMonth, 0);
+        $revenueGrowth = $lastMonthRevenue == 0 ? 100 : round((($totalRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100, 2);
+
+        // Tương tự sản phẩm đã bán tăng giảm (giả định)
+        $lastMonthProductsSold = DB::table('order_items')
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->where('orders.status', 'completed')
+            ->whereMonth('orders.created_at', $lastMonth)
+            ->sum('order_items.quantity');
+        $productsSoldTrend = $lastMonthProductsSold == 0 ? 100 : round((($totalProductsSold - $lastMonthProductsSold) / $lastMonthProductsSold) * 100, 2);
+
+        // Khách hàng mới tăng giảm (giả định)
+        $lastMonthNewCustomers = User::whereMonth('created_at', $lastMonth)->count();
+        $newCustomersGrowth = $lastMonthNewCustomers == 0 ? 100 : round((($newCustomers - $lastMonthNewCustomers) / $lastMonthNewCustomers) * 100, 2);
+
+        // Lượt truy cập tăng giảm (giả định)
+        $visitsGrowth = 22; // bạn có thể thay bằng tính toán thực tế
+
+        return view('pages.admin.dashboard', [
+            'orderStats' => $orderStats,
+            'revenueByMonth' => $revenueByMonth,
+            'recentOrders' => $recentOrders,
+            'totalRevenue' => $totalRevenue,
+            'totalProductsSold' => $totalProductsSold,
+            'newCustomers' => $newCustomers,
+            'totalVisits' => $totalVisits,
+            'revenueGrowth' => $revenueGrowth,
+            'productsSoldTrend' => $productsSoldTrend,
+            'newCustomersGrowth' => $newCustomersGrowth,
+            'visitsGrowth' => $visitsGrowth,
+        ]);
     }
+
+    public function exportExcel()
+    {
+        return Excel::download(new ReportExport, 'report.xlsx');
+    }
+
     public function users()
     {
         $users = User::latest()->paginate(10);
@@ -269,25 +347,36 @@ class AdminController extends Controller
         // Cập nhật ảnh nếu có upload mới
         if ($request->hasFile('image')) {
             // Xoá ảnh cũ nếu có
-            if ($product->image_url) {
-                Storage::delete('public/images/products/' . $product->image_url);
+            if ($product->image_url && Storage::disk('public')->exists('images/products/' . $product->image_url)) {
+                Storage::disk('public')->delete('images/products/' . $product->image_url);
             }
 
-            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('public/images/products', $imageName);
+            // Lưu ảnh mới
+            $imageName = time() . '.' . $request->file('image')->extension();
+            $request->file('image')->storeAs('images/products', $imageName, 'public');
+
             $product->image_url = $imageName;
         }
 
+
+        
+
+       
         // Cập nhật file nếu có upload mới
         if ($request->hasFile('file')) {
-            if ($product->file_url) {
-                Storage::delete('public/files/products/' . $product->file_url);
+            // Xoá file cũ nếu có
+            if ($product->file_url && Storage::disk('public')->exists('file/' . $product->file_url)) {
+                Storage::disk('public')->delete('file/' . $product->file_url);
             }
 
-            $fileName = time() . '_' . $request->file('file')->getClientOriginalName();
-            $request->file('file')->storeAs('public/files/products', $fileName);
+            // Lưu file mới
+            $fileName = time() . '.' . $request->file('file')->extension();
+            $request->file('file')->storeAs('file', $fileName, 'public');
+
             $product->file_url = $fileName;
         }
+
+
 
         // Cập nhật dữ liệu khác
         $product->fill([
@@ -395,8 +484,7 @@ class AdminController extends Controller
 
 
 
-    // DASHBOARD
-
+    
 
 
 

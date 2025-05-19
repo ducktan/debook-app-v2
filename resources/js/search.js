@@ -27,14 +27,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (data.length > 0) {
                     data.forEach(product => {
+                        let imgSrc = "storage/images/products/" + product.image_url;  // nối chuỗi bình thường
+
                         html += `
                             <a href="/products/${product.id}" class="d-block p-2 border-bottom text-decoration-none text-dark">
                                 <div class="d-flex align-items-center">
-                                    <img src="${product.image_url}" alt="${product.title}" width="40" height="40" class="me-2" style="object-fit: cover;">
+                                    <img src="${imgSrc}" alt="${product.title}" width="40" height="40" class="me-2" style="object-fit: cover;">
                                     <span>${product.title}</span>
                                 </div>
                             </a>
                         `;
+
                     });
                 } else {
                     html = '<div class="p-2 text-muted">Không tìm thấy sản phẩm</div>';

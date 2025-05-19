@@ -122,6 +122,10 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->group(function()
     Route::delete('/orders/delete/{id}', [AdminController::class, 'destroyOrder'])->name('admin.orders.destroy');
     Route::patch('/orders/complete/{order}', [AdminController::class, 'complete'])->name('orders.complete');
 
+    // Export
+    Route::get('/export-report', [AdminController::class, 'exportExcel'])->name('admin.exportReport');
+
+
 
 
 
