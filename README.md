@@ -97,12 +97,9 @@ php artisan serve
 
 ```text
 Admin:
-Email: admin@debook.vn
-Mật khẩu: password
+Email: acc-demo-1@debook.vn
+Mật khẩu: 12345678
 
-Người dùng:
-Email: user@debook.vn
-Mật khẩu: password
 ```
 
 ---
