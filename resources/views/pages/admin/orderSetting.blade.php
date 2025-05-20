@@ -85,7 +85,7 @@
                     <div class="card stat-card p-3 shadow-sm border-left-secondary">
                         <div class="card-body">
                             <h6 class="text-muted">Đã xác nhận</h6>
-                            <h4 class="mb-0">{{ $stats['conpleted'] ?? 0 }}</h4>
+                            <h4 class="mb-0">{{ $stats['completed'] ?? 0 }}</h4>
                         </div>
                     </div>
                 </div>

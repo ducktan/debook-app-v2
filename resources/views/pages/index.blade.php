@@ -77,29 +77,34 @@
       
       <div class="tab-pane fade" id="podcast" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
           <div class="category__list row">
-              @foreach($podcasts as $podcast)
-              <div class="category__item col-6 col-md-3">
-                  <div class="card" style="background-image: url('{{ asset('storage/images/products/'. $podcast->image_url ?? 'assets/img/Logo.png') }}');"></div>
-                  <div class="card-body">
-                      <h5 class="card-title">{{ $podcast->title }}</h5>
-                      <p class="card-text">{{ $podcast->description}} </p>
-                  </div>
-              </div>
-              @endforeach
-          </div> <!-- thêm cái này -->
+            @foreach($podcasts as $podcast)
+            <div class="category__item col-6 col-md-3">
+                <a href="{{ route('products.show', $podcast->id) }}" class="text-decoration-none text-reset">
+                    <div class="card" style="background-image: url('{{ asset('storage/images/products/'. ($podcast->image_url ?? 'assets/img/Logo.png')) }}');"></div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $podcast->title }}</h5>
+                        <p class="card-text">{{ $podcast->description }}</p>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+          </div>
+
       </div>
       
       <div class="tab-pane fade" id="blog" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-          <div class="category__list row">            
-              <div class="category__item col-3">
-                  <div class="card"></div>
-                  <div class="card-body">
-                      <h5 class="card-title">SÁCH VĂN HỌC</h5>
-                      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  </div>
+       <div class="category__list row">
+          @foreach($blogs as $blog)
+          <div class="category__item col-3">
+              <div class="card" style="background-image: url('{{ asset('storage/' . ($blog->image_url ?? 'default-blog.png')) }}'); height: 200px; background-size: cover; background-position: center;"></div>
+              <div class="card-body">
+                  <h5 class="card-title">{{ $blog->title }}</h5>
+                  <p class="card-text">{{ Str::limit(strip_tags($blog->content), 100) }}</p>
               </div>
           </div>
-      </div> <!-- thêm cái này -->
+          @endforeach
+        </div>
+      </div> 
       
         
       </div>
@@ -108,98 +113,93 @@
       <!-- Book -->
       <!-- SÁCH NỔI BẬT -->
     <section class="book container section">
-      <p class="title">SÁCH NỔI BẬT</p>
-      <div class="book__list row" style="margin: 0;">
-        @foreach($ebooks as $book)
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-            <img src="{{ asset('storage/images/products/'. $book->image_url) }}" class="card-img-top" alt="book">
-            <div class="card-body">
-              <h5 class="card-title">{{ $book->title }}</h5>
-              <div class="card-price">
-                <p class="card-text">{{ number_format($book->price, 0, ',', '.') }}đ</p>
-                <div class="card-promotion">-{{ rand(20, 80) }}%</div> <!-- tạm random -->
-              </div>
-              <del>{{ number_format($book->price * 2, 0, ',', '.') }}đ</del>
-              <div class="card-star" style="color: rgb(255, 205, 68);">
-                @for($i = 0; $i < round($book->rating); $i++)
-                  <i class="fa fa-star"></i>
-                @endfor
-              </div>
-            </div>
+  <p class="title">SÁCH NỔI BẬT</p>
+  <div class="book__list row" style="margin: 0;">
+    @foreach($ebooks as $book)
+      <div class="card col-3" style="width: 15rem; padding: 0;">
+        <a href="{{ route('products.show', $book->id) }}">
+          <img src="{{ asset('storage/images/products/'. $book->image_url) }}" class="card-img-top" alt="book">
+        </a>
+        <div class="card-body">
+          <a href="{{ route('products.show', $book->id) }}" style="text-decoration:none; color: inherit;">
+            <h5 class="card-title">{{ $book->title }}</h5>
+          </a>
+          <div class="card-price">
+            <p class="card-text">{{ number_format($book->price, 0, ',', '.') }}đ</p>
           </div>
-        @endforeach
+          <div class="card-star" style="color: rgb(255, 205, 68);">
+            @php
+              $avgRating = round($book->rating);
+            @endphp
+            @for($i = 0; $i < $avgRating; $i++)
+              <i class="fa fa-star"></i>
+            @endfor
+          </div>
+        </div>
       </div>
-    </section>
+    @endforeach
+  </div>
+</section>
+
 
     <!-- PODCAST -->
-    <section class="book container section">
-      <p class="title">PODCAST</p>
-      <div class="book__list row" style="margin: 0;">
-        @foreach($podcasts as $podcast)
-          <div class="card col-3" style="width: 15rem; padding: 0;">
-            <img src="{{ asset('storage/images/products/'. $podcast->image_url) }}" class="card-img-top" alt="podcast">
-            <div class="card-body">
-              <h5 class="card-title">{{ $podcast->title }}</h5>
-              <div class="card-price">
-                <p class="card-text">{{ number_format($podcast->price, 0, ',', '.') }}đ</p>
-                <div class="card-promotion">-{{ rand(10, 50) }}%</div>
-              </div>
-              <del>{{ number_format($podcast->price * 1.8, 0, ',', '.') }}đ</del>
-              <div class="card-star" style="color: rgb(255, 205, 68);">
-                @for($i = 0; $i < round($podcast->rating); $i++)
-                  <i class="fa fa-star"></i>
-                @endfor
-              </div>
-            </div>
+    <!-- PODCAST -->
+<section class="book container section">
+  <p class="title">PODCAST</p>
+  <div class="book__list row" style="margin: 0;">
+    @foreach($podcasts as $podcast)
+      <div class="card col-3" style="width: 15rem; padding: 0;">
+        <a href="{{ route('products.show', $podcast->id) }}">
+          <img src="{{ asset('storage/images/products/'. $podcast->image_url) }}" class="card-img-top" alt="podcast">
+        </a>
+        <div class="card-body">
+          <a href="{{ route('products.show', $podcast->id) }}" style="text-decoration:none; color: inherit;">
+            <h5 class="card-title">{{ $podcast->title }}</h5>
+          </a>
+          <div class="card-price">
+            <p class="card-text">{{ number_format($podcast->price, 0, ',', '.') }}đ</p>
           </div>
-        @endforeach
+          <div class="card-star" style="color: rgb(255, 205, 68);">
+            @php
+              $avgRating = round($podcast->rating);
+            @endphp
+            @for($i = 0; $i < $avgRating; $i++)
+              <i class="fa fa-star"></i>
+            @endfor
+          </div>
+        </div>
       </div>
-    </section>
+    @endforeach
+  </div>
+</section>
+
 
   
   
       <!-- Playlist -->
-  
-      <section class="playlist container section">
-        <p class="title">PLAYLIST YÊU THÍCH</p>
-        
-        <div class="row playlist__row">
-          <div class="playlist__item col-md-3 col-6">
-            <div class="playlist__img"></div>
-            <div class="playlist__content">
-              <h5 class="playlist__title">Trạm dừng cảm xúc</h5>
-              <p class="playlist__author">Podcast chữa lành</p>
+  <section class="playlist container section">
+    <p class="title">LỜI HAY Ý ĐẸP</p>
+
+    <div class="row playlist__row">
+        @forelse($fiveStarComments as $comment)
+            <div class="playlist__item col-md-3 col-6">
+                <div class="playlist__img" style="background-image: url('{{ asset('storage/images/avatar/' . ($comment->user->avatar ?? 'default-avatar.png')) }}'); background-size: cover; background-position: center; height: 150px; border-radius: 8px;"></div>
+                <div class="playlist__content">
+                    <h5 class="playlist__title">{{ $comment->user->name ?? 'Người dùng ẩn danh' }}</h5>
+                    <p class="playlist__author" style="font-style: italic; font-size: 0.9rem;">{{ Str::limit($comment->content, 100) }}</p>
+                    <div style="color: #FFC107;">
+                        @for ($i = 0; $i < 5; $i++)
+                            <i class="fa fa-star"></i>
+                        @endfor
+                    </div>
+                </div>
             </div>
-          </div>
-  
-          <div class="playlist__item col-md-3 col-6">
-            <div class="playlist__img"></div>
-            <div class="playlist__content">
-              <h5 class="playlist__title">Trạm dừng cảm xúc</h5>
-              <p class="playlist__author">Podcast chữa lành</p>
-            </div>
-          </div>
-  
-          <div class="playlist__item col-md-3 col-6">
-            <div class="playlist__img"></div>
-            <div class="playlist__content">
-              <h5 class="playlist__title">Trạm dừng cảm xúc</h5>
-              <p class="playlist__author">Podcast chữa lành</p>
-            </div>
-          </div>
-  
-          <div class="playlist__item col-md-3 col-6">
-            <div class="playlist__img"></div>
-            <div class="playlist__content">
-              <h5 class="playlist__title">Trạm dừng cảm xúc</h5>
-              <p class="playlist__author">Podcast chữa lành</p>
-            </div>
-          </div>
-  
-          
-        </div>
-        
-      </section>
+        @empty
+            <p class="text-center">Chưa có bình luận 5 sao nào.</p>
+        @endforelse
+    </div>
+</section>
+
   
       <!-- Contact -->
       <section class="contact container-fluid section">

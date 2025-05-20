@@ -2,66 +2,51 @@
 
 namespace App\Http\Controllers;
 use Laravel\Socialite\Facades\Socialite;
-
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+
+use Illuminate\Http\Request;
 
 class SocialiteController extends Controller
-
 {
     //
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function authProviderRedirect($provider)
+    // Google login
+    // Redirect to Google for authentication
+    
+    public function googleLogin()
     {
-        if($provider) {
-            return Socialite::driver($provider)->redirect();
-        }
-        abort(404);
-        
+        return Socialite::driver('google')->redirect();
     }
-    public function socialAuthencation($provider)
+    // Handle the callback from Google
+    public function googleAuthentication()
     {
-        
-            try {
+         try {
 
-                if ($provider) {
-                    
-                    $socialUser = Socialite::driver($provider)->user();
+                $googleUser = Socialite::driver('google')->user();
             
-                    $user = User::where('email', $socialUser->email)->first();
-                    if ($user) {
+            $user = User::where('email', $googleUser->email)->first();
+            if ($user) {
             
-                        Auth::login($user);
-                        return redirect()->route('index');
-                    }
-                    else {
-                        // Nếu người dùng chưa tồn tại trong hệ thống, tạo mới
-                        $newUser = User::create([
-                            'id' => $socialUser->id,
-                            'name' => $socialUser->name,
-                            'email' => $socialUser->email,
-                            'password' => Hash::make('12345678'), // Tạo mật khẩu ngẫu nhiên
-                            'avatar' => $socialUser->avatar,
-                        ]);
+                Auth::login($user);
+                return redirect()->route('index');
+            }
+            else {
+                // Nếu người dùng chưa tồn tại trong hệ thống, tạo mới
+                $newUser = User::create([
+                    'id' => $googleUser->id,
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'password' => Hash::make('12345678'), // Tạo mật khẩu ngẫu nhiên
+                    'avatar' => $googleUser->avatar,
+                ]);
 
-                        if ($newUser) {
-                            Auth::login($newUser);
-                            return redirect()->route('index');
-                        }
-            
-                    }
-
-                
+                if ($newUser) {
+                    Auth::login($newUser);
+                    return redirect()->route('index');
+                }
+    
                 
             
             }
@@ -70,10 +55,6 @@ class SocialiteController extends Controller
                 return redirect('/')->with('error', 'Đăng nhập thất bại. Vui lòng thử lại.');
             }
 
-
-        
-
-        
+       
     }
-    
 }

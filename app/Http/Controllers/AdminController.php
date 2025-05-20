@@ -127,12 +127,7 @@ class AdminController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:users,name',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'utype' => 'required|in:ADM,USR,VIP',
-        ]);
+        
 
         User::create([
             'name' => $request->name,

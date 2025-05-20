@@ -176,12 +176,12 @@
     new Chart(document.getElementById('ordersChart'), {
         type: 'doughnut',
         data: {
-            labels: ['pending', 'completed', 'cancel'],
+            labels: ['pending', 'completed', 'cancelled'],
             datasets: [{
                 data: [
                     orderStats.pending || 0,
                     orderStats.completed || 0,
-                    orderStats.cancel || 0
+                    orderStats.cancelled || 0
                 ],
                 backgroundColor: ['#FBBC05', '#34A853', '#EA4335'],
                 borderWidth: 0

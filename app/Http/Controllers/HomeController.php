@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Mail\WelcomeSubscriberMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\SubscribeRequest;
+use App\Models\Post;
 use App\Models\Subscription;
+use App\Models\Comment;
 
 
 class HomeController extends Controller
@@ -18,10 +20,18 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $ebooks = Product::where('type', 'ebook')->latest()->take(6)->get();
+        $ebooks = Product::where('type', 'ebook')
+            ->withAvg('comments', 'rating')    // thêm trường comments_avg_rating
+            ->orderByDesc('comments_avg_rating')
+            ->take(8)
+            ->get();
         $podcasts = Product::where('type', 'podcast')->latest()->take(6)->get();
+        $blogs = Post::latest()->take(6)->get();  // lấy 6 bài blog mới nhất
+        $fiveStarComments = Comment::where('rating', 5)->latest()->take(4)->get();
 
-        return view('pages.index', compact('ebooks', 'podcasts','categories'));
+        return view('pages.index', compact('ebooks', 'podcasts', 'categories', 'blogs', 'fiveStarComments'));
+
+        
     }
     public function member()
     {

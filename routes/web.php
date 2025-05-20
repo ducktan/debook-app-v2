@@ -19,9 +19,11 @@ Auth::routes(); //Authentication routes
 
 // Socialite routes
 Route::controller(SocialiteController::class)->group(function () {
-    Route::get('/auth/redirection/{provider}', 'authProviderRedirect')->name('auth.redirection');
-    Route::get('auth/{provider}/callback', 'socialAuthencation')->name('auth.callback');
+    Route::get('/auth/google', 'googleLogin')->name('auth.google');
+    Route::get('/auth/google-callback', 'googleAuthentication')->name('auth.google-callback');
 });
+
+
 
 // Indexx
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
@@ -124,6 +126,7 @@ Route::middleware(['auth', AuthAdmin::class])->prefix('admin')->group(function()
 
     // Export
     Route::get('/export-report', [AdminController::class, 'exportExcel'])->name('admin.exportReport');
+  
 
 
 
