@@ -102,7 +102,7 @@
     </div>
 </div>
 
-<audio id="audio" src="{{ asset($product->file_url) }}"></audio>
+<audio id="audio" src="{{ asset('storage/file/' . $product->file_url) }}"></audio>
 
 <script>
     const audio = document.getElementById('audio');

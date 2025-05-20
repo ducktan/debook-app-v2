@@ -71,11 +71,11 @@
 
                         <div class="row mb-0 social">
                             
-                                <a href="{{ route('auth.redirection','google') }}">
+                                <a href="{{ route('auth.google') }}">
                                     <i class="fa-brands fa-google"></i>
                                 </a>
 
-                                <a href="{{ route('auth.redirection','facebook') }}">
+                                <a href="">
                                     <i class="fa-brands fa-facebook"></i>
                                 </a>
                             

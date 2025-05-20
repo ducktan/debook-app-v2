@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -90,6 +91,14 @@ class ProductController extends Controller
             'content' => $request->content,
             'rating' => $request->rating ?? 0,
         ]);
+        // Tính điểm trung bình mới của product
+        $avgRating = Comment::where('product_id', $productId)
+            ->avg('rating');
+
+        // Cập nhật lại cột rating trong bảng products
+        DB::table('products')
+            ->where('id', $productId)
+            ->update(['rating' => $avgRating]);
 
         return back()->with('success', 'Bình luận đã được gửi.');
     }
