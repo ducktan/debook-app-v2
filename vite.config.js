@@ -29,6 +29,7 @@ export default defineConfig({
                 'resources/js/search.js',
                 'resources/js/filter.js',
                 'resources/js/blogDetail.js',
+                 'resources/js/chatbot.js',
 
                 'resources/js/admin/user.js',
                 'resources/js/admin/category.js',
