@@ -11,7 +11,7 @@ export default defineConfig({
                 'resources/css/user.css',
                 'resources/css/member.css',
                 'resources/css/admin/dashboard.css',
-                
+                 'resources/css/readBook.css', // ✅ thêm dòng này
             ],
             refresh: true,
         }),

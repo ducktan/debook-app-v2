@@ -35,20 +35,12 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 });
 
 
-
-
-// Other pages
-Route::get('/member-register', [HomeController::class, 'showPackages'])->name('member');
-
-//1
-Route::get('/payment/{id}', [PaymentController::class, 'show'])->name('payment');
-//2
-Route::post('/process-payment', [PaymentController::class, 'process'])->name('processPayment');
-
-
-
 //
 Route::get('/user', [UserController::class, 'showUserDashboard'])->name('dashboard');
 
+
+Route::get('/member-register', [HomeController::class, 'member'])->name('member');
+
+Route::get('/read-book/{id}', [HomeController::class, 'read'])->name('books.read');
 
 

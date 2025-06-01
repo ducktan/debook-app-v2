@@ -7,44 +7,157 @@
 
 @section('content')
      <!-- Banner -->
+  <style>
+    /* Nút sticky mở podcast */
+  
 
 
+    .div-container {
+  width: 100%;
+  height: 300px; /* Chiều cao div */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-container img {
+  height: 100%; /* Chiều cao của ảnh bằng với chiều cao div */
+  width: auto; /* Đảm bảo chiều rộng của ảnh không bị kéo dài */
+}
+
+  .play-button {
+    margin: 10px;
+    background-color: rgb(179, 175, 124);
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 999;
+  }
+
+  .audio-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #ccc;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    height: 10%;
+  }
+
+  .audio-player.show {
+    transform: translateY(0);
+  }
+
+  .track-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    height: 48px;
+    width:48px;
+  }
+
+  .track-cover {
+ 
+    border-radius: 8px;
+    max-height: 100%;
+  width: auto;
+  object-fit: cover;
+
+  }
+
+  .track-title {
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-artist {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 2;
+    justify-content: center;
+  }
+
+  .icon-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .progress-bar {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  #seekBar {
+    width: 100%;
+    height: 4px;
+    background: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    appearance: none;
+  }
+
+  #seekBar::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #333;
+    border-radius: 50%;
+  }
+
+  #currentTime, #duration {
+    font-size: 12px;
+    color: #555;
+  }
+
+  .right-icons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  #volume {
+    width: 60px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
 
 
-    <section class="banner container-fluid bg-dark banner section">
-    <!-- phần hiện thông báo-->
-
-              @if(session('success'))
-            <div class="alert alert-success" id="success-message">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger" id="error-message">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <script>
-            // Kiểm tra nếu thông báo thành công có tồn tại
-            if (document.getElementById('success-message')) {
-                setTimeout(function() {
-                    // Ẩn thông báo sau 3 giây
-                    document.getElementById('success-message').style.display = 'none';
-                }, 3000);  // Thời gian 3 giây (3000ms)
-            }
-
-            // Kiểm tra nếu thông báo lỗi có tồn tại
-            if (document.getElementById('error-message')) {
-                setTimeout(function() {
-                    // Ẩn thông báo sau 3 giây
-                    document.getElementById('error-message').style.display = 'none';
-                }, 3000);  // Thời gian 3 giây (3000ms)
-            }
-        </script>
-
-
+  </style>
+      <section class="banner container-fluid bg-dark banner section">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -213,51 +326,226 @@
       </div>
       </section>
   
+
+
+
+
+
+
+
+
+
+
+ 
+  <!-- Audio Player -->
+  <div class="audio-player container" id="audioPlayer">
+    <button class="close-btn" onclick="document.getElementById('audioPlayer').style.display='none'">✖</button>
+    <div class="track-info">
+      <img src="" alt="Album Art" class="track-cover" >
+      <div>
+        <div class="track-title"></div>
+        <div class="track-artist"></div>
+      </div>
+    </div>
+
+    <audio id="audio" src="./amthanh/CheHo-WxrdieGillLucin3x-9070141.mp3"></audio>
+
+    <div class="controls">
+      <button onclick="toggleSpeed()" class="icon-btn" id="speed">1.0x</button>
+      <button onclick="skip(-15)" class="icon-btn"><i class="fas fa-undo-alt"></i></button>
+      <button onclick="playPause()" class="icon-btn"><i id="playIcon" class="fas fa-play"></i></button>
+      <button onclick="skip(15)" class="icon-btn"><i class="fas fa-redo-alt"></i></button>
+      <span id="currentTime">00:00</span>
+      <div class="progress-bar">
+        <input type="range" id="seekBar" min="0" value="0">
+      </div>
+      <span id="duration">03:20</span>
+
+      <div class="right-icons">
+        <i class="fas fa-volume-up icon-btn" id="volumeIcon"></i>
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+      </div>
+</div>
+
+  </div>
+
+  <!-- book read tram create -->
+ <section class="book container section">
+  <div class="book__list row" style="margin: 0;">
+    @foreach ($books as $book)
+      <div class="card col-3" style="width: 15rem; padding: 0;">
+        <img src="{{ asset($book->image_path) }}" class="card-img-top" alt="book">
+        <div class="card-body">
+          <h5 class="card-title">{{ $book->title }} - {{ $book->author }} - Tặng kèm Bookmark</h5>
+          <div class="card-price">
+            <p class="card-text">{{ number_format($book->price, 0, ',', '.') }}đ</p>
+
+            <!-- Nút đọc sách: chuyển trang -->
+            <a href="{{ route('books.read', ['id' => $book->id]) }}" class="btn btn-primary read-button">
+              Đọc sách
+            </a>
+
+            <div class="card-promotion">
+              -{{ round(100 - ($book->price / $book->original_price * 100)) }}%
+            </div>
+          </div>
+          <del>{{ number_format($book->original_price, 0, ',', '.') }}đ</del>
+          <div class="card-star" style="color: rgb(255, 205, 68);">
+            <i class="fa fa-star"></i><i class="fa fa-star"></i>
+            <i class="fa fa-star"></i><i class="fa fa-star"></i>
+          </div>
+        </div>
+      </div>
+    @endforeach
+  </div>
+</section>
+
+
+
+
+
+
+
+<!-- Tram create podcast--> 
+
+ <section class="book container section">
+  <div class="book__list row" style="margin: 0;">
+  @foreach ($books as $book)
+  <div class="card col-3" style="width: 15rem; padding: 0;">
+    <img src="{{ asset($book->image_path) }}" class="card-img-top" alt="book">
+    <div class="card-body">
+      <h5 class="card-title">{{ $book->title }} - {{ $book->author }} - Tặng kèm Bookmark</h5>
+      <div class="card-price">
+        <p class="card-text">{{ number_format($book->price, 0, ',', '.') }}đ</p>
+
+        <!-- Nút nghe podcast -->
+        <button class="play-button" data-audio="{{ asset($book->audio_path) }}">🎧 Nghe Podcast</button>
+
+        <div class="card-promotion">
+          -{{ round(100 - ($book->price / $book->original_price * 100)) }}%
+        </div>
+      </div>
+      <del>{{ number_format($book->original_price, 0, ',', '.') }}đ</del>
+      <div class="card-star" style="color: rgb(255, 205, 68);">
+        <i class="fa fa-star"></i><i class="fa fa-star"></i>
+        <i class="fa fa-star"></i><i class="fa fa-star"></i>
+      </div>
+    </div>
+  </div>
+  @endforeach
+</div>
+ </section>
+
+      
       <!-- Book -->
-      <!-- SÁCH NỔI BẬT -->
-    <section class="book container section">
-      <p class="title">SÁCH NỔI BẬT</p>
-      <div class="book__list row" style="margin: 0;">
-        @foreach($ebooks as $book)
+
+      <section class="book container section">
+        <p class="title">SÁCH NỔI BẬT</p>
+        <div class="book__list row" style="margin: 0;">
           <div class="card col-3" style="width: 15rem; padding: 0;">
             <img src="{{ asset($book->image_url) }}" class="card-img-top" alt="book">
             <div class="card-body">
-              <h5 class="card-title">{{ $book->title }}</h5>
-              <div class="card-price">
-                <p class="card-text">{{ number_format($book->price, 0, ',', '.') }}đ</p>
-                <div class="card-promotion">-{{ rand(20, 80) }}%</div> <!-- tạm random -->
-              </div>
-              <del>{{ number_format($book->price * 2, 0, ',', '.') }}đ</del>
-              <div class="card-star" style="color: rgb(255, 205, 68);">
-                @for($i = 0; $i < round($book->rating); $i++)
-                  <i class="fa fa-star"></i>
-                @endfor
-              </div>
+              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
+             <div class="card-price">
+              <p class="card-text">39.000đ</p>
+             
+              <div class="card-promotion">-75%</div>
+             </div> 
+             <del>150.000đ</del>
+             <div class="card-star" style="color: rgb(255, 205, 68);">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>  
+             </div>
             </div>
           </div>
-        @endforeach
-      </div>
-    </section>
+  
+          <div class="card col-3" style="width: 15rem; padding: 0;">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
+            <div class="card-body">
+              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
+             <div class="card-price">
+              <p class="card-text">39.000đ</p>
+             
 
-    <!-- PODCAST -->
-    <section class="book container section">
-      <p class="title">PODCAST</p>
-      <div class="book__list row" style="margin: 0;">
-        @foreach($podcasts as $podcast)
+              <div class="card-promotion">-75%</div>
+             </div> 
+             <del>150.000đ</del>
+             <div class="card-star" style="color: rgb(255, 205, 68);">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>  
+             </div>
+            </div>
+          </div>
+  
+          <div class="card col-3" style="width: 15rem; padding: 0;">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
+            <div class="card-body">
+              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
+             <div class="card-price">
+              <p class="card-text">39.000đ</p>
+            
+              <div class="card-promotion">-75%</div>
+             </div> 
+             <del>150.000đ</del>
+             <div class="card-star" style="color: rgb(255, 205, 68);">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>  
+             </div>
+            </div>
+          </div>
+  
+          <div class="card col-3" style="width: 15rem; padding: 0;">
+              <img src="{{ asset('assets/img/book2.jpg') }}" class="card-img-top" alt="book">
+            <div class="card-body">
+              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
+             <div class="card-price">
+              <p class="card-text">39.000đ</p>
+      
+              <div class="card-promotion">-75%</div>
+             </div> 
+             <del>150.000đ</del>
+             <div class="card-star" style="color: rgb(255, 205, 68);">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>  
+             </div>
+            </div>
+          </div>
+  
+       
+        </div>
+      </section>
+  
+
+
+      <!-- Podcast -->
+  
+      <section class="book container section">
+        <p class="title">PODCAST</p>
+        <div class="book__list row" style="margin: 0;">
           <div class="card col-3" style="width: 15rem; padding: 0;">
             <img src="{{ asset($podcast->image_url) }}" class="card-img-top" alt="podcast">
             <div class="card-body">
-              <h5 class="card-title">{{ $podcast->title }}</h5>
-              <div class="card-price">
-                <p class="card-text">{{ number_format($podcast->price, 0, ',', '.') }}đ</p>
-                <div class="card-promotion">-{{ rand(10, 50) }}%</div>
-              </div>
-              <del>{{ number_format($podcast->price * 1.8, 0, ',', '.') }}đ</del>
-              <div class="card-star" style="color: rgb(255, 205, 68);">
-                @for($i = 0; $i < round($podcast->rating); $i++)
-                  <i class="fa fa-star"></i>
-                @endfor
-              </div>
+              <h5 class="card-title">Đôi mắt - Nam Cao - Tặng kèm Bookmark</h5>
+             <div class="card-price">
+              <p class="card-text">39.000đ</p>
+           
+              <div class="card-promotion">-75%</div>
+             </div> 
+             <del>150.000đ</del>
+             <div class="card-star" style="color: rgb(255, 205, 68);">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>  
+             </div>
             </div>
           </div>
         @endforeach
@@ -308,6 +596,112 @@
         </div>
         
       </section>
+
+
+
+
+
+
+  <!--   thêm  -->
+
+
+
+
+
+<script>
+
+
+document.querySelectorAll('.play-button').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    const audioPlayer = document.getElementById('audioPlayer');
+    audioPlayer.classList.add('show');
+  });
+});
+
+
+  const audio = document.getElementById('audio');
+  const seekBar = document.getElementById('seekBar');
+  const currentTimeEl = document.getElementById('currentTime');
+  const durationEl = document.getElementById('duration');
+  const playIcon = document.getElementById('playIcon');
+  const speedBtn = document.getElementById('speed');
+  const volumeIcon = document.getElementById('volumeIcon');
+  let speed = 1.0;
+
+  function playPause() {
+    if (audio.paused) {
+      audio.play();
+      playIcon.classList.replace('fa-play', 'fa-pause');
+    } else {
+      audio.pause();
+      playIcon.classList.replace('fa-pause', 'fa-play');
+    }
+  }
+
+  function skip(seconds) {
+    audio.currentTime += seconds;
+  }
+
+  function toggleSpeed() {
+    speed += 0.25;
+    if (speed > 2) speed = 1.0;
+    audio.playbackRate = speed;
+    speedBtn.innerText = speed.toFixed(1) + 'x';
+  }
+
+  audio.ontimeupdate = () => {
+    seekBar.max = audio.duration;
+    seekBar.value = audio.currentTime;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+    durationEl.textContent = formatTime(audio.duration);
+  };
+
+  seekBar.oninput = (e) => {
+    audio.currentTime = e.target.value;
+  };
+
+  document.getElementById('volume').oninput = (e) => {
+    const volume = e.target.value;
+    audio.volume = volume;
+
+    if (volume == 0) {
+      volumeIcon.className = 'fas fa-volume-mute icon-btn';
+    } else if (volume < 0.5) {
+      volumeIcon.className = 'fas fa-volume-down icon-btn';
+    } else {
+      volumeIcon.className = 'fas fa-volume-up icon-btn';
+    }
+  };
+
+  // 👉 Xử lý tất cả các nút play-button
+  const playButtons = document.querySelectorAll('.play-button');
+  playButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const audioSrc = this.getAttribute('data-audio');
+      audio.src = audioSrc;
+      audio.play();
+      playIcon.classList.replace('fa-play', 'fa-pause');
+      document.getElementById('audioPlayer').style.display = 'block';
+    });
+  });
+
+  function closePlayer() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    audio.pause();
+    playIcon.classList.replace('fa-pause', 'fa-play');
+    audioPlayer.classList.remove('show');
+    audioPlayer.style.display = 'none';
+  }
+
+  function formatTime(seconds) {
+    const min = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${min}:${sec}`;
+  }
+
+</script>
+
+
   
       <!-- Contact -->
       <section class="contact container-fluid section">

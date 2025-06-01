@@ -9,26 +9,25 @@ use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Book;
+
+
 class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
-        $ebooks = Product::where('type', 'ebook')->latest()->take(6)->get();
-        $podcasts = Product::where('type', 'podcast')->latest()->take(6)->get();
+         $books = Book::all();
+        return view('pages.index', compact('books'));
+       // return view('pages.index');
 
-        return view('pages.index', compact('ebooks', 'podcasts','categories'));
     }
 
 
 
-    public function showPackages()
-    {
-        // Lấy tất cả các gói hội viên từ cơ sở dữ liệu
-        $subscriptions = Subscription::all();
+    public function read($id)
+{
+    $book = Book::findOrFail($id);
+    return view('pages.readBook', compact('book'));
+}
 
-        // Truyền dữ liệu tới view
-        return view('pages.member', compact('subscriptions'));
-    }
-  
 }
