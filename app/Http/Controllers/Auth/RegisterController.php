@@ -71,20 +71,7 @@ class RegisterController extends Controller
         ]);
     }
 
-     /**
-     * Show the login form with categories.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function showRegisterForm()
-    {
-        // Lấy danh mục từ bảng categories
-        $categories = Category::all();
-
-        // Truyền dữ liệu categories vào view register
-        return view('auth.register', compact('categories'));
-    }
-
+  
 
 
 }

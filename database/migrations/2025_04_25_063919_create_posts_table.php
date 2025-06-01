@@ -12,18 +12,16 @@ class CreatePostsTable extends Migration
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-
-            // Liên kết với người dùng
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            // Nội dung bài viết
-            $table->string('title');
-            $table->text('content')->nullable();
-            $table->string('audio_url')->nullable(); // Nếu có file âm thanh đính kèm
-
-            $table->timestamps();
+        $table->id();
+        $table->string('title');
+        $table->string('slug')->unique();
+        $table->string('author')->nullable();
+        $table->text('excerpt')->nullable();
+        $table->longText('content');
+        $table->string('thumbnail')->nullable(); // đường dẫn ảnh
+        $table->unsignedInteger('likes')->default(0);
+        $table->unsignedInteger('views')->default(0);
+        $table->timestamps();
         });
     }
 

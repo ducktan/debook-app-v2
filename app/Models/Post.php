@@ -10,15 +10,27 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'title',
+        'slug',
+        'author',
+        'excerpt',
         'content',
-        'audio_url',
+        'thumbnail',
+        'likes',
+        'views',
     ];
+
+
 
     // Quan hệ: Một bài viết thuộc về một người dùng
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(PostComment::class);
+    }
+
 }

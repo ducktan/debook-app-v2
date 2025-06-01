@@ -19,6 +19,23 @@
                             <i class="fa-solid fa-house"></i>
                         </a>
                     </li>
+                    @php
+                        $cart = session('cart', []);
+                        $cartCount = array_sum(array_column($cart, 'quantity'));
+                    @endphp
+
+
+                    <li class="nav-item position-relative">
+                        <a class="nav-link active" aria-current="page" href="{{ url('/cart') }}">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            @if ($cartCount > 0)
+                                <span class="position-absolute top-0 start-100 move__it badge rounded-pill bg-danger">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+
 
                     
                     
@@ -57,6 +74,8 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
 
+                    
+
                     <div class="icon__search">
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
@@ -70,12 +89,13 @@
     <div class="header__category container">
 
         @foreach ($categories as $category)
-        <a href="#" class="header__category-item">
+        <a href="{{ route('categories.show', $category->slug) }}" class="header__category-item">
             {{ $category->name }}
         </a>
         @endforeach
+    
       
-      <a href="">Blog</a>
+      <a href="{{ route('blog')}}">Blog</a>
     </div>
 </header>
        

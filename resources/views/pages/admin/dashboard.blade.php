@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="./userManagement.html">
+                    <a class="nav-link d-flex align-items-center" href="{{route('admin.userSetting')}}">
                         <i class="fa-solid fa-user text-warning"></i>
                         <span>Người dùng</span>
                       

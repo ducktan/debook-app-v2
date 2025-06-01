@@ -41,18 +41,6 @@ class LoginController extends Controller
     }
 
 
-    /**
-     * Show the login form with categories.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function showLoginForm()
-    {
-        // Lấy danh mục từ bảng categories
-        $categories = Category::all();
-
-        // Truyền dữ liệu categories vào view login
-        return view('auth.login', compact('categories'));
-    }
+    
 
 }

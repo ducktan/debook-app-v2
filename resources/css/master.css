@@ -32,6 +32,14 @@ html,body{
 .line__fi:hover::after {
     width: 100%;
 }
+.badge {
+    font-size: 0.7rem;
+    padding: 5px 6px;
+}
+.move__it {
+    transform: translate(-150%,0%);
+}
+
 
 a {
     text-decoration: none;
